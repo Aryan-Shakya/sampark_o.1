@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Wellness Dashboard - SamPark</title>
+  <title>Student Wellness Dashboard - TechHealth</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
@@ -84,7 +84,7 @@
 
 <div class="sidebar" id="sidebar">
   <div class="sidebar-header">
-    <div class="logo">SamPark</div>
+    <div class="logo">TechHealth</div>
     <div class="user-info">
       <i class="fas fa-user-circle"></i>
       <span>Student Dashboard</span>
@@ -295,8 +295,11 @@
     });
   }
 
-  // Initialize default language
-  updateLanguage('en');
+  // Initialize language from localStorage (or default to English)
+const savedLang = localStorage.getItem("selectedLanguage") || "en";
+langSelect.value = savedLang;
+updateLanguage(savedLang);
+
 </script>
 
 </body>
