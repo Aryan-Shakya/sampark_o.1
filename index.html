@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SamPark Login - Bright Mental Wellness</title>
+  <title>TechHealth Login - Bright Mental Wellness</title>
   <style>
     * {
       margin: 0; 
@@ -243,7 +243,7 @@
     <div class="content">
       <h1 id="welcome-text">🌟 Your Wellness Journey</h1>
       <p id="description-text">
-        Welcome to <strong>SamPark</strong>, your vibrant digital wellness companion.  
+        Welcome to <strong>TechHealth</strong>, your vibrant digital wellness companion.  
         Experience personalized mental health support, connect with caring professionals, and discover tools for a brighter, more balanced life.
       </p>
     </div>
@@ -271,9 +271,7 @@
         <input type="password" id="password" placeholder="Password" required>
         <button type="submit" id="login-btn">Sign In</button>
         <p><span id="forgot-text">Forgot password?</span> <a href="#">Reset here</a></p>
-        <!--
-        <p><span id="signup-text">New to SamPark?</span> <a href="#">Join us today</a></p>
-        -->
+        <p><span id="signup-text">New to TechHealth?</span> <a href="#">Join us today</a></p>
       </form>
     </div>
   </div>
@@ -282,13 +280,13 @@
     const translations = {
       en: {
         welcome: "🌟 Your Wellness Journey",
-        description: "Welcome to SamPark, your vibrant digital wellness companion. Experience personalized mental health support, connect with caring professionals, and discover tools for a brighter, more balanced life.",
+        description: "Welcome to TechHealth, your vibrant digital wellness companion. Experience personalized mental health support, connect with caring professionals, and discover tools for a brighter, more balanced life.",
         login: "Welcome Back",
         username: "Username",
         password: "Password",
         loginBtn: "Sign In",
         forgot: "Forgot password?",
-        signup: "New to SamPark?"
+        signup: "New to TechHealth?"
       },
       hi: {
         welcome: "🌟 आपकी कल्याण यात्रा",
@@ -329,6 +327,9 @@
     // Language switching
     langSelect.addEventListener("change", (e) => {
       const lang = e.target.value;
+
+      localStorage.setItem("selectedLanguage", lang);
+
       document.getElementById("welcome-text").innerText = translations[lang].welcome;
       document.getElementById("description-text").innerText = translations[lang].description;
       document.getElementById("login-title").innerText = translations[lang].login;
@@ -338,6 +339,14 @@
       document.getElementById("forgot-text").innerText = translations[lang].forgot;
       document.getElementById("signup-text").innerText = translations[lang].signup;
     });
+
+    // Set default language when page loads
+window.addEventListener("load", () => {
+  const savedLang = localStorage.getItem("selectedLanguage") || "en";
+  langSelect.value = savedLang;
+  langSelect.dispatchEvent(new Event("change")); // Apply saved language immediately
+});
+
 
     // Form submission with role-based redirection
     form.addEventListener("submit", (e) => {
