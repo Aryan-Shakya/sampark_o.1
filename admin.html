@@ -3,370 +3,1013 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TechHealth Login - Bright Mental Wellness</title>
+  <title>Admin Dashboard - TechHealth</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     * {
-      margin: 0; 
-      padding: 0; 
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
-      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     body {
-      height: 100vh;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #F8F9FA 0%, #E8F5F4 100%);
+      color: #2C3E50;
       display: flex;
-      background: linear-gradient(135deg, #F8F9FA, #FDFEFE);
+      min-height: 100vh;
     }
 
-    /* Left Info Panel */
-    .info-left {
-      width: 50%;
-      background: linear-gradient(135deg, #4ECDC4, #A2EBB3, #F7DC6F);
-      background-size: 400% 400%;
-      animation: gradientShift 20s ease infinite;
+    /* Sidebar */
+    .sidebar {
+      width: 280px;
+      height: 100vh;
+      background: linear-gradient(180deg, #BB8FCE 0%, #D2B4DE 100%);
+      color: white;
+      padding: 0;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      box-shadow: 4px 0 20px rgba(187, 143, 206, 0.2);
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .sidebar-header {
+      padding: 30px 25px;
+      background: rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: white;
+    }
+
+    .user-info {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      display: flex;
       align-items: center;
-      padding: 60px;
+      gap: 8px;
+    }
+
+    .sidebar nav {
+      flex: 1;
+      padding: 20px 0;
+    }
+
+    .sidebar nav a {
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      padding: 15px 25px;
+      margin: 5px 0;
+      transition: all 0.3s ease;
+      border-left: 4px solid transparent;
+    }
+
+    .sidebar nav a:hover,
+    .sidebar nav a.active {
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      border-left-color: #F7DC6F;
+      transform: translateX(5px);
+    }
+
+    .sidebar nav a i {
+      width: 20px;
+      margin-right: 15px;
+      font-size: 1.1rem;
+    }
+
+    /* Main Content */
+    .main {
+      flex: 1;
+      margin-left: 280px;
+      padding: 0;
+      overflow-y: auto;
+      transition: margin-left 0.3s ease;
+    }
+
+    /* Topbar */
+    .topbar {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 20px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 20px rgba(187, 143, 206, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .topbar h1 {
+      font-size: 1.8rem;
+      font-weight: 600;
       color: #2C3E50;
+    }
+
+    .topbar .profile {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .topbar input {
+      width: 280px;
+      padding: 10px 16px;
+      border: 2px solid #E8F5F4;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      background: white;
+      color: #2C3E50;
+      transition: all 0.3s ease;
+    }
+
+    .topbar input:focus {
+      outline: none;
+      border-color: #BB8FCE;
+      box-shadow: 0 0 15px rgba(187, 143, 206, 0.2);
+    }
+
+    .language-selector select {
+      padding: 8px 15px;
+      border: 2px solid #E8F5F4;
+      border-radius: 8px;
+      background: white;
+      color: #2C3E50;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .language-selector select:focus {
+      outline: none;
+      border-color: #BB8FCE;
+      box-shadow: 0 0 10px rgba(187, 143, 206, 0.2);
+    }
+
+    .topbar .profile img {
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      border: 2px solid #BB8FCE;
+    }
+
+    /* Dashboard Content */
+    .dashboard-content {
+      padding: 30px;
+    }
+
+    /* Cards Grid */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(187, 143, 206, 0.08);
+      border: 1px solid rgba(187, 143, 206, 0.1);
+      transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
     }
 
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      25% { background-position: 100% 50%; }
-      50% { background-position: 100% 100%; }
-      75% { background-position: 0% 100%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    /* Floating wellness elements */
-    .wellness-float {
-      position: absolute;
-      border-radius: 50%;
-      animation: float 12s infinite ease-in-out;
-    }
-
-    .float1 { 
-      width: 120px; height: 120px; 
-      top: 15%; left: 10%; 
-      background: radial-gradient(circle, rgba(187, 143, 206, 0.4), rgba(241, 194, 232, 0.2));
-      animation-delay: 0s; 
-    }
-    .float2 { 
-      width: 160px; height: 160px; 
-      bottom: 20%; right: 15%; 
-      background: radial-gradient(circle, rgba(174, 214, 241, 0.4), rgba(162, 235, 179, 0.2));
-      animation-delay: 4s; 
-    }
-    .float3 { 
-      width: 100px; height: 100px; 
-      top: 60%; left: 5%; 
-      background: radial-gradient(circle, rgba(248, 196, 113, 0.4), rgba(247, 220, 111, 0.2));
-      animation-delay: 8s; 
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
-      25% { transform: translateY(-20px) rotate(90deg); opacity: 0.8; }
-      50% { transform: translateY(-40px) rotate(180deg); opacity: 1; }
-      75% { transform: translateY(-20px) rotate(270deg); opacity: 0.8; }
-    }
-
-    .info-left .content {
-      position: relative;
-      z-index: 2;
-      max-width: 500px;
-      text-align: left;
-      animation: fadeInUp 2s ease forwards;
-    }
-
-    .info-left h1 {
-      font-size: 2.8em;
-      margin-bottom: 24px;
-      color: #2C3E50;
-      font-weight: 700;
-      text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
-    }
-
-    .info-left p {
-      font-size: 1.25em;
-      line-height: 1.7;
-      color: #2C3E50;
-      font-weight: 400;
-    }
-
-    @keyframes fadeInUp {
-      0% { transform: translateY(40px); opacity: 0; }
-      100% { transform: translateY(0); opacity: 1; }
-    }
-
-    /* Right Login Panel */
-    .login-right {
-      width: 50%;
-      background: linear-gradient(145deg, #FDFEFE, #F8F9FA);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 50px;
-      box-shadow: -10px 0 30px rgba(78, 205, 196, 0.1);
-      position: relative;
-    }
-
-    .login-right::before {
+    .card::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
-      height: 100%;
-      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234ECDC4' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-      z-index: 1;
+      height: 4px;
+      background: linear-gradient(90deg, #BB8FCE, #D2B4DE, #F1C2E8);
     }
 
-    .login-box {
-      width: 100%;
-      max-width: 380px;
-      text-align: center;
-      animation: fadeIn 1.8s ease;
-      background: rgba(253, 254, 254, 0.9);
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 20px 40px rgba(78, 205, 196, 0.1);
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(187, 143, 206, 0.15);
+    }
+
+    .card h3 {
+      margin-bottom: 20px;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #2C3E50;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card h3 i {
+      color: #BB8FCE;
+    }
+
+    .card ul {
+      list-style: none;
+      font-size: 1rem;
+    }
+
+    .card ul li {
+      margin-bottom: 12px;
+      color: #5D6D7E;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(187, 143, 206, 0.1);
+    }
+
+    .card ul li:last-child {
+      border-bottom: none;
+    }
+
+    .card ul li strong {
+      color: #2C3E50;
+      font-weight: 600;
+    }
+
+    .card.wide {
+      grid-column: span 2;
+    }
+
+    /* Status Indicators */
+    .status-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 8px;
+    }
+
+    .status-available { background: #52C41A; }
+    .status-busy { background: #FF7875; }
+    .status-break { background: #FAAD14; }
+
+    /* Chart Placeholder */
+    .chart {
+      height: 200px;
+      background: linear-gradient(135deg, #F8F9FA, rgba(187, 143, 206, 0.05));
+      border: 2px solid rgba(187, 143, 206, 0.1);
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #5D6D7E;
+      font-size: 1rem;
+      font-weight: 500;
       position: relative;
-      z-index: 2;
+      overflow: hidden;
     }
 
-    .login-box h2 {
+    .chart::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(187, 143, 206, 0.1), transparent);
+      border-radius: 50%;
+    }
+
+    .chart.small {
+      height: 150px;
+    }
+
+    .chart canvas {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    /* Metric Cards */
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
       margin-bottom: 30px;
-      font-size: 2.2em;
-      background: linear-gradient(135deg, #4ECDC4, #44A08D);
+    }
+
+    .metric-card {
+      background: white;
+      padding: 25px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(187, 143, 206, 0.08);
+      border: 2px solid rgba(187, 143, 206, 0.1);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #BB8FCE, #F1C2E8);
+    }
+
+    .metric-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(187, 143, 206, 0.15);
+    }
+
+    .metric-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #BB8FCE, #D2B4DE);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      font-weight: 700;
     }
 
-    .login-box input, 
-    .login-box select {
-      width: 100%;
-      padding: 16px 20px;
-      margin: 12px 0;
+    .metric-label {
+      color: #5D6D7E;
+      font-weight: 500;
+      font-size: 1rem;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, #BB8FCE, #D2B4DE);
+      color: white;
+    }
+
+    .btn.primary:hover {
+      background: linear-gradient(135deg, #D2B4DE, #BB8FCE);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(187, 143, 206, 0.3);
+    }
+
+    .btn.secondary {
+      background: #F8F9FA;
+      color: #2C3E50;
+      border: 2px solid #E8F5F4;
+    }
+
+    .btn.secondary:hover {
+      background: #E8F5F4;
+      border-color: #BB8FCE;
+    }
+
+    /* Reports Section */
+    .reports-section {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      margin: 25px 0;
+      box-shadow: 0 10px 30px rgba(187, 143, 206, 0.08);
+      border: 1px solid rgba(187, 143, 206, 0.1);
+    }
+
+    .reports-section h3 {
+      margin-bottom: 20px;
+      color: #2C3E50;
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .reports-section h3 i {
+      color: #BB8FCE;
+    }
+
+    .reports-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .report-item {
+      padding: 20px;
       border: 2px solid #E8F5F4;
       border-radius: 12px;
-      font-size: 1.05em;
-      outline: none;
       transition: all 0.3s ease;
-      background: #FDFEFE;
-      color: #2C3E50;
+      background: linear-gradient(135deg, #FDFEFE, #F8F9FA);
     }
 
-    .login-box input:focus, 
-    .login-box select:focus {
-      border-color: #4ECDC4;
-      box-shadow: 0 0 20px rgba(78, 205, 196, 0.2);
+    .report-item:hover {
+      border-color: #BB8FCE;
       transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(187, 143, 206, 0.1);
     }
 
-    .login-box button {
-      width: 100%;
-      padding: 16px;
-      margin-top: 20px;
-      border: none;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #4ECDC4, #44A08D);
-      color: white;
-      font-weight: 600;
-      font-size: 1.15em;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 8px 25px rgba(78, 205, 196, 0.3);
+    .report-item h4 {
+      color: #2C3E50;
+      margin-bottom: 10px;
+      font-size: 1.1rem;
     }
 
-    .login-box button:hover {
-      background: linear-gradient(135deg, #44A08D, #4ECDC4);
-      box-shadow: 0 12px 35px rgba(78, 205, 196, 0.4);
-      transform: translateY(-3px);
-    }
-
-    .login-box p {
-      margin-top: 20px;
-      font-size: 0.95em;
+    .report-item p {
       color: #5D6D7E;
+      font-size: 0.9rem;
+      margin-bottom: 15px;
     }
 
-    .login-box a {
-      color: #BB8FCE;
-      text-decoration: none;
-      font-weight: 600;
-      transition: all 0.3s ease;
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+
+      .sidebar.mobile-open {
+        transform: translateX(0);
+      }
+
+      .main {
+        margin-left: 0;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .card.wide {
+        grid-column: span 1;
+      }
+
+      .topbar input {
+        width: 200px;
+      }
+
+      .metric-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      }
     }
 
-    .login-box a:hover {
-      color: #4ECDC4;
-      text-decoration: underline;
+    .mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #2C3E50;
+      cursor: pointer;
+      margin-right: 15px;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(30px) scale(0.95); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    /* Responsive Design */
-    @media screen and (max-width: 768px) {
-      body { flex-direction: column; }
-      .info-left, .login-right { width: 100%; padding: 40px 30px; }
-      .info-left { min-height: 40vh; }
-      .login-right { min-height: 60vh; }
-      .info-left h1 { font-size: 2.2em; }
-      .info-left p { font-size: 1.1em; }
-      .login-box { max-width: 100%; padding: 30px; }
-      .float1, .float2, .float3 { display: none; }
-    }
-
-    @media screen and (max-width: 480px) {
-      .info-left, .login-right { padding: 30px 20px; }
-      .info-left h1 { font-size: 1.9em; }
-      .info-left p { font-size: 1em; }
-      .login-box { padding: 25px; }
-      .login-box h2 { font-size: 1.8em; }
+    @media (max-width: 768px) {
+      .mobile-toggle {
+        display: block;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="info-left">
-    <div class="wellness-float float1"></div>
-    <div class="wellness-float float2"></div>
-    <div class="wellness-float float3"></div>
-
-    <div class="content">
-      <h1 id="welcome-text">🌟 Your Wellness Journey</h1>
-      <p id="description-text">
-        Welcome to <strong>TechHealth</strong>, your vibrant digital wellness companion.  
-        Experience personalized mental health support, connect with caring professionals, and discover tools for a brighter, more balanced life.
-      </p>
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">TechHealth</div>
+      <div class="user-info">
+        <i class="fas fa-user-shield"></i>
+        <span>Admin Portal</span>
+      </div>
     </div>
+
+    <nav>
+      <a href="#" class="nav-link active">
+        <i class="fas fa-tachometer-alt"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fas fa-users"></i>
+        <span>User Management</span>
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fas fa-user-md"></i>
+        <span>Counselors</span>
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fas fa-graduation-cap"></i>
+        <span>Students</span>
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fas fa-chart-bar"></i>
+        <span>Analytics</span>
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fas fa-comments"></i>
+        <span>Forum Management</span>
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fas fa-book"></i>
+        <span>Resources</span>
+      </a>
+      <a href="#" class="nav-link">
+        <i class="fas fa-cog"></i>
+        <span>Settings</span>
+      </a>
+      <a href="index.html" class="nav-link">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+      </a>
+    </nav>
   </div>
 
-  <div class="login-right">
-    <div class="login-box">
-      <h2 id="login-title">Welcome Back</h2>
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="mobile-toggle" onclick="toggleSidebar()">
+          <i class="fas fa-bars"></i>
+        </button>
+        <h1 id="page-title">Admin Dashboard</h1>
+      </div>
+      <div class="profile">
+        <input type="text" placeholder="Search...">
+        <div class="language-selector">
+          <select id="languageSelect">
+            <option value="en">English</option>
+            <option value="hi">हिन्दी (Hindi)</option>
+            <option value="ur">اردو (Urdu)</option>
+            <option value="ks">کٲشُر (Kashmiri)</option>
+          </select>
+        </div>
+        <!-- <div style="margin-left: 15px;">
+          <a href="student.html" style="margin-right: 10px; color: #BB8FCE; text-decoration: none;">Student</a>
+          <a href="counselor.html" style="color: #BB8FCE; text-decoration: none;">Counselor</a>
+        </div> -->
+        <img src="https://via.placeholder.com/40x40/BB8FCE/FFFFFF?text=A" alt="Admin">
+      </div>
+    </div>
 
-      <select id="language-select">
-        <option value="en">English</option>
-        <option value="hi">हिन्दी (Hindi)</option>
-        <option value="ur">اردو (Urdu)</option>
-        <option value="ks">کٲشُر (Kashmiri)</option>
-      </select>
+    <div class="dashboard-content">
+      <!-- Key Metrics -->
+      <div class="metric-grid">
+        <div class="metric-card">
+          <div class="metric-value">1,247</div>
+          <div class="metric-label" id="total-users">Total Users</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">342</div>
+          <div class="metric-label" id="active-sessions">Active Sessions</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">89</div>
+          <div class="metric-label" id="counselors-online">Counselors Online</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">15</div>
+          <div class="metric-label" id="urgent-cases">Urgent Cases</div>
+        </div>
+      </div>
 
-      <select id="role-select">
-        <option value="student">Student</option>
-        <option value="counselor">Counselor</option>
-        <option value="admin">Admin</option>
-      </select>
+      <div class="cards">
+        <div class="card wide">
+          <h3>
+            <i class="fas fa-chart-line"></i>
+            <span id="screening-trends">Screening Trends</span>
+          </h3>
+          <div class="chart">
+            <canvas id="screeningChart" width="400" height="200"></canvas>
+          </div>
+        </div>
 
-      <form>
-        <input type="text" id="username" placeholder="Username" required>
-        <input type="password" id="password" placeholder="Password" required>
-        <button type="submit" id="login-btn">Sign In</button>
-        <p><span id="forgot-text">Forgot password?</span> <a href="#">Reset here</a></p>
-        <p><span id="signup-text">New to TechHealth?</span> <a href="#">Join us today</a></p>
-      </form>
+        <div class="card">
+          <h3>
+            <i class="fas fa-calendar-check"></i>
+            <span id="appointments-overview">Appointments Overview</span>
+          </h3>
+          <ul>
+            <li>
+              <span id="today-scheduled">Today Scheduled:</span>
+              <strong>12</strong>
+            </li>
+            <li>
+              <span id="completed">Completed:</span>
+              <strong>8</strong>
+            </li>
+            <li>
+              <span id="pending">Pending:</span>
+              <strong>4</strong>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>
+            <i class="fas fa-user-check"></i>
+            <span id="counselor-availability">Counselor Availability</span>
+          </h3>
+          <ul>
+            <li>
+              <span>
+                <span class="status-indicator status-available"></span>
+                Dr. Smith
+              </span>
+              <strong>Available</strong>
+            </li>
+            <li>
+              <span>
+                <span class="status-indicator status-busy"></span>
+                Dr. Johnson
+              </span>
+              <strong>Busy</strong>
+            </li>
+            <li>
+              <span>
+                <span class="status-indicator status-break"></span>
+                Dr. Patel
+              </span>
+              <strong>On Break</strong>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>
+            <i class="fas fa-chart-bar"></i>
+            <span id="resource-usage">Resource Usage</span>
+          </h3>
+          <div class="chart small">
+            <canvas id="resourceChart" width="300" height="150"></canvas>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>
+            <i class="fas fa-comments"></i>
+            <span id="forum-metrics">Forum Metrics</span>
+          </h3>
+          <ul>
+            <li>
+              <span id="new-posts">New Posts:</span>
+              <strong>32</strong>
+            </li>
+            <li>
+              <span id="active-users">Active Users:</span>
+              <strong>120</strong>
+            </li>
+            <li>
+              <span id="flagged-topics">Flagged Topics:</span>
+              <strong>3</strong>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>
+            <i class="fas fa-cogs"></i>
+            <span id="system-management">System Management</span>
+          </h3>
+          <ul>
+            <li>
+              <span id="manage-users">Manage Users</span>
+              <button class="btn secondary">
+                <i class="fas fa-users-cog"></i>
+                Open
+              </button>
+            </li>
+            <li>
+              <span id="access-logs">Access Logs</span>
+              <button class="btn secondary">
+                <i class="fas fa-list-alt"></i>
+                View
+              </button>
+            </li>
+            <li>
+              <span id="system-health">System Health</span>
+              <button class="btn secondary">
+                <i class="fas fa-heartbeat"></i>
+                Check
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="reports-section">
+        <h3>
+          <i class="fas fa-file-export"></i>
+          <span id="reports-exports">Reports & Exports</span>
+        </h3>
+        <div class="reports-grid">
+          <div class="report-item">
+            <h4 id="monthly-report">Monthly Analytics Report</h4>
+            <p id="monthly-desc">Comprehensive overview of platform usage and user engagement metrics.</p>
+            <button class="btn primary">
+              <i class="fas fa-download"></i>
+              <span id="generate">Generate</span>
+            </button>
+          </div>
+          <div class="report-item">
+            <h4 id="counselor-performance">Counselor Performance</h4>
+            <p id="counselor-desc">Detailed analysis of counselor effectiveness and client satisfaction.</p>
+            <button class="btn primary">
+              <i class="fas fa-chart-line"></i>
+              <span id="view">View</span>
+            </button>
+          </div>
+          <div class="report-item">
+            <h4 id="user-feedback">User Feedback Summary</h4>
+            <p id="feedback-desc">Aggregated feedback from students and analysis of platform improvements.</p>
+            <button class="btn primary">
+              <i class="fas fa-comments"></i>
+              <span id="analyze">Analyze</span>
+            </button>
+          </div>
+          <div class="report-item">
+            <h4 id="system-logs">System Logs Export</h4>
+            <p id="logs-desc">Technical logs for system monitoring and security audit purposes.</p>
+            <button class="btn primary">
+              <i class="fas fa-file-code"></i>
+              <span id="export">Export</span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
-    const translations = {
-      en: {
-        welcome: "🌟 Your Wellness Journey",
-        description: "Welcome to TechHealth, your vibrant digital wellness companion. Experience personalized mental health support, connect with caring professionals, and discover tools for a brighter, more balanced life.",
-        login: "Welcome Back",
-        username: "Username",
-        password: "Password",
-        loginBtn: "Sign In",
-        forgot: "Forgot password?",
-        signup: "New to TechHealth?"
-      },
-      hi: {
-        welcome: "🌟 आपकी कल्याण यात्रा",
-        description: "टेकहेल्थ में आपका स्वागत है, आपका जीवंत डिजिटल कल्याण साथी। व्यक्तिगत मानसिक स्वास्थ्य सहायता का अनुभव करें, देखभाल करने वाले पेशेवरों से जुड़ें, और एक उज्जवल, अधिक संतुलित जीवन के लिए उपकरण खोजें।",
-        login: "वापसी पर स्वागत है",
-        username: "उपयोगकर्ता नाम",
-        password: "पासवर्ड",
-        loginBtn: "साइन इन",
-        forgot: "पासवर्ड भूल गए?",
-        signup: "टेकहेल्थ में नए हैं?"
-      },
-      ur: {
-        welcome: "🌟 آپ کا فلاحی سفر",
-        description: "ٹیک ہیلتھ میں خوش آمدید، آپ کا متحرک ڈیجیٹل فلاحی ساتھی۔ ذاتی ذہنی صحت کی مدد کا تجربہ کریں، دیکھ بھال کرنے والے پیشہ ور افراد سے جڑیں، اور ایک روشن، زیادہ متوازن زندگی کے لیے آلات دریافت کریں۔",
-        login: "واپسی پر خوش آمدید",
-        username: "صارف کا نام",
-        password: "پاس ورڈ",
-        loginBtn: "سائن ان",
-        forgot: "پاس ورڈ بھول گئے؟",
-        signup: "ٹیک ہیلتھ میں نئے ہیں؟"
-      },
-      ks: {
-        welcome: "🌟 توہندُ بہبودی سفر",
-        description: "ٹیک ہیلتھ منز خوش آمدید، توہندُ متحرک ڈیجیٹل بہبودی ساتھی۔ ذاتی ذہنی صحت کی مدد کا تجربہ کریو، دیکھ بھال کرنے والے پیشہ ور افراد سے جڑیو، اور اکھ روشن، زیادہ متوازن زندگی کے لیے آلات دریافت کریو۔",
-        login: "واپسی پر خوش آمدید",
-        username: "ناو",
-        password: "پاسورڈ",
-        loginBtn: "سائن ان",
-        forgot: "پاسورڈ بھولِ گۄے؟",
-        signup: "ٹیک ہیلتھ منز نۄے چھیو؟"
+  const translations = {
+    en: {
+      title: "Admin Dashboard",
+      totalUsers: "Total Users",
+      activeSessions: "Active Sessions", 
+      counselorsOnline: "Counselors Online",
+      urgentCases: "Urgent Cases",
+      screeningTrends: "Screening Trends",
+      appointmentsOverview: "Appointments Overview",
+      todayScheduled: "Today Scheduled:",
+      completed: "Completed:",
+      pending: "Pending:",
+      counselorAvailability: "Counselor Availability",
+      resourceUsage: "Resource Usage",
+      forumMetrics: "Forum Metrics",
+      newPosts: "New Posts:",
+      activeUsers: "Active Users:",
+      flaggedTopics: "Flagged Topics:",
+      systemManagement: "System Management",
+      manageUsers: "Manage Users",
+      accessLogs: "Access Logs",
+      systemHealth: "System Health",
+      reportsExports: "Reports & Exports",
+      monthlyReport: "Monthly Analytics Report",
+      monthlyDesc: "Comprehensive overview of platform usage and user engagement metrics.",
+      counselorPerformance: "Counselor Performance",
+      counselorDesc: "Detailed analysis of counselor effectiveness and client satisfaction.",
+      userFeedback: "User Feedback Summary",
+      feedbackDesc: "Aggregated feedback from students and analysis of platform improvements.",
+      systemLogs: "System Logs Export",
+      logsDesc: "Technical logs for system monitoring and security audit purposes.",
+      generate: "Generate",
+      view: "View",
+      analyze: "Analyze",
+      export: "Export",
+      sidebar: {
+        dashboard: "Dashboard",
+        userManagement: "User Management",
+        counselors: "Counselors",
+        students: "Students",
+        analytics: "Analytics",
+        forumManagement: "Forum Management",
+        resources: "Resources",
+        settings: "Settings",
+        logout: "Logout"
       }
-    };
+    },
+    hi: {
+      title: "एडमिन डैशबोर्ड",
+      totalUsers: "कुल उपयोगकर्ता",
+      activeSessions: "सक्रिय सेशन",
+      counselorsOnline: "ऑनलाइन काउंसलर", 
+      urgentCases: "तत्काल मामले",
+      screeningTrends: "स्क्रीनिंग रुझान",
+      appointmentsOverview: "अपॉइंटमेंट्स अवलोकन",
+      todayScheduled: "आज निर्धारित:",
+      completed: "पूर्ण:",
+      pending: "लंबित:",
+      counselorAvailability: "काउंसलर उपलब्धता",
+      resourceUsage: "संसाधन उपयोग",
+      forumMetrics: "फोरम मेट्रिक्स",
+      newPosts: "नई पोस्ट:",
+      activeUsers: "सक्रिय उपयोगकर्ता:",
+      flaggedTopics: "फ़्लैग किए गए विषय:",
+      systemManagement: "सिस्टम प्रबंधन",
+      manageUsers: "उपयोगकर्ता प्रबंधन",
+      accessLogs: "एक्सेस लॉग्स",
+      systemHealth: "सिस्टम स्वास्थ्य",
+      reportsExports: "रिपोर्ट्स और एक्सपोर्ट्स",
+      monthlyReport: "मासिक एनालिटिक्स रिपोर्ट",
+      monthlyDesc: "प्लेटफॉर्म उपयोग और उपयोगकर्ता एंगेजमेंट मेट्रिक्स का व्यापक अवलोकन।",
+      counselorPerformance: "काउंसलर प्रदर्शन",
+      counselorDesc: "काउंसलर प्रभावशीलता और क्लाइंट संतुष्टि का विस्तृत विश्लेषण।",
+      userFeedback: "उपयोगकर्ता फीडबैक सारांश",
+      feedbackDesc: "छात्रों से एकत्रित फीडबैक और प्लेटफॉर्म सुधार का विश्लेषण।",
+      systemLogs: "सिस्टम लॉग्स एक्सपोर्ट",
+      logsDesc: "सिस्टम मॉनिटरिंग और सुरक्षा ऑडिट उद्देश्यों के लिए तकनीकी लॉग्स।",
+      generate: "उत्पन्न करें",
+      view: "देखें",
+      analyze: "विश्लेषण करें",
+      export: "एक्सपोर्ट करें",
+      sidebar: {
+        dashboard: "डैशबोर्ड",
+        userManagement: "उपयोगकर्ता प्रबंधन",
+        counselors: "काउंसलर",
+        students: "छात्र",
+        analytics: "विश्लेषण",
+        forumManagement: "फोरम प्रबंधन",
+        resources: "संसाधन",
+        settings: "सेटिंग्स",
+        logout: "लॉगआउट"
+      }
+    },
+    ur: {
+      title: "ایڈمن ڈیش بورڈ",
+      totalUsers: "کل صارفین",
+      activeSessions: "فعال سیشنز",
+      counselorsOnline: "آن لائن کاؤنسلرز",
+      urgentCases: "فوری مقدمات", 
+      screeningTrends: "اسکریننگ کے رجحانات",
+      appointmentsOverview: "ملاقاتوں کا جائزہ",
+      todayScheduled: "آج مقرر:",
+      completed: "مکمل:",
+      pending: "زیر التوا:",
+      counselorAvailability: "کاؤنسلر کی دستیابی",
+      resourceUsage: "وسائل کا استعمال",
+      forumMetrics: "فورم میٹرکس",
+      newPosts: "نئی پوسٹس:",
+      activeUsers: "فعال صارفین:",
+      flaggedTopics: "نشان زد موضوعات:",
+      systemManagement: "سسٹم منیجمنٹ",
+      manageUsers: "صارف کا انتظام",
+      accessLogs: "رسائی لاگز",
+      systemHealth: "سسٹم کی صحت",
+      reportsExports: "رپورٹس اور ایکسپورٹس",
+      monthlyReport: "ماہانہ تجزیاتی رپورٹ",
+      monthlyDesc: "پلیٹ فارم کے استعمال اور صارف کی مشغولیت کی میٹرکس کا جامع جائزہ۔",
+      counselorPerformance: "کاؤنسلر کی کارکردگی",
+      counselorDesc: "کاؤنسلر کی تاثیر اور کلائنٹ کی اطمینان کا تفصیلی تجزیہ۔",
+      userFeedback: "صارف فیڈبیک خلاصہ",
+      feedbackDesc: "طلباء سے جمع شدہ فیڈبیک اور پلیٹ فارم بہتری کا تجزیہ۔",
+      systemLogs: "سسٹم لاگز ایکسپورٹ",
+      logsDesc: "سسٹم مانیٹرنگ اور سیکیورٹی آڈٹ مقاصد کے لیے تکنیکی لاگز۔",
+      generate: "تیار کریں",
+      view: "دیکھیں",
+      analyze: "تجزیہ کریں",
+      export: "ایکسپورٹ کریں",
+      sidebar: {
+        dashboard: "ڈیش بورڈ",
+        userManagement: "صارف کا انتظام",
+        counselors: "کاؤنسلرز",
+        students: "طلباء",
+        analytics: "تجزیات",
+        forumManagement: "فورم انتظام",
+        resources: "وسائل",
+        settings: "سیٹنگز",
+        logout: "لاگ آؤٹ"
+      }
+    },
+    ks: {
+      title: "ایڈمن ڈیش بورڈ",
+      totalUsers: "کل صارف",
+      activeSessions: "فعال سیشن",
+      counselorsOnline: "آن لائن کاؤنسلر",
+      urgentCases: "ضروری معاملات",
+      screeningTrends: "اسکریننگ رجحان",
+      appointmentsOverview: "ملاقات جائزہ",
+      todayScheduled: "آز مقرر:",
+      completed: "مکمل:",
+      pending: "منتظر:",
+      counselorAvailability: "کاؤنسلر دستیابی",
+      resourceUsage: "وسائل استعمال",
+      forumMetrics: "فورم میٹرک",
+      newPosts: "نۄے پوسٹ:",
+      activeUsers: "فعال صارف:",
+      flaggedTopics: "نشان زد موضوع:",
+      systemManagement: "سسٹم انتظام",
+      manageUsers: "صارف انتظام",
+      accessLogs: "رسائی لاگ",
+      systemHealth: "سسٹم صحت",
+      reportsExports: "رپورٹ تہ ایکسپورٹ",
+      monthlyReport: "ماہانہ تجزیاتی رپورٹ",
+      monthlyDesc: "پلیٹ فارم استعمال تہ صارف مشغولیت میٹرک کا جامع جائزہ۔",
+      counselorPerformance: "کاؤنسلر کارکردگی",
+      counselorDesc: "کاؤنسلر تاثیر تہ کلائنٹ اطمینان کا تفصیلی تجزیہ۔",
+      userFeedback: "صارف فیڈبیک خلاصہ",
+      feedbackDesc: "طلباء پیٹھ جمع فیڈبیک تہ پلیٹ فارم بہتری کا تجزیہ۔",
+      systemLogs: "سسٹم لاگ ایکسپورٹ",
+      logsDesc: "سسٹم مانیٹرنگ تہ سیکیورٹی آڈٹ مقاصد خٲطرؠ تکنیکی لاگ۔",
+      generate: "بناؤ",
+      view: "ویکھیو",
+      analyze: "تجزیہ کریو",
+      export: "ایکسپورٹ کریو",
+      sidebar: {
+        dashboard: "ڈیش بورڈ",
+        userManagement: "صارف انتظام",
+        counselors: "کاؤنسلر",
+        students: "طلباء",
+        analytics: "تجزیات",
+        forumManagement: "فورم انتظام",
+        resources: "وسائل",
+        settings: "سیٹنگ",
+        logout: "لاگ آؤٹ"
+      }
+    }
+  };
 
-    const langSelect = document.getElementById("language-select");
-    const roleSelect = document.getElementById("role-select");
-    const form = document.querySelector("form");
+  
+  function initializeCharts() {
+    const screeningCtx = document.getElementById('screeningChart');
+    if (screeningCtx) {
+      new Chart(screeningCtx, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          datasets: [{
+            label: 'Screenings',
+            data: [65, 78, 90, 81, 96, 105],
+            borderColor: '#BB8FCE',
+            backgroundColor: 'rgba(187, 143, 206, 0.1)',
+            borderWidth: 3,
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { beginAtZero: true, grid: { color: 'rgba(0, 0, 0, 0.1)' } },
+            x: { grid: { display: false } }
+          }
+        }
+      });
+    }
 
-    // Language switching
-    langSelect.addEventListener("change", (e) => {
-      const lang = e.target.value;
+    const resourceCtx = document.getElementById('resourceChart');
+    if (resourceCtx) {
+      new Chart(resourceCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Active Users', 'Idle', 'Maintenance'],
+          datasets: [{ data: [65, 25, 10], backgroundColor: ['#BB8FCE', '#D2B4DE', '#F1C2E8'], borderWidth: 0 }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+      });
+    }
+  }
 
-      localStorage.setItem("selectedLanguage", lang);
 
-      document.getElementById("welcome-text").innerText = translations[lang].welcome;
-      document.getElementById("description-text").innerText = translations[lang].description;
-      document.getElementById("login-title").innerText = translations[lang].login;
-      document.getElementById("username").placeholder = translations[lang].username;
-      document.getElementById("password").placeholder = translations[lang].password;
-      document.getElementById("login-btn").innerText = translations[lang].loginBtn;
-      document.getElementById("forgot-text").innerText = translations[lang].forgot;
-      document.getElementById("signup-text").innerText = translations[lang].signup;
+  function updateLanguage(lang) {
+    const t = translations[lang];
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if(t[key]) el.textContent = t[key];
     });
 
-    // Set default language when page loads
-window.addEventListener("load", () => {
-  const savedLang = localStorage.getItem("selectedLanguage") || "en";
-  langSelect.value = savedLang;
-  langSelect.dispatchEvent(new Event("change")); // Apply saved language immediately
-});
 
+    const s = t.sidebar;
+    const sidebarLinks = document.querySelectorAll('.sidebar nav a span');
+    const keys = ['dashboard','userManagement','counselors','students','analytics','forumManagement','resources','settings','logout'];
+    sidebarLinks.forEach((el,i) => { if(s[keys[i]]) el.textContent = s[keys[i]]; });
 
-    // Form submission with role-based redirection
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const role = roleSelect.value;
+    initializeCharts();
+  }
 
-      // Simple demo navigation (in production, you'd validate credentials)
-      switch(role) {
-        case 'student':
-          window.location.href = 'student.html';
-          break;
-        case 'counselor':
-          window.location.href = 'counselor.html';
-          break;
-        case 'admin':
-          window.location.href = 'admin.html';
-          break;
-      }
-    });
-  </script>
+  document.getElementById('languageSelect').addEventListener('change', e => {
+    updateLanguage(e.target.value);
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    updateLanguage('en');
+  });
+
+</script>
 
 </body>
 </html>
