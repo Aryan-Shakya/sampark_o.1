@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechHealth Login - Bright Mental Wellness</title>
+  <style>
+    * {
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box;
+      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      background: linear-gradient(135deg, #F8F9FA, #FDFEFE);
+    }
+
+    /* Left Info Panel */
+    .info-left {
+      width: 50%;
+      background: linear-gradient(135deg, #4ECDC4, #A2EBB3, #F7DC6F);
+      background-size: 400% 400%;
+      animation: gradientShift 20s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 60px;
+      color: #2C3E50;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      25% { background-position: 100% 50%; }
+      50% { background-position: 100% 100%; }
+      75% { background-position: 0% 100%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Floating wellness elements */
+    .wellness-float {
+      position: absolute;
+      border-radius: 50%;
+      animation: float 12s infinite ease-in-out;
+    }
+
+    .float1 { 
+      width: 120px; height: 120px; 
+      top: 15%; left: 10%; 
+      background: radial-gradient(circle, rgba(187, 143, 206, 0.4), rgba(241, 194, 232, 0.2));
+      animation-delay: 0s; 
+    }
+    .float2 { 
+      width: 160px; height: 160px; 
+      bottom: 20%; right: 15%; 
+      background: radial-gradient(circle, rgba(174, 214, 241, 0.4), rgba(162, 235, 179, 0.2));
+      animation-delay: 4s; 
+    }
+    .float3 { 
+      width: 100px; height: 100px; 
+      top: 60%; left: 5%; 
+      background: radial-gradient(circle, rgba(248, 196, 113, 0.4), rgba(247, 220, 111, 0.2));
+      animation-delay: 8s; 
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
+      25% { transform: translateY(-20px) rotate(90deg); opacity: 0.8; }
+      50% { transform: translateY(-40px) rotate(180deg); opacity: 1; }
+      75% { transform: translateY(-20px) rotate(270deg); opacity: 0.8; }
+    }
+
+    .info-left .content {
+      position: relative;
+      z-index: 2;
+      max-width: 500px;
+      text-align: left;
+      animation: fadeInUp 2s ease forwards;
+    }
+
+    .info-left h1 {
+      font-size: 2.8em;
+      margin-bottom: 24px;
+      color: #2C3E50;
+      font-weight: 700;
+      text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
+    }
+
+    .info-left p {
+      font-size: 1.25em;
+      line-height: 1.7;
+      color: #2C3E50;
+      font-weight: 400;
+    }
+
+    @keyframes fadeInUp {
+      0% { transform: translateY(40px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Right Login Panel */
+    .login-right {
+      width: 50%;
+      background: linear-gradient(145deg, #FDFEFE, #F8F9FA);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 50px;
+      box-shadow: -10px 0 30px rgba(78, 205, 196, 0.1);
+      position: relative;
+    }
+
+    .login-right::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234ECDC4' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      z-index: 1;
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      animation: fadeIn 1.8s ease;
+      background: rgba(253, 254, 254, 0.9);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(78, 205, 196, 0.1);
+      position: relative;
+      z-index: 2;
+    }
+
+    .login-box h2 {
+      margin-bottom: 30px;
+      font-size: 2.2em;
+      background: linear-gradient(135deg, #4ECDC4, #44A08D);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+    }
+
+    .login-box input, 
+    .login-box select {
+      width: 100%;
+      padding: 16px 20px;
+      margin: 12px 0;
+      border: 2px solid #E8F5F4;
+      border-radius: 12px;
+      font-size: 1.05em;
+      outline: none;
+      transition: all 0.3s ease;
+      background: #FDFEFE;
+      color: #2C3E50;
+    }
+
+    .login-box input:focus, 
+    .login-box select:focus {
+      border-color: #4ECDC4;
+      box-shadow: 0 0 20px rgba(78, 205, 196, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .login-box button {
+      width: 100%;
+      padding: 16px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #4ECDC4, #44A08D);
+      color: white;
+      font-weight: 600;
+      font-size: 1.15em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 25px rgba(78, 205, 196, 0.3);
+    }
+
+    .login-box button:hover {
+      background: linear-gradient(135deg, #44A08D, #4ECDC4);
+      box-shadow: 0 12px 35px rgba(78, 205, 196, 0.4);
+      transform: translateY(-3px);
+    }
+
+    .login-box p {
+      margin-top: 20px;
+      font-size: 0.95em;
+      color: #5D6D7E;
+    }
+
+    .login-box a {
+      color: #BB8FCE;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .login-box a:hover {
+      color: #4ECDC4;
+      text-decoration: underline;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Responsive Design */
+    @media screen and (max-width: 768px) {
+      body { flex-direction: column; }
+      .info-left, .login-right { width: 100%; padding: 40px 30px; }
+      .info-left { min-height: 40vh; }
+      .login-right { min-height: 60vh; }
+      .info-left h1 { font-size: 2.2em; }
+      .info-left p { font-size: 1.1em; }
+      .login-box { max-width: 100%; padding: 30px; }
+      .float1, .float2, .float3 { display: none; }
+    }
+
+    @media screen and (max-width: 480px) {
+      .info-left, .login-right { padding: 30px 20px; }
+      .info-left h1 { font-size: 1.9em; }
+      .info-left p { font-size: 1em; }
+      .login-box { padding: 25px; }
+      .login-box h2 { font-size: 1.8em; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="info-left">
+    <div class="wellness-float float1"></div>
+    <div class="wellness-float float2"></div>
+    <div class="wellness-float float3"></div>
+
+    <div class="content">
+      <h1 id="welcome-text">🌟 Your Wellness Journey</h1>
+      <p id="description-text">
+        Welcome to <strong>TechHealth</strong>, your vibrant digital wellness companion.  
+        Experience personalized mental health support, connect with caring professionals, and discover tools for a brighter, more balanced life.
+      </p>
+    </div>
+  </div>
+
+  <div class="login-right">
+    <div class="login-box">
+      <h2 id="login-title">Welcome Back</h2>
+
+      <select id="language-select">
+        <option value="en">English</option>
+        <option value="hi">हिन्दी (Hindi)</option>
+        <option value="ur">اردو (Urdu)</option>
+        <option value="ks">کٲشُر (Kashmiri)</option>
+      </select>
+
+      <select id="role-select">
+        <option value="student">Student</option>
+        <option value="counselor">Counselor</option>
+        <option value="admin">Admin</option>
+      </select>
+
+      <form>
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="submit" id="login-btn">Sign In</button>
+        <p><span id="forgot-text">Forgot password?</span> <a href="#">Reset here</a></p>
+        <p><span id="signup-text">New to TechHealth?</span> <a href="#">Join us today</a></p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const translations = {
+      en: {
+        welcome: "🌟 Your Wellness Journey",
+        description: "Welcome to TechHealth, your vibrant digital wellness companion. Experience personalized mental health support, connect with caring professionals, and discover tools for a brighter, more balanced life.",
+        login: "Welcome Back",
+        username: "Username",
+        password: "Password",
+        loginBtn: "Sign In",
+        forgot: "Forgot password?",
+        signup: "New to TechHealth?"
+      },
+      hi: {
+        welcome: "🌟 आपकी कल्याण यात्रा",
+        description: "टेकहेल्थ में आपका स्वागत है, आपका जीवंत डिजिटल कल्याण साथी। व्यक्तिगत मानसिक स्वास्थ्य सहायता का अनुभव करें, देखभाल करने वाले पेशेवरों से जुड़ें, और एक उज्जवल, अधिक संतुलित जीवन के लिए उपकरण खोजें।",
+        login: "वापसी पर स्वागत है",
+        username: "उपयोगकर्ता नाम",
+        password: "पासवर्ड",
+        loginBtn: "साइन इन",
+        forgot: "पासवर्ड भूल गए?",
+        signup: "टेकहेल्थ में नए हैं?"
+      },
+      ur: {
+        welcome: "🌟 آپ کا فلاحی سفر",
+        description: "ٹیک ہیلتھ میں خوش آمدید، آپ کا متحرک ڈیجیٹل فلاحی ساتھی۔ ذاتی ذہنی صحت کی مدد کا تجربہ کریں، دیکھ بھال کرنے والے پیشہ ور افراد سے جڑیں، اور ایک روشن، زیادہ متوازن زندگی کے لیے آلات دریافت کریں۔",
+        login: "واپسی پر خوش آمدید",
+        username: "صارف کا نام",
+        password: "پاس ورڈ",
+        loginBtn: "سائن ان",
+        forgot: "پاس ورڈ بھول گئے؟",
+        signup: "ٹیک ہیلتھ میں نئے ہیں؟"
+      },
+      ks: {
+        welcome: "🌟 توہندُ بہبودی سفر",
+        description: "ٹیک ہیلتھ منز خوش آمدید، توہندُ متحرک ڈیجیٹل بہبودی ساتھی۔ ذاتی ذہنی صحت کی مدد کا تجربہ کریو، دیکھ بھال کرنے والے پیشہ ور افراد سے جڑیو، اور اکھ روشن، زیادہ متوازن زندگی کے لیے آلات دریافت کریو۔",
+        login: "واپسی پر خوش آمدید",
+        username: "ناو",
+        password: "پاسورڈ",
+        loginBtn: "سائن ان",
+        forgot: "پاسورڈ بھولِ گۄے؟",
+        signup: "ٹیک ہیلتھ منز نۄے چھیو؟"
+      }
+    };
+
+    const langSelect = document.getElementById("language-select");
+    const roleSelect = document.getElementById("role-select");
+    const form = document.querySelector("form");
+
+    // Language switching
+    langSelect.addEventListener("change", (e) => {
+      const lang = e.target.value;
+      document.getElementById("welcome-text").innerText = translations[lang].welcome;
+      document.getElementById("description-text").innerText = translations[lang].description;
+      document.getElementById("login-title").innerText = translations[lang].login;
+      document.getElementById("username").placeholder = translations[lang].username;
+      document.getElementById("password").placeholder = translations[lang].password;
+      document.getElementById("login-btn").innerText = translations[lang].loginBtn;
+      document.getElementById("forgot-text").innerText = translations[lang].forgot;
+      document.getElementById("signup-text").innerText = translations[lang].signup;
+    });
+
+    // Form submission with role-based redirection
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const role = roleSelect.value;
+
+      // Simple demo navigation (in production, you'd validate credentials)
+      switch(role) {
+        case 'student':
+          window.location.href = 'student.html';
+          break;
+        case 'counselor':
+          window.location.href = 'counselor.html';
+          break;
+        case 'admin':
+          window.location.href = 'admin.html';
+          break;
+      }
+    });
+  </script>
+
+</body>
+</html>

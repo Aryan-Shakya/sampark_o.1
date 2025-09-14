@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Wellness Dashboard - TechHealth</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #F8F9FA 0%, #E8F5F4 100%);
+      color: #2C3E50;
+      line-height: 1.6;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 280px;
+      height: 100vh;
+      background: linear-gradient(180deg, #4ECDC4 0%, #44A08D 100%);
+      color: white;
+      padding: 0;
+      z-index: 1000;
+      box-shadow: 4px 0 20px rgba(78, 205, 196, 0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar-header {
+      padding: 30px 25px;
+      background: rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: white;
+    }
+
+    .user-info {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sidebar-nav {
+      padding: 20px 0;
+    }
+
+    .nav-item {
+      margin: 5px 0;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      padding: 15px 25px;
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-left: 4px solid transparent;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      border-left-color: #F7DC6F;
+      transform: translateX(5px);
+    }
+
+    .nav-link i {
+      width: 20px;
+      margin-right: 15px;
+      font-size: 1.1rem;
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-left: 280px;
+      min-height: 100vh;
+      transition: margin-left 0.3s ease;
+    }
+
+    .topbar {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 20px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 20px rgba(78, 205, 196, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .topbar h1 {
+      color: #2C3E50;
+      font-size: 1.8rem;
+      font-weight: 600;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .language-selector select {
+      padding: 8px 15px;
+      border: 2px solid #E8F5F4;
+      border-radius: 8px;
+      background: white;
+      color: #2C3E50;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .language-selector select:focus {
+      outline: none;
+      border-color: #4ECDC4;
+      box-shadow: 0 0 10px rgba(78, 205, 196, 0.2);
+    }
+
+    .content {
+      padding: 30px;
+    }
+
+    /* Welcome Section */
+    .welcome-section {
+      background: linear-gradient(135deg, #FDFEFE, rgba(78, 205, 196, 0.05));
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 30px;
+      border: 2px solid rgba(78, 205, 196, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .welcome-section::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(162, 235, 179, 0.2), transparent);
+      border-radius: 50%;
+    }
+
+    .welcome-text {
+      position: relative;
+      z-index: 2;
+    }
+
+    .welcome-text h2 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #4ECDC4, #44A08D);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .welcome-text p {
+      color: #5D6D7E;
+      font-size: 1.1rem;
+    }
+
+    /* Grid Layouts */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    .activities-section {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(78, 205, 196, 0.08);
+      border: 1px solid rgba(78, 205, 196, 0.1);
+    }
+
+    .quick-stats {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, white, #F8F9FA);
+      border-radius: 16px;
+      padding: 25px;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(78, 205, 196, 0.08);
+      border: 2px solid rgba(78, 205, 196, 0.1);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #4ECDC4, #A2EBB3, #F7DC6F);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(78, 205, 196, 0.15);
+    }
+
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #4ECDC4, #44A08D);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat-label {
+      color: #5D6D7E;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+
+    /* Activity Cards */
+    .activity-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .activity-card {
+      background: white;
+      border-radius: 16px;
+      padding: 25px;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+      border: 2px solid #E8F5F4;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .activity-card:hover {
+      transform: translateY(-5px);
+      border-color: #4ECDC4;
+      box-shadow: 0 15px 40px rgba(78, 205, 196, 0.15);
+    }
+
+    .activity-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      font-size: 1.5rem;
+      color: white;
+    }
+
+    .breathing { background: linear-gradient(135deg, #AED6F1, #85C1E9); }
+    .journaling { background: linear-gradient(135deg, #F8C471, #F7DC6F); }
+    .mindfulness { background: linear-gradient(135deg, #BB8FCE, #D2B4DE); }
+    .coping { background: linear-gradient(135deg, #F1C2E8, #FADBD8); }
+    .meditation { background: linear-gradient(135deg, #A2EBB3, #82E0AA); }
+
+    .activity-card h4 {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+      color: #2C3E50;
+    }
+
+    .activity-progress {
+      color: #5D6D7E;
+      font-size: 0.9rem;
+    }
+
+    /* Progress Section */
+    .progress-section {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      margin-top: 30px;
+      box-shadow: 0 10px 30px rgba(78, 205, 196, 0.08);
+      border: 1px solid rgba(78, 205, 196, 0.1);
+    }
+
+    .progress-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-top: 20px;
+    }
+
+    .progress-item {
+      text-align: center;
+    }
+
+    .progress-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: conic-gradient(#4ECDC4 0deg, #E8F5F4 0deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      position: relative;
+    }
+
+    .progress-circle::before {
+      content: '';
+      width: 80px;
+      height: 80px;
+      background: white;
+      border-radius: 50%;
+      position: absolute;
+    }
+
+    .progress-value {
+      position: relative;
+      z-index: 2;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #4ECDC4;
+    }
+
+    .progress-label {
+      color: #5D6D7E;
+      font-weight: 500;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #2C3E50;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title i {
+      color: #4ECDC4;
+    }
+
+    /* Achievement Badge */
+    .achievement-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #F7DC6F, #F8C471);
+      color: #2C3E50;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin: 10px 5px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.mobile-open {
+        transform: translateX(0);
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .activity-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .progress-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Mobile Menu Toggle */
+    .mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #2C3E50;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-toggle {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">TechHealth</div>
+      <div class="user-info">
+        <i class="fas fa-user-circle"></i>
+        <span>Student Dashboard</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-item">
+        <a href="#" class="nav-link active">
+          <i class="fas fa-home"></i>
+          <span>Dashboard</span>
+        </a>
+      </div>
+      <div class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="fas fa-brain"></i>
+          <span>Mindfulness</span>
+        </a>
+      </div>
+      <div class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="fas fa-book-open"></i>
+          <span>Resources</span>
+        </a>
+      </div>
+      <div class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="fas fa-comments"></i>
+          <span>Support Chat</span>
+        </a>
+      </div>
+      <div class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="fas fa-calendar-alt"></i>
+          <span>Appointments</span>
+        </a>
+      </div>
+      <div class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="fas fa-chart-line"></i>
+          <span>Progress</span>
+        </a>
+      </div>
+      <div class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="fas fa-cog"></i>
+          <span>Settings</span>
+        </a>
+      </div>
+      <div class="nav-item">
+        <a href="index.html" class="nav-link">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </a>
+      </div>
+    </nav>
+  </div>
+
+  <div class="main-content">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="mobile-toggle" onclick="toggleSidebar()">
+          <i class="fas fa-bars"></i>
+        </button>
+        <h1 id="page-title">Student Wellness Dashboard</h1>
+      </div>
+      <div class="topbar-right">
+        <div class="language-selector">
+          <select id="languageSelect">
+            <option value="en">English</option>
+            <option value="hi">हिन्दी (Hindi)</option>
+            <option value="ur">اردو (Urdu)</option>
+            <option value="ks">کٲشُر (Kashmiri)</option>
+          </select>
+        </div>
+        <div style="margin-left: 15px;">
+          <a href="counselor.html" style="margin-right: 10px; color: #4ECDC4; text-decoration: none;">Counselor</a>
+          <a href="admin.html" style="color: #4ECDC4; text-decoration: none;">Admin</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="welcome-section">
+        <div class="welcome-text">
+          <h2 id="welcome-message">Welcome to Your Wellness Space! 🌟</h2>
+          <p id="welcome-description">Take a moment to check in with yourself and explore activities designed to support your mental wellbeing.</p>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="activities-section">
+          <h3 class="section-title">
+            <i class="fas fa-heart"></i>
+            <span id="activities-title">Exercises & Meditation</span>
+          </h3>
+
+          <div class="activity-grid">
+            <div class="activity-card" onclick="startActivity('breathing')">
+              <div class="activity-icon breathing">
+                <i class="fas fa-wind"></i>
+              </div>
+              <h4 id="breathing-title">Breathing Exercises</h4>
+              <div class="activity-progress" id="breathing-progress">0 Completed</div>
+            </div>
+
+            <div class="activity-card" onclick="startActivity('journaling')">
+              <div class="activity-icon journaling">
+                <i class="fas fa-pen-fancy"></i>
+              </div>
+              <h4 id="journaling-title">Journaling Prompts</h4>
+              <div class="activity-progress" id="journaling-progress">0 Completed</div>
+            </div>
+
+            <div class="activity-card" onclick="startActivity('mindfulness')">
+              <div class="activity-icon mindfulness">
+                <i class="fas fa-lotus-position"></i>
+              </div>
+              <h4 id="mindfulness-title">Mindfulness Activities</h4>
+              <div class="activity-progress" id="mindfulness-progress">0 Completed</div>
+            </div>
+
+            <div class="activity-card" onclick="startActivity('coping')">
+              <div class="activity-icon coping">
+                <i class="fas fa-shield-alt"></i>
+              </div>
+              <h4 id="coping-title">Coping Skills</h4>
+              <div class="activity-progress" id="coping-progress">0 Practiced</div>
+            </div>
+
+            <div class="activity-card" onclick="startActivity('meditation')">
+              <div class="activity-icon meditation">
+                <i class="fas fa-leaf"></i>
+              </div>
+              <h4 id="meditation-title">Meditation Classes</h4>
+              <div class="activity-progress" id="meditation-progress">0 Attended</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="quick-stats">
+          <div class="stat-card">
+            <div class="stat-value" id="streak-value">0</div>
+            <div class="stat-label" id="streak-label">Day Streak 🔥</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-value" id="stress-level">5</div>
+            <div class="stat-label" id="stress-label">Stress Level /10</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="achievement-badge">
+              <i class="fas fa-trophy"></i>
+              <span id="achievement-text">Getting Started!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="progress-section">
+        <h3 class="section-title">
+          <i class="fas fa-chart-area"></i>
+          <span id="progress-title">Progress & Insights</span>
+        </h3>
+
+        <div class="progress-grid">
+          <div class="progress-item">
+            <div class="progress-circle" style="background: conic-gradient(#4ECDC4 126deg, #E8F5F4 0deg);">
+              <div class="progress-value">35%</div>
+            </div>
+            <div class="progress-label" id="mood-label">Mood Tracker</div>
+          </div>
+
+          <div class="progress-item">
+            <div class="progress-circle" style="background: conic-gradient(#F7DC6F 180deg, #E8F5F4 0deg);">
+              <div class="progress-value">50%</div>
+            </div>
+            <div class="progress-label" id="goals-label">Weekly Goals</div>
+          </div>
+
+          <div class="progress-item">
+            <div class="progress-circle" style="background: conic-gradient(#BB8FCE 72deg, #E8F5F4 0deg);">
+              <div class="progress-value">20%</div>
+            </div>
+            <div class="progress-label" id="wellness-label">Wellness Score</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Language translations
+    const translations = {
+      en: {
+        pageTitle: "Student Wellness Dashboard",
+        welcomeMessage: "Welcome to Your Wellness Space! 🌟",
+        welcomeDescription: "Take a moment to check in with yourself and explore activities designed to support your mental wellbeing.",
+        activitiesTitle: "Exercises & Meditation",
+        breathingTitle: "Breathing Exercises",
+        journalingTitle: "Journaling Prompts",
+        mindfulnessTitle: "Mindfulness Activities",
+        copingTitle: "Coping Skills",
+        meditationTitle: "Meditation Classes",
+        breathingProgress: "0 Completed",
+        journalingProgress: "0 Completed",
+        mindfulnessProgress: "0 Completed",
+        copingProgress: "0 Practiced",
+        meditationProgress: "0 Attended",
+        streakLabel: "Day Streak 🔥",
+        stressLabel: "Stress Level /10",
+        achievementText: "Getting Started!",
+        progressTitle: "Progress & Insights",
+        moodLabel: "Mood Tracker",
+        goalsLabel: "Weekly Goals",
+        wellnessLabel: "Wellness Score"
+      },
+      hi: {
+        pageTitle: "छात्र कल्याण डैशबोर्ड",
+        welcomeMessage: "अपने कल्याण स्थान में आपका स्वागत है! 🌟",
+        welcomeDescription: "अपने साथ जांच करने के लिए एक क्षण लें और अपने मानसिक कल्याण का समर्थन करने के लिए डिज़ाइन की गई गतिविधियों का अन्वेषण करें।",
+        activitiesTitle: "व्यायाम और ध्यान",
+        breathingTitle: "श्वास अभ्यास",
+        journalingTitle: "जर्नलिंग प्रॉम्प्ट्स",
+        mindfulnessTitle: "सजगता गतिविधियाँ",
+        copingTitle: "सामना करने के कौशल",
+        meditationTitle: "ध्यान कक्षाएं",
+        breathingProgress: "0 पूर्ण",
+        journalingProgress: "0 पूर्ण",
+        mindfulnessProgress: "0 पूर्ण",
+        copingProgress: "0 अभ्यास किया",
+        meditationProgress: "0 उपस्थित",
+        streakLabel: "दिन की लकीर 🔥",
+        stressLabel: "तनाव स्तर /10",
+        achievementText: "शुरुआत हो रही है!",
+        progressTitle: "प्रगति और अंतर्दृष्टि",
+        moodLabel: "मूड ट्रैकर",
+        goalsLabel: "साप्ताहिक लक्ष्य",
+        wellnessLabel: "कल्याण स्कोर"
+      },
+      ur: {
+        pageTitle: "طالب علم کی فلاحی ڈیش بورڈ",
+        welcomeMessage: "آپ کی فلاحی جگہ میں خوش آمدید! 🌟",
+        welcomeDescription: "اپنے ساتھ چیک کرنے کے لیے ایک لمحہ لیں اور اپنی ذہنی فلاح و بہبود کی حمایت کے لیے ڈیزائن کی گئی سرگرمیوں کو دیکھیں۔",
+        activitiesTitle: "ورزش اور مراقبہ",
+        breathingTitle: "سانس کی مشقیں",
+        journalingTitle: "جرنلنگ پرامپٹس",
+        mindfulnessTitle: "ذہن سازی کی سرگرمیاں",
+        copingTitle: "نمٹنے کی مہارت",
+        meditationTitle: "مراقبہ کلاسز",
+        breathingProgress: "0 مکمل",
+        journalingProgress: "0 مکمل",
+        mindfulnessProgress: "0 مکمل",
+        copingProgress: "0 مشق",
+        meditationProgress: "0 حاضری",
+        streakLabel: "دن کی لکیر 🔥",
+        stressLabel: "تناؤ کی سطح /10",
+        achievementText: "شروعات ہو رہی ہے!",
+        progressTitle: "ترقی اور بصیرت",
+        moodLabel: "موڈ ٹریکر",
+        goalsLabel: "ہفتہ وار اہداف",
+        wellnessLabel: "فلاحی اسکور"
+      },
+      ks: {
+        pageTitle: "طالب علم کی فلاحی ڈیش بورڈ",
+        welcomeMessage: "توہندِ فلاحی جاے منز خوش آمدید! 🌟",
+        welcomeDescription: "پانان سٟتؠ چیک کرنہ خٲطرؠ اکھ لحظہ نیو تؠ پانِ ذہنی فلاح و بہبود کِ حمایت خٲطرؠ ڈیزائن کرمت سرگرمی ویکھیو۔",
+        activitiesTitle: "ورزش تؠ مراقبہ",
+        breathingTitle: "ساہ نیونک مشق",
+        journalingTitle: "جرنلنگ پرامپٹس",
+        mindfulnessTitle: "ذہن سازی سرگرمی",
+        copingTitle: "نمٹنک مہارت",
+        meditationTitle: "مراقبہ کلاس",
+        breathingProgress: "0 مکمل",
+        journalingProgress: "0 مکمل",
+        mindfulnessProgress: "0 مکمل",
+        copingProgress: "0 مشق",
+        meditationProgress: "0 حاضری",
+        streakLabel: "دۄہن کؠ لکیر 🔥",
+        stressLabel: "تناؤ سطح /10",
+        achievementText: "شروعات گژھان چھُ!",
+        progressTitle: "ترقی تؠ بصیرت",
+        moodLabel: "موڈ ٹریکر",
+        goalsLabel: "ہفتہ وار مقصد",
+        wellnessLabel: "فلاحی اسکور"
+      }
+    };
+
+    // Language switching functionality
+    document.getElementById('languageSelect').addEventListener('change', function() {
+      const selectedLang = this.value;
+      updateLanguage(selectedLang);
+    });
+
+    function updateLanguage(lang) {
+      const t = translations[lang];
+
+      document.getElementById('page-title').textContent = t.pageTitle;
+      document.getElementById('welcome-message').textContent = t.welcomeMessage;
+      document.getElementById('welcome-description').textContent = t.welcomeDescription;
+      document.getElementById('activities-title').textContent = t.activitiesTitle;
+      document.getElementById('breathing-title').textContent = t.breathingTitle;
+      document.getElementById('journaling-title').textContent = t.journalingTitle;
+      document.getElementById('mindfulness-title').textContent = t.mindfulnessTitle;
+      document.getElementById('coping-title').textContent = t.copingTitle;
+      document.getElementById('meditation-title').textContent = t.meditationTitle;
+      document.getElementById('breathing-progress').textContent = t.breathingProgress;
+      document.getElementById('journaling-progress').textContent = t.journalingProgress;
+      document.getElementById('mindfulness-progress').textContent = t.mindfulnessProgress;
+      document.getElementById('coping-progress').textContent = t.copingProgress;
+      document.getElementById('meditation-progress').textContent = t.meditationProgress;
+      document.getElementById('streak-label').textContent = t.streakLabel;
+      document.getElementById('stress-label').textContent = t.stressLabel;
+      document.getElementById('achievement-text').textContent = t.achievementText;
+      document.getElementById('progress-title').textContent = t.progressTitle;
+      document.getElementById('mood-label').textContent = t.moodLabel;
+      document.getElementById('goals-label').textContent = t.goalsLabel;
+      document.getElementById('wellness-label').textContent = t.wellnessLabel;
+    }
+
+    // Activity interaction
+    function startActivity(activityType) {
+      alert(`Starting ${activityType} activity! This would open the specific exercise interface.`);
+    }
+
+    // Mobile sidebar toggle
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('mobile-open');
+    }
+
+    // Navigation functionality
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        if (this.getAttribute('href') === '#') {
+          e.preventDefault();
+
+          // Remove active class from all links
+          document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+
+          // Add active class to clicked link
+          this.classList.add('active');
+
+          // Show a message for demo purposes
+          const section = this.querySelector('span').textContent;
+          alert(`Navigating to ${section} section`);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
