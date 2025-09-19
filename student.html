@@ -10,7 +10,7 @@
     * { margin:0; padding:0; box-sizing:border-box; }
     body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #F8F9FA 0%, #E8F5F4 100%); color:#2C3E50; line-height:1.6; }
 
-    /* Sidebar */
+    
     .sidebar { position: fixed; left: 0; top:0; width:280px; height:100vh; background: linear-gradient(180deg, #4ECDC4 0%, #44A08D 100%); color:white; padding:0; z-index:1000; box-shadow:4px 0 20px rgba(78,205,196,0.2); transition:transform 0.3s ease; }
     .sidebar-header { padding:30px 25px; background: rgba(255,255,255,0.1); border-bottom:1px solid rgba(255,255,255,0.2); }
     .logo { font-size:1.8rem; font-weight:700; margin-bottom:8px; color:white; }
@@ -21,7 +21,6 @@
     .nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.15); color:white; border-left-color:#F7DC6F; transform:translateX(5px); }
     .nav-link i { width:20px; margin-right:15px; font-size:1.1rem; }
 
-    /* Main Content */
     .main-content { margin-left:280px; min-height:100vh; transition:margin-left 0.3s ease; }
     .topbar { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); padding:20px 30px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 2px 20px rgba(78,205,196,0.1); position:sticky; top:0; z-index:100; }
     .topbar h1 { color:#2C3E50; font-size:1.8rem; font-weight:600; }
@@ -67,17 +66,52 @@
     .section-title i { color:#4ECDC4; }
     .achievement-badge { display:inline-flex; align-items:center; gap:8px; background: linear-gradient(135deg, #F7DC6F, #F8C471); color:#2C3E50; padding:8px 16px; border-radius:20px; font-size:0.9rem; font-weight:600; margin:10px 5px; }
 
-    @media (max-width:768px) {
-      .sidebar { transform:translateX(-100%); }
-      .sidebar.mobile-open { transform:translateX(0); }
-      .main-content { margin-left:0; }
-      .dashboard-grid { grid-template-columns:1fr; }
-      .activity-grid { grid-template-columns:1fr 1fr; }
-      .progress-grid { grid-template-columns:1fr; }
-    }
+    @media screen and (min-width: 1200px) {
+  .topbar h1 { font-size: 2rem; }
+  .welcome-text h2 { font-size: 2.4rem; }
+  .stat-value { font-size: 3rem; }
+  .dashboard-grid { grid-template-columns: 2fr 1fr; }
+}
 
-    .mobile-toggle { display:none; background:none; border:none; font-size:1.5rem; color:#2C3E50; cursor:pointer; }
-    @media (max-width:768px) { .mobile-toggle { display:block; } }
+@media screen and (max-width: 1199px) and (min-width: 992px) {
+  .topbar h1 { font-size: 1.7rem; }
+  .welcome-text h2 { font-size: 2rem; }
+  .stat-value { font-size: 2.3rem; }
+  .dashboard-grid { grid-template-columns: 2fr 1fr; }
+}
+
+@media screen and (max-width: 991px) and (min-width: 768px) {
+  .main-content { margin-left: 0; }
+  .dashboard-grid { grid-template-columns: 1fr; }
+  .activity-grid { grid-template-columns: repeat(2, 1fr); }
+  .progress-grid { grid-template-columns: repeat(2, 1fr); }
+  .topbar h1 { font-size: 1.6rem; }
+  .welcome-text h2 { font-size: 1.8rem; }
+}
+
+@media screen and (max-width: 767px) and (min-width: 481px) {
+  .main-content { margin-left: 0; }
+  .dashboard-grid { grid-template-columns: 1fr; }
+  .activity-grid { grid-template-columns: 1fr 1fr; }
+  .progress-grid { grid-template-columns: 1fr; }
+  .topbar h1 { font-size: 1.4rem; }
+  .welcome-text h2 { font-size: 1.6rem; }
+  .stat-value { font-size: 2rem; }
+}
+
+@media screen and (max-width: 480px) {
+  .main-content { margin-left: 0; }
+  .dashboard-grid { grid-template-columns: 1fr; }
+  .activity-grid { grid-template-columns: 1fr; }
+  .progress-grid { grid-template-columns: 1fr; }
+  .topbar { padding: 15px; }
+  .topbar h1 { font-size: 1.2rem; }
+  .welcome-text h2 { font-size: 1.4rem; }
+  .welcome-text p { font-size: 0.95rem; }
+  .stat-value { font-size: 1.8rem; }
+  .section-title { font-size: 1.2rem; }
+  .activity-card h4 { font-size: 1rem; }
+}
   </style>
 </head>
 <body>
@@ -211,17 +245,15 @@
 </div>
 
 <script>
-  // Sidebar mobile toggle
+  
   function toggleSidebar() {
     document.getElementById('sidebar').classList.toggle('mobile-open');
   }
 
-  // Panic button action
   document.getElementById('panicButton').addEventListener('click', function() {
     alert("Panic button pressed! Immediate help is being contacted.");
   });
 
-  // Translation object (all texts)
   const translations = {
     en: {
       pageTitle: "Student Wellness Dashboard",
@@ -309,7 +341,6 @@
     }
   };
 
-  // Update language
   const langSelect = document.getElementById('languageSelect');
   langSelect.addEventListener('change', () => {
     const selected = langSelect.value;
@@ -320,45 +351,42 @@
   function updateLanguage(lang) {
     const t = translations[lang];
 
-    // Topbar title
+   
     document.getElementById('page-title').textContent = t.pageTitle;
 
-    // Logo & user label
+    
     document.querySelector('.logo').textContent = t.logo;
     document.querySelector('.user-info span').textContent = t.dashboardLabel;
 
-    // Welcome section
+    
     document.getElementById('welcome-message').textContent = t.welcome;
     document.getElementById('welcome-description').textContent = t.description;
 
-    // Section titles
+    
     document.getElementById('activities-title').textContent = t.activities;
     document.getElementById('progress-title').textContent = t.progress;
 
-    // Activity cards
+    
     ['breathing','journaling','mindfulness','coping','meditation'].forEach(id => {
       document.getElementById(`${id}-title`).textContent = t[id];
     });
 
-    // Sidebar
+    
     document.querySelectorAll('.sidebar-nav .nav-link span').forEach((el, index) => {
       el.textContent = t.sidebar[index];
     });
 
-    // Panic button
     document.getElementById('panicButton').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${t.panic}`;
 
-    // Quick stats
     document.getElementById('streak-label').textContent = t.streakLabel;
     document.getElementById('stress-label').textContent = t.stressLabel;
     document.getElementById('achievement-text').textContent = t.achievement;
 
-    // Progress section
     document.getElementById('mood-label').textContent = t.moodLabel;
     document.getElementById('goals-label').textContent = t.goalsLabel;
   }
 
-  // Initialize language from localStorage
+
   const savedLang = localStorage.getItem("selectedLanguage") || "en";
   langSelect.value = savedLang;
   updateLanguage(savedLang);
