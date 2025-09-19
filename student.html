@@ -216,14 +216,17 @@
     document.getElementById('sidebar').classList.toggle('mobile-open');
   }
 
-  // Panic button
+  // Panic button action
   document.getElementById('panicButton').addEventListener('click', function() {
     alert("Panic button pressed! Immediate help is being contacted.");
   });
 
-  // Translation object
+  // Translation object (all texts)
   const translations = {
     en: {
+      pageTitle: "Student Wellness Dashboard",
+      logo: "SamPark",
+      dashboardLabel: "Student Dashboard",
       welcome: "Welcome to Your Wellness Space! 🌟",
       description: "Take a moment to check in with yourself and explore activities designed to support your mental wellbeing.",
       activities: "Exercises & Meditation",
@@ -233,9 +236,18 @@
       journaling: "Journaling Prompts",
       mindfulness: "Mindfulness Activities",
       coping: "Coping Skills",
-      meditation: "Meditation Classes"
+      meditation: "Meditation Classes",
+      panic: "Panic",
+      streakLabel: "Day Streak 🔥",
+      stressLabel: "Stress Level /10",
+      achievement: "Getting Started!",
+      moodLabel: "Mood Tracker",
+      goalsLabel: "Weekly Goals"
     },
     hi: {
+      pageTitle: "छात्र वेलनेस डैशबोर्ड",
+      logo: "सैमपार्क",
+      dashboardLabel: "छात्र डैशबोर्ड",
       welcome: "आपके वेलनेस स्पेस में स्वागत है! 🌟",
       description: "अपने आप के साथ चेक इन करने और मानसिक कल्याण का समर्थन करने वाली गतिविधियों का अन्वेषण करने के लिए एक पल लें।",
       activities: "व्यायाम और ध्यान",
@@ -245,9 +257,18 @@
       journaling: "जर्नलिंग सुझाव",
       mindfulness: "सजगता गतिविधियाँ",
       coping: "सहायता कौशल",
-      meditation: "ध्यान कक्षाएँ"
+      meditation: "ध्यान कक्षाएँ",
+      panic: "पैनिक",
+      streakLabel: "दिन का स्ट्रीक 🔥",
+      stressLabel: "तनाव स्तर /10",
+      achievement: "शुरुआत हो गई!",
+      moodLabel: "मूड ट्रैकर",
+      goalsLabel: "साप्ताहिक लक्ष्य"
     },
     ur: {
+      pageTitle: "اسٹوڈنٹ ویلنز ڈیش بورڈ",
+      logo: "سیم پارک",
+      dashboardLabel: "طالب علم ڈیش بورڈ",
       welcome: "آپ کی ویلنز اسپیس میں خوش آمدید! 🌟",
       description: "اپنے آپ کو چیک کرنے اور ذہنی بہبود کی حمایت کرنے والی سرگرمیوں کو دریافت کرنے کے لیے ایک لمحہ نکالیں۔",
       activities: "ورزش اور مراقبہ",
@@ -257,9 +278,18 @@
       journaling: "جرنلنگ پرامپٹس",
       mindfulness: "ذہن سازی کی سرگرمیاں",
       coping: "مدد کی مہارتیں",
-      meditation: "مراقبہ کلاسز"
+      meditation: "مراقبہ کلاسز",
+      panic: "پینک",
+      streakLabel: "دن کا سلسلہ 🔥",
+      stressLabel: "تناؤ کی سطح /10",
+      achievement: "شروع کر دیا!",
+      moodLabel: "مزاج ٹریکر",
+      goalsLabel: "ہفتہ وار اہداف"
     },
     ks: {
+      pageTitle: "سٹودنٹ وئلنس ڈیش بورڈ",
+      logo: "سیم پارک",
+      dashboardLabel: "سٹودنٹ ڈیش بورڈ",
       welcome: "تُهند وێلنز اسپیس مٲن خوش آمدید! 🌟",
       description: "اپنٛ آپس منز چیک ان کرن تہ ذہنی فلاح حمایت سرگرمیاں تلاش کرنٛس ہک لمحہ نکالو۔",
       activities: "ورزش تہ دھیان",
@@ -269,38 +299,71 @@
       journaling: "جرنلنگ پرامپٹس",
       mindfulness: "ذہن سازی کی سرگرمیاں",
       coping: "مدد کی مہارتیں",
-      meditation: "مراقبہ کلاسز"
+      meditation: "مراقبہ کلاسز",
+      panic: "پینک",
+      streakLabel: "دن کا سلسلہ 🔥",
+      stressLabel: "تناؤ کی سطح /10",
+      achievement: "شروع کر دیا!",
+      moodLabel: "مزاج ٹریکر",
+      goalsLabel: "ہفتہ وار اہداف"
     }
   };
 
   // Update language
   const langSelect = document.getElementById('languageSelect');
-  langSelect.addEventListener('change', () => updateLanguage(langSelect.value));
+  langSelect.addEventListener('change', () => {
+    const selected = langSelect.value;
+    updateLanguage(selected);
+    localStorage.setItem("selectedLanguage", selected);
+  });
 
   function updateLanguage(lang) {
     const t = translations[lang];
+
+    // Topbar title
+    document.getElementById('page-title').textContent = t.pageTitle;
+
+    // Logo & user label
+    document.querySelector('.logo').textContent = t.logo;
+    document.querySelector('.user-info span').textContent = t.dashboardLabel;
+
+    // Welcome section
     document.getElementById('welcome-message').textContent = t.welcome;
     document.getElementById('welcome-description').textContent = t.description;
+
+    // Section titles
     document.getElementById('activities-title').textContent = t.activities;
     document.getElementById('progress-title').textContent = t.progress;
-    document.getElementById('breathing-title').textContent = t.breathing;
-    document.getElementById('journaling-title').textContent = t.journaling;
-    document.getElementById('mindfulness-title').textContent = t.mindfulness;
-    document.getElementById('coping-title').textContent = t.coping;
-    document.getElementById('meditation-title').textContent = t.meditation;
 
-    // Update sidebar
+    // Activity cards
+    ['breathing','journaling','mindfulness','coping','meditation'].forEach(id => {
+      document.getElementById(`${id}-title`).textContent = t[id];
+    });
+
+    // Sidebar
     document.querySelectorAll('.sidebar-nav .nav-link span').forEach((el, index) => {
       el.textContent = t.sidebar[index];
     });
+
+    // Panic button
+    document.getElementById('panicButton').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${t.panic}`;
+
+    // Quick stats
+    document.getElementById('streak-label').textContent = t.streakLabel;
+    document.getElementById('stress-label').textContent = t.stressLabel;
+    document.getElementById('achievement-text').textContent = t.achievement;
+
+    // Progress section
+    document.getElementById('mood-label').textContent = t.moodLabel;
+    document.getElementById('goals-label').textContent = t.goalsLabel;
   }
 
-  // Initialize language from localStorage (or default to English)
-const savedLang = localStorage.getItem("selectedLanguage") || "en";
-langSelect.value = savedLang;
-updateLanguage(savedLang);
-
+  // Initialize language from localStorage
+  const savedLang = localStorage.getItem("selectedLanguage") || "en";
+  langSelect.value = savedLang;
+  updateLanguage(savedLang);
 </script>
+
 
 </body>
 </html>
