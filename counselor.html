@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Counselor Dashboard - SamPark</title>
+  <title>Counselor Dashboard - TechHealth</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
@@ -652,61 +652,63 @@
 </head>
 <body>
 
-  <div class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <div class="logo">SamPark</div>
-      <div class="user-info">
-        <i class="fas fa-user-md"></i>
-        <span>Counselor Portal</span>
-      </div>
-    </div>
 
-    <nav class="sidebar-nav">
-      <div class="nav-item">
-        <a href="#" class="nav-link active" data-section="dashboard">
-          <i class="fas fa-home"></i>
-          <span>🏠 Dashboard</span>
-        </a>
-      </div>
-      <div class="nav-item">
-        <a href="#" class="nav-link" data-section="clients">
-          <i class="fas fa-users"></i>
-          <span>👥 My Clients</span>
-        </a>
-      </div>
-      <div class="nav-item">
-        <a href="#" class="nav-link" data-section="sessions">
-          <i class="fas fa-calendar-day"></i>
-          <span>📅 Today's Sessions</span>
-        </a>
-      </div>
-      <div class="nav-item">
-        <a href="#" class="nav-link" data-section="progress">
-          <i class="fas fa-chart-line"></i>
-          <span>📊 Client Progress</span>
-        </a>
-      </div>
-      <div class="nav-item">
-        <a href="#" class="nav-link" data-section="notes">
-          <i class="fas fa-sticky-note"></i>
-          <span>📝 Case Notes</span>
-        </a>
-      </div>
-      <div class="nav-item">
-        <a href="#" class="nav-link" data-section="alerts">
-          <i class="fas fa-exclamation-triangle"></i>
-          <span>🚨 Emergency Alerts</span>
-        </a>
-      </div>
-      <div class="nav-item">
-        <a href="index.html" class="nav-link">
-          <i class="fas fa-sign-out-alt"></i>
-          <span>Logout</span>
-        </a>
-      </div>
-    </nav>
+
+
+  <div class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo" id="sidebarLogo">TechHealth</div>
+    <div class="user-info">
+      <i class="fas fa-user-md"></i>
+      <span id="sidebarPortal">Counselor Portal</span>
+    </div>
   </div>
 
+  <nav class="sidebar-nav">
+    <div class="nav-item">
+      <a href="#" class="nav-link active" data-section="dashboard">
+        <i class="fas fa-home"></i>
+        <span id="navDashboard">🏠 Dashboard</span>
+      </a>
+    </div>
+    <div class="nav-item">
+      <a href="#" class="nav-link" data-section="clients">
+        <i class="fas fa-users"></i>
+        <span id="navClients">👥 My Clients</span>
+      </a>
+    </div>
+    <div class="nav-item">
+      <a href="#" class="nav-link" data-section="sessions">
+        <i class="fas fa-calendar-day"></i>
+        <span id="navSessions">📅 Today's Sessions</span>
+      </a>
+    </div>
+    <div class="nav-item">
+      <a href="#" class="nav-link" data-section="progress">
+        <i class="fas fa-chart-line"></i>
+        <span id="navProgress">📊 Client Progress</span>
+      </a>
+    </div>
+    <div class="nav-item">
+      <a href="#" class="nav-link" data-section="notes">
+        <i class="fas fa-sticky-note"></i>
+        <span id="navNotes">📝 Case Notes</span>
+      </a>
+    </div>
+    <div class="nav-item">
+      <a href="#" class="nav-link" data-section="alerts">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span id="navAlerts">🚨 Emergency Alerts</span>
+      </a>
+    </div>
+    <div class="nav-item">
+      <a href="index.html" class="nav-link">
+        <i class="fas fa-sign-out-alt"></i>
+        <span id="navLogout">Logout</span>
+      </a>
+    </div>
+  </nav>
+</div>
   <div class="main-content">
     <div class="topbar">
       <div class="topbar-left">
@@ -724,10 +726,10 @@
             <option value="ks">کٲشُر (Kashmiri)</option>
           </select>
         </div>
-        <!--<div style="margin-left: 15px;">
+        <!-- <div style="margin-left: 15px;">
           <a href="student.html" style="margin-right: 10px; color: #44A08D; text-decoration: none;">Student</a>
           <a href="admin.html" style="color: #44A08D; text-decoration: none;">Admin</a>
-        </div>-->
+        </div> -->
       </div>
     </div>
 
@@ -813,44 +815,44 @@
       </div>
 
       <!-- Urgent Alerts Section -->
-      <div class="section">
-        <h2 class="section-title">
-          <i class="fas fa-bell"></i>
-          <span id="urgent-alerts">Urgent Alerts</span>
-        </h2>
+<div class="section">
+  <h2 class="section-title">
+    <i class="fas fa-bell"></i>
+    <span id="urgent-alerts">Urgent Alerts</span>
+  </h2>
 
-        <div class="alert-list">
-          <div class="alert-card">
-            <div class="alert-content">
-              <div class="alert-header">
-                <h4>Sarah M.</h4>
-                <div class="priority-badge medium">Medium Priority</div>
-              </div>
-              <div class="alert-concern">Missed 2 consecutive sessions</div>
-              <div class="alert-time">Last contact: 3 days ago</div>
-            </div>
-            <button class="btn btn-danger">
-              <i class="fas fa-exclamation-triangle"></i>
-              Take Action
-            </button>
-          </div>
-
-          <div class="alert-card high-priority">
-            <div class="alert-content">
-              <div class="alert-header">
-                <h4>Alex K.</h4>
-                <div class="priority-badge high">High Priority</div>
-              </div>
-              <div class="alert-concern">Reported increased anxiety levels</div>
-              <div class="alert-time">Last contact: Today</div>
-            </div>
-            <button class="btn btn-danger">
-              <i class="fas fa-phone"></i>
-              Contact Now
-            </button>
-          </div>
+  <div class="alert-list">
+    <div class="alert-card">
+      <div class="alert-content">
+        <div class="alert-header">
+          <h4 id="alert-name-1">Soniya M.</h4>
+          <div class="priority-badge medium" id="alert-priority-1">Medium Priority</div>
         </div>
+        <div class="alert-concern" id="alert-concern-1">Missed 2 consecutive sessions</div>
+        <div class="alert-time" id="alert-time-1">Last contact: 3 days ago</div>
       </div>
+      <button class="btn btn-danger">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span id="alert-action-1">Take Action</span>
+      </button>
+    </div>
+
+    <div class="alert-card high-priority">
+      <div class="alert-content">
+        <div class="alert-header">
+          <h4 id="alert-name-2">Alex K.</h4>
+          <div class="priority-badge high" id="alert-priority-2">High Priority</div>
+        </div>
+        <div class="alert-concern" id="alert-concern-2">Reported increased anxiety levels</div>
+        <div class="alert-time" id="alert-time-2">Last contact: Today</div>
+      </div>
+      <button class="btn btn-danger">
+        <i class="fas fa-phone"></i>
+        <span id="alert-action-2">Contact Now</span>
+      </button>
+    </div>
+  </div>
+</div>
 
       <!-- Quick Actions Section -->
       <div class="section">
@@ -919,7 +921,14 @@
   </div>
 
   <script>
-    // Application Data (same as original but kept for functionality)
+
+
+// Load saved language (default English if none)
+const savedLang = localStorage.getItem("selectedLanguage") || "en";
+
+
+
+
     const appData = {
       clientMoodData: {
         labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
@@ -952,7 +961,27 @@
         contactClient: "👥 Contact Client",
         emergencyProtocol: "🚨 Emergency Protocol",
         cancel: "Cancel",
-        confirm: "Confirm"
+        confirm: "Confirm",
+        sidebarLogo: "TechHealth",
+        alertName1: "Soniya M.",
+    alertPriority1: "Medium Priority",
+    alertConcern1: "Missed 2 consecutive sessions",
+    alertTime1: "Last contact: 3 days ago",
+    alertAction1: "Take Action",
+    
+    alertName2: "Alex K.",
+    alertPriority2: "High Priority", 
+    alertConcern2: "Reported increased anxiety levels",
+    alertTime2: "Last contact: Today",
+    alertAction2: "Contact Now",
+  sidebarPortal: "Counselor Portal",
+  navDashboard: "🏠 Dashboard",
+  navClients: "👥 My Clients",
+  navSessions: "📅 Today's Sessions",
+  navProgress: "📊 Client Progress",
+  navNotes: "📝 Case Notes",
+  navAlerts: "🚨 Emergency Alerts",
+  navLogout: "Logout"
       },
       hi: {
         title: "काउंसलर डैशबोर्ड",
@@ -977,7 +1006,27 @@
         contactClient: "👥 क्लाइंट से संपर्क करें",
         emergencyProtocol: "🚨 आपातकालीन प्रोटोकॉल",
         cancel: "रद्द करें",
-        confirm: "पुष्टि करें"
+        confirm: "पुष्टि करें",
+        sidebarLogo: "टेकहेल्थ",
+        alertName1: "सोनिया एम.",
+    alertPriority1: "मध्यम प्राथमिकता",
+    alertConcern1: "2 लगातार सत्र छूट गए",
+    alertTime1: "अंतिम संपर्क: 3 दिन पहले",
+    alertAction1: "कार्रवाई करें",
+    
+    alertName2: "एलेक्स के.",
+    alertPriority2: "उच्च प्राथमिकता",
+    alertConcern2: "बढ़ी हुई चिंता की सूचना दी",
+    alertTime2: "अंतिम संपर्क: आज",
+    alertAction2: "अभी संपर्क करें",
+  sidebarPortal: "काउंसलर पोर्टल",
+  navDashboard: "🏠 डैशबोर्ड",
+  navClients: "👥 मेरे क्लाइंट",
+  navSessions: "📅 आज के सेशन",
+  navProgress: "📊 क्लाइंट प्रगति",
+  navNotes: "📝 केस नोट्स",
+  navAlerts: "🚨 आपातकालीन अलर्ट",
+  navLogout: "लॉगआउट"
       },
       ur: {
         title: "کاؤنسلر ڈیش بورڈ",
@@ -1002,7 +1051,27 @@
         contactClient: "👥 کلائنٹ سے رابطہ کریں", 
         emergencyProtocol: "🚨 ہنگامی پروٹوکول",
         cancel: "منسوخ",
-        confirm: "تصدیق"
+        confirm: "تصدیق",
+        sidebarLogo: "ٹیک ہیلتھ",
+        alertName1: "سونیا ایم۔",
+    alertPriority1: "درمیانی ترجیح",
+    alertConcern1: "2 مسلسل سیشنز چھوٹ گئے",
+    alertTime1: "آخری رابطہ: 3 دن پہلے",
+    alertAction1: "کارروائی کریں",
+    
+    alertName2: "الیگزینڈر کے۔",
+    alertPriority2: "اعلی ترجیح",
+    alertConcern2: "بڑھتی ہوئی پریشانی کی سطح کی اطلاع دی",
+    alertTime2: "آخری رابطہ: آج",
+    alertAction2: "ابھی رابطہ کریں",
+  sidebarPortal: "کاؤنسلر پورٹل",
+  navDashboard: "🏠 ڈیش بورڈ",
+  navClients: "👥 میرے کلائنٹس",
+  navSessions: "📅 آج کے سیشنز",
+  navProgress: "📊 کلائنٹ کی ترقی",
+  navNotes: "📝 کیس نوٹس",
+  navAlerts: "🚨 ہنگامی انتباہات",
+  navLogout: "لاگ آؤٹ"
       },
       ks: {
         title: "کاؤنسلر ڈیش بورڈ",
@@ -1027,14 +1096,72 @@
         contactClient: "👥 کلائنٹ سیت رابطہ کریو",
         emergencyProtocol: "🚨 ہنگامی طریقہ کار",
         cancel: "منسوخ",
-        confirm: "تصدیق"
+        confirm: "تصدیق",
+        alertName1: "سونیا ایم۔",
+    alertPriority1: "درمیانی ترجیح",
+    alertConcern1: "2 مسلسل سیشنز چھوٹ گئے",
+    alertTime1: "آخری رابطہ: 3 دن پہلے",
+    alertAction1: "کارروائی کریں",
+    
+    alertName2: "الیگزینڈر کے۔",
+    alertPriority2: "اعلی ترجیح",
+    alertConcern2: "بڑھتی ہوئی پریشانی کی سطح کی اطلاع دی",
+    alertTime2: "آخری رابطہ: آج",
+    alertAction2: "ابھی رابطہ کریں",
+        sidebarLogo: "ٹیک ہیلتھ",
+  sidebarPortal: "کاؤنسلر پورٹل",
+  navDashboard: "🏠 ڈیش بورڈ",
+  navClients: "👥 میرے کلائنٹس",
+  navSessions: "📅 آج کے سیشنز",
+  navProgress: "📊 کلائنٹ کی ترقی",
+  navNotes: "📝 کیس نوٹس",
+  navAlerts: "🚨 ہنگامی انتباہات",
+  navLogout: "لاگ آؤٹ"
       }
     };
+
+
+
+    const sidebarLogo = document.querySelector(".logo");
+const sidebarPortal = document.querySelector(".user-info span");
+const navLinks = document.querySelectorAll(".sidebar-nav .nav-link span");
+
+function updateSidebarLanguage(lang) {
+  const t = translations[lang];
+  if (!t) return;
+
+  sidebarLogo.textContent = t.sidebarLogo;
+  sidebarPortal.textContent = t.sidebarPortal;
+
+  navLinks.forEach(link => {
+    const section = link.parentElement.getAttribute("data-section");
+    if (section === "dashboard") link.textContent = t.navDashboard;
+    if (section === "clients") link.textContent = t.navClients;
+    if (section === "sessions") link.textContent = t.navSessions;
+    if (section === "progress") link.textContent = t.navProgress;
+    if (section === "notes") link.textContent = t.navNotes;
+    if (section === "alerts") link.textContent = t.navAlerts;
+    if (!section) link.textContent = t.navLogout; // logout
+  });
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const langSelect = document.getElementById("languageSelect");
+  if (langSelect) {
+    langSelect.value = savedLang; // set dropdown value to saved language
+  }
+  new CounselorDashboard();
+});
+
+document.getElementById("languageSelect").addEventListener("change", e => {
+  updateSidebarLanguage(e.target.value);
+});
 
     // Initialize dashboard
     class CounselorDashboard {
       constructor() {
-        this.currentLanguage = 'en';
+        this.currentLanguage = savedLang;
         this.moodChart = null;
         this.currentAction = null;
         this.init();
@@ -1118,6 +1245,8 @@
             }
           });
         });
+
+
 
         // Stat cards
         document.querySelectorAll('.stat-card.clickable').forEach(card => {
@@ -1313,7 +1442,7 @@
         const t = translations[this.currentLanguage];
 
         // Update page title
-        document.title = `${t.title} - SamPark`;
+        document.title = `${t.title} - TechHealth`;
         document.getElementById('page-title').textContent = t.title;
 
         // Update section titles
@@ -1346,6 +1475,64 @@
         document.getElementById('contact-client').textContent = t.contactClient;
         document.getElementById('emergency-protocol').textContent = t.emergencyProtocol;
 
+                // Update section titles
+        document.getElementById('todays-overview').textContent = t.todaysOverview;
+        document.getElementById('client-insights').textContent = t.clientInsights;
+        document.getElementById('urgent-alerts').textContent = t.urgentAlerts;
+        document.getElementById('quick-actions').textContent = t.quickActions;
+
+        // Update stat labels
+        document.getElementById('sessions-scheduled').textContent = t.sessionsScheduled;
+        document.getElementById('active-clients').textContent = t.activeClients;
+        document.getElementById('urgent-cases').textContent = t.urgentCases;
+        document.getElementById('completed-sessions').textContent = t.completedSessions;
+        document.getElementById('no-shows').textContent = t.noShows;
+
+        // Update insight titles
+        document.getElementById('client-mood-trends').textContent = t.clientMoodTrends;
+        document.getElementById('session-completion-rate').textContent = t.sessionCompletionRate;
+        document.getElementById('active-cases-status').textContent = t.activeCasesStatus;
+
+        // Update case status labels
+        document.getElementById('improving').textContent = t.improving;
+        document.getElementById('stable').textContent = t.stable;
+        document.getElementById('concerning').textContent = t.concerning;
+
+        // Update action buttons
+        document.getElementById('add-session-notes').textContent = t.addSessionNotes;
+        document.getElementById('schedule-appointment').textContent = t.scheduleAppointment;
+        document.getElementById('generate-report').textContent = t.generateReport;
+        document.getElementById('contact-client').textContent = t.contactClient;
+        document.getElementById('emergency-protocol').textContent = t.emergencyProtocol;
+
+        // Update modal buttons
+        document.getElementById('modalCancel').textContent = t.cancel;
+        document.getElementById('modalConfirm').textContent = t.confirm;
+
+
+document.getElementById('sidebarLogo').textContent   = t.sidebarLogo;
+document.getElementById('sidebarPortal').textContent = t.sidebarPortal;
+document.getElementById('navDashboard').textContent  = t.navDashboard;
+document.getElementById('navClients').textContent    = t.navClients;
+document.getElementById('navSessions').textContent   = t.navSessions;
+document.getElementById('navProgress').textContent   = t.navProgress;
+document.getElementById('navNotes').textContent      = t.navNotes;
+document.getElementById('navAlerts').textContent     = t.navAlerts;
+document.getElementById('navLogout').textContent     = t.navLogout;
+
+
+      }
+    }
+
+    // Initialize the dashboard
+    new CounselorDashboard();
+
+    // Sidebar toggle for mobile
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('mobile-open');
+    }
+
+
         // Show language change confirmation
         const languageNames = {
           en: 'English',
@@ -1354,8 +1541,8 @@
           ks: 'Kashmiri (کٲشُر)'
         };
         this.showTemporaryMessage(`Language changed to ${languageNames[this.currentLanguage]}`);
-      }
-    }
+      
+    
 
     // Mobile sidebar toggle
     function toggleSidebar() {
