@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard - SamPark</title>
+  <title>Admin Dashboard - TechHealth</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
@@ -491,10 +491,10 @@
 
   <div class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <div class="logo">SamPark</div>
+      <div class="logo" data-i18n="sidebarLogo">TechHealth</div>
       <div class="user-info">
         <i class="fas fa-user-shield"></i>
-        <span>Admin Portal</span>
+        <span data-i18n="sidebarPortal">Admin Portal</span>
       </div>
     </div>
 
@@ -544,7 +544,7 @@
         <button class="mobile-toggle" onclick="toggleSidebar()">
           <i class="fas fa-bars"></i>
         </button>
-        <h1 id="page-title">Admin Dashboard</h1>
+        <h1 id="page-title" data-i18n="adminDashboard">Admin Dashboard</h1>
       </div>
       <div class="profile">
         <input type="text" placeholder="Search...">
@@ -569,19 +569,19 @@
       <div class="metric-grid">
         <div class="metric-card">
           <div class="metric-value">1,247</div>
-          <div class="metric-label" id="total-users">Total Users</div>
+          <div class="metric-label" id="total-users" data-i18n="totalUsers">Total Users</div>
         </div>
         <div class="metric-card">
           <div class="metric-value">342</div>
-          <div class="metric-label" id="active-sessions">Active Sessions</div>
+          <div class="metric-label" id="active-sessions" data-i18n="activeSessions">Active Sessions</div>
         </div>
         <div class="metric-card">
           <div class="metric-value">89</div>
-          <div class="metric-label" id="counselors-online">Counselors Online</div>
+          <div class="metric-label" id="counselors-online" data-i18n="counselorsOnline">Counselors Online</div>
         </div>
         <div class="metric-card">
           <div class="metric-value">15</div>
-          <div class="metric-label" id="urgent-cases">Urgent Cases</div>
+          <div class="metric-label" id="urgent-cases" data-i18n="urgentCases">Urgent Cases</div>
         </div>
       </div>
 
@@ -589,7 +589,7 @@
         <div class="card wide">
           <h3>
             <i class="fas fa-chart-line"></i>
-            <span id="screening-trends">Screening Trends</span>
+            <span id="screening-trends" data-i18n="screeningTrends">Screening Trends</span>
           </h3>
           <div class="chart">
             <canvas id="screeningChart" width="400" height="200"></canvas>
@@ -599,19 +599,19 @@
         <div class="card">
           <h3>
             <i class="fas fa-calendar-check"></i>
-            <span id="appointments-overview">Appointments Overview</span>
+            <span id="appointments-overview" data-i18n="appointmentsOverview">Appointments Overview</span>
           </h3>
           <ul>
             <li>
-              <span id="today-scheduled">Today Scheduled:</span>
+              <span id="today-scheduled" data-i18n="todayScheduled">Today Scheduled:</span>
               <strong>12</strong>
             </li>
             <li>
-              <span id="completed">Completed:</span>
+              <span id="completed" data-i18n="completed">Completed:</span>
               <strong>8</strong>
             </li>
             <li>
-              <span id="pending">Pending:</span>
+              <span id="pending" data-i18n="pending">Pending:</span>
               <strong>4</strong>
             </li>
           </ul>
@@ -620,7 +620,7 @@
         <div class="card">
           <h3>
             <i class="fas fa-user-check"></i>
-            <span id="counselor-availability">Counselor Availability</span>
+            <span id="counselor-availability" data-i18n="counselorAvailability">Counselor Availability</span>
           </h3>
           <ul>
             <li>
@@ -628,21 +628,22 @@
                 <span class="status-indicator status-available"></span>
                 Dr. Smith
               </span>
-              <strong>Available</strong>
+              <strong data-i18n="statusAvailable">Available</strong>
+
             </li>
             <li>
               <span>
                 <span class="status-indicator status-busy"></span>
                 Dr. Johnson
               </span>
-              <strong>Busy</strong>
+              <strong data-i18n="statusBusy">Busy</strong>
             </li>
             <li>
               <span>
                 <span class="status-indicator status-break"></span>
                 Dr. Patel
               </span>
-              <strong>On Break</strong>
+              <strong data-i18n="statusBreak">On Break</strong>
             </li>
           </ul>
         </div>
@@ -650,29 +651,28 @@
         <div class="card">
           <h3>
             <i class="fas fa-chart-bar"></i>
-            <span id="resource-usage">Resource Usage</span>
+            <span id="resource-usage" data-i18n="resourceUsage">Resource Usage</span>
           </h3>
           <div class="chart small">
             <canvas id="resourceChart" width="300" height="150"></canvas>
           </div>
         </div>
-
-        <div class="card">
+          <div class="card">
           <h3>
             <i class="fas fa-comments"></i>
-            <span id="forum-metrics">Forum Metrics</span>
+            <span id="forum-metrics" data-i18n="forumMetrics">Forum Metrics</span>
           </h3>
           <ul>
             <li>
-              <span id="new-posts">New Posts:</span>
+              <span id="new-posts" data-i18n="newPostsLabel">New Posts:</span>
               <strong>32</strong>
             </li>
             <li>
-              <span id="active-users">Active Users:</span>
+              <span id="active-users" data-i18n="activeUsersLabel">Active Users:</span>
               <strong>120</strong>
             </li>
             <li>
-              <span id="flagged-topics">Flagged Topics:</span>
+              <span id="flagged-topics" data-i18n="flaggedTopicsLabel">Flagged Topics:</span>
               <strong>3</strong>
             </li>
           </ul>
@@ -681,173 +681,191 @@
         <div class="card">
           <h3>
             <i class="fas fa-cogs"></i>
-            <span id="system-management">System Management</span>
+            <span id="system-management" data-i18n="systemManagement">System Management</span>
           </h3>
           <ul>
-            <li>
-              <span id="manage-users">Manage Users</span>
-              <button class="btn secondary">
-                <i class="fas fa-users-cog"></i>
-                Open
-              </button>
-            </li>
-            <li>
-              <span id="access-logs">Access Logs</span>
-              <button class="btn secondary">
-                <i class="fas fa-list-alt"></i>
-                View
-              </button>
-            </li>
-            <li>
-              <span id="system-health">System Health</span>
-              <button class="btn secondary">
-                <i class="fas fa-heartbeat"></i>
-                Check
-              </button>
-            </li>
+             <li>
+  <span id="manage-users" data-i18n="manageUsers">Manage Users</span>
+  <button class="btn secondary">
+    <i class="fas fa-users-cog"></i>
+    <span data-i18n="open">Open</span>
+  </button>
+</li>
+<li>
+  <span id="access-logs" data-i18n="accessLogs">Access Logs</span>
+  <button class="btn secondary">
+    <i class="fas fa-list-alt"></i>
+    <span data-i18n="view">View</span>
+  </button>
+</li>
+<li>
+  <span id="system-health" data-i18n="systemHealth">System Health</span>
+  <button class="btn secondary">
+    <i class="fas fa-heartbeat"></i>
+    <span data-i18n="check">Check</span>
+  </button>
+</li>
+
           </ul>
         </div>
       </div>
 
       <div class="reports-section">
-        <h3>
-          <i class="fas fa-file-export"></i>
-          <span id="reports-exports">Reports & Exports</span>
-        </h3>
-        <div class="reports-grid">
-          <div class="report-item">
-            <h4 id="monthly-report">Monthly Analytics Report</h4>
-            <p id="monthly-desc">Comprehensive overview of platform usage and user engagement metrics.</p>
-            <button class="btn primary">
-              <i class="fas fa-download"></i>
-              <span id="generate">Generate</span>
-            </button>
-          </div>
-          <div class="report-item">
-            <h4 id="counselor-performance">Counselor Performance</h4>
-            <p id="counselor-desc">Detailed analysis of counselor effectiveness and client satisfaction.</p>
-            <button class="btn primary">
-              <i class="fas fa-chart-line"></i>
-              <span id="view">View</span>
-            </button>
-          </div>
-          <div class="report-item">
-            <h4 id="user-feedback">User Feedback Summary</h4>
-            <p id="feedback-desc">Aggregated feedback from students and analysis of platform improvements.</p>
-            <button class="btn primary">
-              <i class="fas fa-comments"></i>
-              <span id="analyze">Analyze</span>
-            </button>
-          </div>
-          <div class="report-item">
-            <h4 id="system-logs">System Logs Export</h4>
-            <p id="logs-desc">Technical logs for system monitoring and security audit purposes.</p>
-            <button class="btn primary">
-              <i class="fas fa-file-code"></i>
-              <span id="export">Export</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <script>
-  const translations = {
-    en: {
-      title: "Admin Dashboard",
-      totalUsers: "Total Users",
-      activeSessions: "Active Sessions", 
-      counselorsOnline: "Counselors Online",
-      urgentCases: "Urgent Cases",
-      screeningTrends: "Screening Trends",
-      appointmentsOverview: "Appointments Overview",
-      todayScheduled: "Today Scheduled:",
-      completed: "Completed:",
-      pending: "Pending:",
-      counselorAvailability: "Counselor Availability",
-      resourceUsage: "Resource Usage",
-      forumMetrics: "Forum Metrics",
-      newPosts: "New Posts:",
-      activeUsers: "Active Users:",
-      flaggedTopics: "Flagged Topics:",
-      systemManagement: "System Management",
-      manageUsers: "Manage Users",
-      accessLogs: "Access Logs",
-      systemHealth: "System Health",
-      reportsExports: "Reports & Exports",
-      monthlyReport: "Monthly Analytics Report",
-      monthlyDesc: "Comprehensive overview of platform usage and user engagement metrics.",
-      counselorPerformance: "Counselor Performance",
-      counselorDesc: "Detailed analysis of counselor effectiveness and client satisfaction.",
-      userFeedback: "User Feedback Summary",
-      feedbackDesc: "Aggregated feedback from students and analysis of platform improvements.",
-      systemLogs: "System Logs Export",
-      logsDesc: "Technical logs for system monitoring and security audit purposes.",
-      generate: "Generate",
-      view: "View",
-      analyze: "Analyze",
-      export: "Export",
-      sidebar: {
-        dashboard: "Dashboard",
-        userManagement: "User Management",
-        counselors: "Counselors",
-        students: "Students",
-        analytics: "Analytics",
-        forumManagement: "Forum Management",
-        resources: "Resources",
-        settings: "Settings",
-        logout: "Logout"
-      }
-    },
-    hi: {
-      title: "एडमिन डैशबोर्ड",
-      totalUsers: "कुल उपयोगकर्ता",
-      activeSessions: "सक्रिय सेशन",
-      counselorsOnline: "ऑनलाइन काउंसलर", 
-      urgentCases: "तत्काल मामले",
-      screeningTrends: "स्क्रीनिंग रुझान",
-      appointmentsOverview: "अपॉइंटमेंट्स अवलोकन",
-      todayScheduled: "आज निर्धारित:",
-      completed: "पूर्ण:",
-      pending: "लंबित:",
-      counselorAvailability: "काउंसलर उपलब्धता",
-      resourceUsage: "संसाधन उपयोग",
-      forumMetrics: "फोरम मेट्रिक्स",
-      newPosts: "नई पोस्ट:",
-      activeUsers: "सक्रिय उपयोगकर्ता:",
-      flaggedTopics: "फ़्लैग किए गए विषय:",
-      systemManagement: "सिस्टम प्रबंधन",
-      manageUsers: "उपयोगकर्ता प्रबंधन",
-      accessLogs: "एक्सेस लॉग्स",
-      systemHealth: "सिस्टम स्वास्थ्य",
-      reportsExports: "रिपोर्ट्स और एक्सपोर्ट्स",
-      monthlyReport: "मासिक एनालिटिक्स रिपोर्ट",
-      monthlyDesc: "प्लेटफॉर्म उपयोग और उपयोगकर्ता एंगेजमेंट मेट्रिक्स का व्यापक अवलोकन।",
-      counselorPerformance: "काउंसलर प्रदर्शन",
-      counselorDesc: "काउंसलर प्रभावशीलता और क्लाइंट संतुष्टि का विस्तृत विश्लेषण।",
-      userFeedback: "उपयोगकर्ता फीडबैक सारांश",
-      feedbackDesc: "छात्रों से एकत्रित फीडबैक और प्लेटफॉर्म सुधार का विश्लेषण।",
-      systemLogs: "सिस्टम लॉग्स एक्सपोर्ट",
-      logsDesc: "सिस्टम मॉनिटरिंग और सुरक्षा ऑडिट उद्देश्यों के लिए तकनीकी लॉग्स।",
-      generate: "उत्पन्न करें",
-      view: "देखें",
-      analyze: "विश्लेषण करें",
-      export: "एक्सपोर्ट करें",
-      sidebar: {
-        dashboard: "डैशबोर्ड",
-        userManagement: "उपयोगकर्ता प्रबंधन",
-        counselors: "काउंसलर",
-        students: "छात्र",
-        analytics: "विश्लेषण",
-        forumManagement: "फोरम प्रबंधन",
-        resources: "संसाधन",
-        settings: "सेटिंग्स",
-        logout: "लॉगआउट"
-      }
-    },
-    ur: {
-      title: "ایڈمن ڈیش بورڈ",
+  <h3>
+  <i class="fas fa-file-export"></i>
+  <span id="reports-exports" data-i18n="reportsExports">Reports & Exports</span>
+</h3>
+
+<div class="report-item">
+  <h4 id="monthly-report" data-i18n="monthlyReport">Monthly Analytics Report</h4>
+  <p id="monthly-desc" data-i18n="monthlyDesc">Comprehensive overview of platform usage and user engagement metrics.</p>
+  <button class="btn primary">
+    <i class="fas fa-download"></i>
+    <span data-i18n="generate">Generate</span>
+  </button>
+</div>
+
+<div class="report-item">
+  <h4 id="counselor-performance" data-i18n="counselorPerformance">Counselor Performance</h4>
+  <p id="counselor-desc" data-i18n="counselorDesc">Detailed analysis of counselor effectiveness and client satisfaction.</p>
+  <button class="btn primary">
+    <i class="fas fa-chart-line"></i>
+    <span data-i18n="view">View</span>
+  </button>
+</div>
+
+<div class="report-item">
+  <h4 id="user-feedback" data-i18n="userFeedback">User Feedback Summary</h4>
+  <p id="feedback-desc" data-i18n="feedbackDesc">Aggregated feedback from students and analysis of platform improvements.</p>
+  <button class="btn primary">
+    <i class="fas fa-comments"></i>
+    <span data-i18n="analyze">Analyze</span>
+  </button>
+</div>
+
+<div class="report-item">
+  <h4 id="system-logs" data-i18n="systemLogs">System Logs Export</h4>
+  <p id="logs-desc" data-i18n="logsDesc">Technical logs for system monitoring and security audit purposes.</p>
+  <button class="btn primary">
+    <i class="fas fa-file-code"></i>
+    <span data-i18n="export">Export</span>
+  </button>
+</div>
+
+<script>
+
+const translations = {
+  en: {
+    sidebarLogo: "TechHealth",
+    sidebarPortal: "Admin Portal",
+    adminDashboard: "Admin Dashboard",
+    totalUsers: "Total Users",
+    activeSessions: "Active Sessions",
+    counselorsOnline: "Counselors Online",
+    urgentCases: "Urgent Cases",
+    screeningTrends: "Screening Trends",
+    appointmentsOverview: "Appointments Overview",
+    todayScheduled: "Today Scheduled:",
+    completed: "Completed:",
+    pending: "Pending:",
+    counselorAvailability: "Counselor Availability",
+    resourceUsage: "Resource Usage",
+    forumMetrics: "Forum Metrics",
+    newPostsLabel: "New Posts:",
+    activeUsersLabel: "Active Users:",
+    flaggedTopicsLabel: "Flagged Topics:",
+    systemManagement: "System Management",
+    manageUsers: "Manage Users",
+    accessLogs: "Access Logs",
+    systemHealth: "System Health",
+    reportsExports: "Reports & Exports",
+    monthlyReport: "Monthly Analytics Report",
+    monthlyDesc: "Comprehensive overview of platform usage and user engagement metrics.",
+    counselorPerformance: "Counselor Performance",
+    counselorDesc: "Detailed analysis of counselor effectiveness and client satisfaction.",
+    userFeedback: "User Feedback Summary",
+    feedbackDesc: "Aggregated feedback from students and analysis of platform improvements.",
+    systemLogs: "System Logs Export",
+    logsDesc: "Technical logs for system monitoring and security audit purposes.",
+    generate: "Generate",
+    view: "View",
+    analyze: "Analyze",
+    export: "Export",
+    statusAvailable: "Available",
+    statusBusy: "Busy",
+    statusBreak: "On Break",
+    open: "Open",
+    check: "Check",
+    sidebar: {
+      dashboard: "Dashboard",
+      userManagement: "User Management",
+      counselors: "Counselors",
+      students: "Students",
+      analytics: "Analytics",
+      forumManagement: "Forum Management",
+      resources: "Resources",
+      settings: "Settings",
+      logout: "Logout"
+    }
+  },
+  hi: {
+    sidebarLogo: "टेकहेल्थ",
+    sidebarPortal: "एडमिन पोर्टल",
+    adminDashboard: "एडमिन डैशबोर्ड",
+    totalUsers: "कुल उपयोगकर्ता",
+    activeSessions: "सक्रिय सेशन",
+    counselorsOnline: "ऑनलाइन काउंसलर",
+    urgentCases: "तत्काल मामले",
+    screeningTrends: "स्क्रीनिंग रुझान",
+    appointmentsOverview: "अपॉइंटमेंट्स अवलोकन",
+    todayScheduled: "आज निर्धारित:",
+    completed: "पूर्ण:",
+    pending: "लंबित:",
+    counselorAvailability: "काउंसलर उपलब्धता",
+    resourceUsage: "संसाधन उपयोग",
+    forumMetrics: "फोरम मेट्रिक्स",
+    newPostsLabel: "नई पोस्ट्स:",
+    activeUsersLabel: "सक्रिय उपयोगकर्ता:",
+    flaggedTopicsLabel: "फ़्लैग किए गए विषय:",
+    systemManagement: "सिस्टम प्रबंधन",
+    manageUsers: "उपयोगकर्ता प्रबंधन",
+    accessLogs: "एक्सेस लॉग्स",
+    systemHealth: "सिस्टम स्वास्थ्य",
+    reportsExports: "रिपोर्ट्स और एक्सपोर्ट्स",
+    monthlyReport: "मासिक एनालिटिक्स रिपोर्ट",
+    monthlyDesc: "प्लेटफॉर्म उपयोग और उपयोगकर्ता एंगेजमेंट मेट्रिक्स का व्यापक अवलोकन।",
+    counselorPerformance: "काउंसलर प्रदर्शन",
+    counselorDesc: "काउंसलर प्रभावशीलता और क्लाइंट संतुष्टि का विस्तृत विश्लेषण।",
+    userFeedback: "उपयोगकर्ता फीडबैक सारांश",
+    feedbackDesc: "छात्रों से एकत्रित फीडबैक और प्लेटफॉर्म सुधार का विश्लेषण।",
+    systemLogs: "सिस्टम लॉग्स एक्सपोर्ट",
+    logsDesc: "सिस्टम मॉनिटरिंग और सुरक्षा ऑडिट उद्देश्यों के लिए तकनीकी लॉग्स।",
+    generate: "उत्पन्न करें",
+    view: "देखें",
+    analyze: "विश्लेषण करें",
+    export: "एक्सपोर्ट करें",
+    statusAvailable: "उपलब्ध",
+    statusBusy: "व्यस्त",
+    statusBreak: "ब्रेक पर",
+    open: "खुला",
+    check: "जांचें",
+    sidebar: {
+      dashboard: "डैशबोर्ड",
+      userManagement: "उपयोगकर्ता प्रबंधन",
+      counselors: "काउंसलर",
+      students: "छात्र",
+      analytics: "विश्लेषण",
+      forumManagement: "फोरम प्रबंधन",
+      resources: "संसाधन",
+      settings: "सेटिंग्स",
+      logout: "लॉगआउट"
+    }
+  },
+  ur: {
+      sidebarLogo: "ٹیک ہیلتھ",
+    sidebarPortal: "ایڈمن پورٹل",
+      adminDashboard: "ایڈمن ڈیش بورڈ",
       totalUsers: "کل صارفین",
       activeSessions: "فعال سیشنز",
       counselorsOnline: "آن لائن کاؤنسلرز",
@@ -860,9 +878,9 @@
       counselorAvailability: "کاؤنسلر کی دستیابی",
       resourceUsage: "وسائل کا استعمال",
       forumMetrics: "فورم میٹرکس",
-      newPosts: "نئی پوسٹس:",
-      activeUsers: "فعال صارفین:",
-      flaggedTopics: "نشان زد موضوعات:",
+      newPostsLabel: "نئے پوسٹس:",
+  activeUsersLabel: "فعال صارفین:",
+  flaggedTopicsLabel: "پرچم زدہ موضوعات:",
       systemManagement: "سسٹم منیجمنٹ",
       manageUsers: "صارف کا انتظام",
       accessLogs: "رسائی لاگز",
@@ -880,6 +898,12 @@
       view: "دیکھیں",
       analyze: "تجزیہ کریں",
       export: "ایکسپورٹ کریں",
+      statusAvailable: "دستیاب",
+  statusBusy: "مصروف",
+  statusBreak: "وقفہ پر",
+  open: "کھلا",
+    view: "دیکھیں",
+    check: "چیک کریں",
       sidebar: {
         dashboard: "ڈیش بورڈ",
         userManagement: "صارف کا انتظام",
@@ -893,7 +917,9 @@
       }
     },
     ks: {
-      title: "ایڈمن ڈیش بورڈ",
+      sidebarLogo: "ٹیک ہیلتھ",
+    sidebarPortal: "ایڈمن پورٹل",
+      adminDashboard: "ایڈمن ڈیش بورڈ",
       totalUsers: "کل صارف",
       activeSessions: "فعال سیشن",
       counselorsOnline: "آن لائن کاؤنسلر",
@@ -906,9 +932,9 @@
       counselorAvailability: "کاؤنسلر دستیابی",
       resourceUsage: "وسائل استعمال",
       forumMetrics: "فورم میٹرک",
-      newPosts: "نۄے پوسٹ:",
-      activeUsers: "فعال صارف:",
-      flaggedTopics: "نشان زد موضوع:",
+       newPostsLabel: "نویں پوسٹ:",
+  activeUsersLabel: "سرگرم صارفین:",
+  flaggedTopicsLabel: "فلیگ کیے گئے موضوعات:",
       systemManagement: "سسٹم انتظام",
       manageUsers: "صارف انتظام",
       accessLogs: "رسائی لاگ",
@@ -926,6 +952,12 @@
       view: "ویکھیو",
       analyze: "تجزیہ کریو",
       export: "ایکسپورٹ کریو",
+      statusAvailable: "دستیاب",
+  statusBusy: "مصروف",
+  statusBreak: "وقفہ پر",
+  open: "کھلا",
+    view: "دیکھیں",
+    check: "چیک کریں",
       sidebar: {
         dashboard: "ڈیش بورڈ",
         userManagement: "صارف انتظام",
@@ -938,78 +970,105 @@
         logout: "لاگ آؤٹ"
       }
     }
-  };
+};
 
-  
-  function initializeCharts() {
-    const screeningCtx = document.getElementById('screeningChart');
-    if (screeningCtx) {
-      new Chart(screeningCtx, {
-        type: 'line',
-        data: {
-          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-          datasets: [{
-            label: 'Screenings',
-            data: [65, 78, 90, 81, 96, 105],
-            borderColor: '#BB8FCE',
-            backgroundColor: 'rgba(187, 143, 206, 0.1)',
-            borderWidth: 3,
-            fill: true,
-            tension: 0.4
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            y: { beginAtZero: true, grid: { color: 'rgba(0, 0, 0, 0.1)' } },
-            x: { grid: { display: false } }
-          }
-        }
-      });
-    }
 
-    const resourceCtx = document.getElementById('resourceChart');
-    if (resourceCtx) {
-      new Chart(resourceCtx, {
-        type: 'doughnut',
-        data: {
-          labels: ['Active Users', 'Idle', 'Maintenance'],
-          datasets: [{ data: [65, 25, 10], backgroundColor: ['#BB8FCE', '#D2B4DE', '#F1C2E8'], borderWidth: 0 }]
-        },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
-      });
-    }
+const translate = {
+  en: { login: "Welcome Back", username: "Username", password: "Password", loginBtn: "Login" },
+  hi: { login: "वापसी पर स्वागत है", username: "उपयोगकर्ता नाम", password: "पासवर्ड", loginBtn: "लॉगिन" },
+  ur: { login: "واپسی پر خوش آمدید", username: "صارف کا نام", password: "پاس ورڈ", loginBtn: "لاگ ان" },
+  ks: { login: "واپسی پر خوش آمدید", username: "ناو", password: "پاسورڈ", loginBtn: "لاگ ان" }
+};
+
+
+function initializeCharts() {
+  const screeningCtx = document.getElementById('screeningChart');
+  if (screeningCtx) {
+    new Chart(screeningCtx, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [{
+          label: 'Screenings',
+          data: [65, 78, 90, 81, 96, 105],
+          borderColor: '#BB8FCE',
+          backgroundColor: 'rgba(187, 143, 206, 0.1)',
+          borderWidth: 3,
+          fill: true,
+          tension: 0.4
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.1)' } }, x: { grid: { display: false } } } }
+    });
   }
 
-
-  function updateLanguage(lang) {
-    const t = translations[lang];
-
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-      const key = el.getAttribute('data-i18n');
-      if(t[key]) el.textContent = t[key];
+  const resourceCtx = document.getElementById('resourceChart');
+  if (resourceCtx) {
+    new Chart(resourceCtx, {
+      type: 'doughnut',
+      data: { labels: ['Active Users', 'Idle', 'Maintenance'], datasets: [{ data: [65,25,10], backgroundColor: ['#BB8FCE','#D2B4DE','#F1C2E8'], borderWidth: 0 }] },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
     });
+  }
+}
 
 
-    const s = t.sidebar;
+function updateLanguage(lang) {
+  const t = translations[lang];
+  if(!t) return;
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if(t[key]) el.textContent = t[key];
+  });
+
+  const s = t.sidebar;
+  if(s){
     const sidebarLinks = document.querySelectorAll('.sidebar nav a span');
     const keys = ['dashboard','userManagement','counselors','students','analytics','forumManagement','resources','settings','logout'];
     sidebarLinks.forEach((el,i) => { if(s[keys[i]]) el.textContent = s[keys[i]]; });
-
-    initializeCharts();
   }
 
-  document.getElementById('languageSelect').addEventListener('change', e => {
-    updateLanguage(e.target.value);
-  });
+  initializeCharts();
+}
 
-  document.addEventListener('DOMContentLoaded', () => {
-    updateLanguage('en');
-  });
 
+function applyLoginTranslations(lang){
+  const t = translate[lang];
+  if(!t) return;
+
+  const loginTitle = document.getElementById("login-title");
+  const usernameInput = document.getElementById("username");
+  const passwordInput = document.getElementById("password");
+  const loginBtn = document.getElementById("login-btn");
+
+  if (loginTitle) loginTitle.innerText = t.login;
+  if (usernameInput) usernameInput.placeholder = t.username;
+  if (passwordInput) passwordInput.placeholder = t.password;
+  if (loginBtn) loginBtn.innerText = t.loginBtn || "Login";
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const savedLang = localStorage.getItem("selectedLanguage") || "en";
+
+  const languageSelect = document.getElementById('languageSelect');
+  if(languageSelect) languageSelect.value = savedLang;
+
+  updateLanguage(savedLang);
+  applyLoginTranslations(savedLang);
+
+  if(languageSelect){
+    languageSelect.addEventListener('change', e => {
+      const lang = e.target.value;
+      localStorage.setItem('selectedLanguage', lang);
+      updateLanguage(lang);
+      applyLoginTranslations(lang);
+    });
+  }
+});
 </script>
+
 
 </body>
 </html>
