@@ -7,17 +7,112 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
+    /* CSS Variables for Theme System */
+    :root {
+      --bg-gradient-start: #F8F9FA;
+      --bg-gradient-end: #E8F5F4;
+      --text-primary: #2C3E50;
+      --text-secondary: #5D6D7E;
+      --bg-white: white;
+      --bg-card: white;
+      --bg-card-secondary: linear-gradient(135deg, #F8F9FA, #FDFEFE);
+      --shadow-color: rgba(68, 160, 141, 0.08);
+      --shadow-hover: rgba(68, 160, 141, 0.15);
+      --border-color: rgba(68, 160, 141, 0.1);
+      --border-card: #E8F5F4;
+      --accent-gradient-start: #44A08D;
+      --accent-gradient-end: #4ECDC4;
+      --sidebar-gradient: linear-gradient(180deg, #44A08D 0%, #4ECDC4 100%);
+      --topbar-bg: rgba(255, 255, 255, 0.95);
+      --modal-bg: white;
+      --modal-header-bg: linear-gradient(135deg, #44A08D, #4ECDC4);
+      --modal-footer-bg: #F8F9FA;
+      --urgent-gradient: linear-gradient(90deg, #FF7875, #F8C471);
+      --warning-gradient: linear-gradient(90deg, #FAAD14, #F7DC6F);
+      --progress-bg: #E8F5F4;
+      --status-available: #52C41A;
+      --status-stable: #44A08D;
+      --status-concerning: #FF7875;
+    }
+
+    [data-theme="dark"] {
+      --bg-gradient-start: #0f172a;
+      --bg-gradient-end: #1e293b;
+      --text-primary: #e2e8f0;
+      --text-secondary: #94a3b8;
+      --bg-white: #1e293b;
+      --bg-card: #1e293b;
+      --bg-card-secondary: linear-gradient(135deg, #1e293b, #334155);
+      --shadow-color: rgba(0, 0, 0, 0.3);
+      --shadow-hover: rgba(0, 0, 0, 0.4);
+      --border-color: rgba(34, 197, 94, 0.2);
+      --border-card: #334155;
+      --accent-gradient-start: #22c55e;
+      --accent-gradient-end: #16a34a;
+      --sidebar-gradient: linear-gradient(180deg, #15803d 0%, #16a34a 100%);
+      --topbar-bg: rgba(30, 41, 59, 0.95);
+      --modal-bg: #1e293b;
+      --modal-header-bg: linear-gradient(135deg, #22c55e, #16a34a);
+      --modal-footer-bg: #334155;
+      --urgent-gradient: linear-gradient(90deg, #ef4444, #f59e0b);
+      --warning-gradient: linear-gradient(90deg, #f59e0b, #eab308);
+      --progress-bg: #334155;
+      --status-available: #10b981;
+      --status-stable: #22c55e;
+      --status-concerning: #ef4444;
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                  background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                  border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                  box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #F8F9FA 0%, #E8F5F4 100%);
-      color: #2C3E50;
+      background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+      color: var(--text-primary);
       line-height: 1.6;
+    }
+
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--accent-gradient-start);
+      border: 2px solid var(--accent-gradient-end);
+      border-radius: 50%;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 8px var(--shadow-color);
+      z-index: 1001;
+      backdrop-filter: blur(10px);
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.15) rotate(10deg);
+      box-shadow: 0 8px 20px var(--shadow-hover);
+    }
+
+    .theme-toggle svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      color: white;
+    }
+
+    .theme-toggle:active {
+      transform: scale(0.95);
     }
 
     /* Sidebar */
@@ -27,11 +122,11 @@
       top: 0;
       width: 280px;
       height: 100vh;
-      background: linear-gradient(180deg, #44A08D 0%, #4ECDC4 100%);
+      background: var(--sidebar-gradient);
       color: white;
       padding: 0;
       z-index: 1000;
-      box-shadow: 4px 0 20px rgba(68, 160, 141, 0.2);
+      box-shadow: 4px 0 20px var(--shadow-color);
       transition: transform 0.3s ease;
     }
 
@@ -96,20 +191,20 @@
     }
 
     .topbar {
-      background: rgba(255, 255, 255, 0.95);
+      background: var(--topbar-bg);
       backdrop-filter: blur(10px);
       padding: 20px 30px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 20px rgba(68, 160, 141, 0.1);
+      box-shadow: 0 2px 20px var(--shadow-color);
       position: sticky;
       top: 0;
       z-index: 100;
     }
 
     .topbar h1 {
-      color: #2C3E50;
+      color: var(--text-primary);
       font-size: 1.8rem;
       font-weight: 600;
     }
@@ -122,10 +217,10 @@
 
     .language-selector select {
       padding: 8px 15px;
-      border: 2px solid #E8F5F4;
+      border: 2px solid var(--border-card);
       border-radius: 8px;
-      background: white;
-      color: #2C3E50;
+      background: var(--bg-card);
+      color: var(--text-primary);
       font-size: 0.9rem;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -133,8 +228,8 @@
 
     .language-selector select:focus {
       outline: none;
-      border-color: #44A08D;
-      box-shadow: 0 0 10px rgba(68, 160, 141, 0.2);
+      border-color: var(--accent-gradient-start);
+      box-shadow: 0 0 10px var(--shadow-color);
     }
 
     .content {
@@ -150,14 +245,14 @@
       font-size: 1.6rem;
       font-weight: 600;
       margin-bottom: 25px;
-      color: #2C3E50;
+      color: var(--text-primary);
       display: flex;
       align-items: center;
       gap: 12px;
     }
 
     .section-title i {
-      color: #44A08D;
+      color: var(--accent-gradient-start);
     }
 
     /* Stats Grid */
@@ -169,12 +264,12 @@
     }
 
     .stat-card {
-      background: white;
+      background: var(--bg-card);
       border-radius: 20px;
       padding: 30px;
       text-align: center;
-      box-shadow: 0 10px 30px rgba(68, 160, 141, 0.08);
-      border: 1px solid rgba(68, 160, 141, 0.1);
+      box-shadow: 0 10px 30px var(--shadow-color);
+      border: 1px solid var(--border-color);
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
@@ -188,45 +283,48 @@
       left: 0;
       width: 100%;
       height: 4px;
-      background: linear-gradient(90deg, #44A08D, #4ECDC4, #A2EBB3);
+      background: linear-gradient(90deg, var(--accent-gradient-start), var(--accent-gradient-end), #A2EBB3);
     }
 
     .stat-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 15px 40px rgba(68, 160, 141, 0.15);
+      box-shadow: 0 15px 40px var(--shadow-hover);
     }
 
     .stat-card.urgent::before {
-      background: linear-gradient(90deg, #FF7875, #F8C471);
+      background: var(--urgent-gradient);
     }
 
     .stat-card.warning::before {
-      background: linear-gradient(90deg, #FAAD14, #F7DC6F);
+      background: var(--warning-gradient);
     }
 
     .stat-value {
       font-size: 2.8rem;
       font-weight: 700;
       margin-bottom: 12px;
-      background: linear-gradient(135deg, #44A08D, #4ECDC4);
+      background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-gradient-end));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .stat-card.urgent .stat-value {
-      background: linear-gradient(135deg, #FF7875, #F8C471);
+      background: var(--urgent-gradient);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .stat-card.warning .stat-value {
-      background: linear-gradient(135deg, #FAAD14, #F7DC6F);
+      background: var(--warning-gradient);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .stat-label {
-      color: #5D6D7E;
+      color: var(--text-secondary);
       font-weight: 500;
       font-size: 1rem;
     }
@@ -240,15 +338,15 @@
     }
 
     .insight-card {
-      background: white;
+      background: var(--bg-card);
       border-radius: 20px;
       padding: 30px;
-      box-shadow: 0 10px 30px rgba(68, 160, 141, 0.08);
-      border: 1px solid rgba(68, 160, 141, 0.1);
+      box-shadow: 0 10px 30px var(--shadow-color);
+      border: 1px solid var(--border-color);
     }
 
     .insight-card h3 {
-      color: #2C3E50;
+      color: var(--text-primary);
       margin-bottom: 25px;
       font-size: 1.3rem;
       font-weight: 600;
@@ -273,7 +371,7 @@
       width: 140px;
       height: 140px;
       border-radius: 50%;
-      background: conic-gradient(#44A08D 85%, #E8F5F4 0);
+      background: conic-gradient(var(--accent-gradient-start) 85%, var(--progress-bg) 0);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -285,7 +383,7 @@
       content: '';
       width: 100px;
       height: 100px;
-      background: white;
+      background: var(--bg-card);
       border-radius: 50%;
       position: absolute;
     }
@@ -293,14 +391,15 @@
     .progress-value {
       font-size: 2rem;
       font-weight: 700;
-      background: linear-gradient(135deg, #44A08D, #4ECDC4);
+      background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-gradient-end));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
       z-index: 1;
     }
 
     .progress-label {
-      color: #5D6D7E;
+      color: var(--text-secondary);
       font-size: 0.9rem;
       font-weight: 500;
     }
@@ -318,26 +417,26 @@
       gap: 20px;
       padding: 20px;
       border-radius: 15px;
-      background: linear-gradient(135deg, #F8F9FA, #FDFEFE);
-      border: 2px solid #E8F5F4;
+      background: var(--bg-card-secondary);
+      border: 2px solid var(--border-card);
       transition: all 0.3s ease;
     }
 
     .status-item:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(68, 160, 141, 0.1);
+      box-shadow: 0 8px 25px var(--shadow-color);
     }
 
     .status-item.improving {
-      border-left: 6px solid #52C41A;
+      border-left: 6px solid var(--status-available);
     }
 
     .status-item.stable {
-      border-left: 6px solid #44A08D;
+      border-left: 6px solid var(--status-stable);
     }
 
     .status-item.concerning {
-      border-left: 6px solid #FF7875;
+      border-left: 6px solid var(--status-concerning);
     }
 
     .status-count {
@@ -347,19 +446,19 @@
     }
 
     .status-item.improving .status-count {
-      color: #52C41A;
+      color: var(--status-available);
     }
 
     .status-item.stable .status-count {
-      color: #44A08D;
+      color: var(--status-stable);
     }
 
     .status-item.concerning .status-count {
-      color: #FF7875;
+      color: var(--status-concerning);
     }
 
     .status-text {
-      color: #2C3E50;
+      color: var(--text-primary);
       font-weight: 500;
       font-size: 1.1rem;
     }
@@ -372,11 +471,11 @@
     }
 
     .alert-card {
-      background: white;
+      background: var(--bg-card);
       border-radius: 20px;
       padding: 25px;
-      box-shadow: 0 10px 30px rgba(68, 160, 141, 0.08);
-      border: 1px solid rgba(68, 160, 141, 0.1);
+      box-shadow: 0 10px 30px var(--shadow-color);
+      border: 1px solid var(--border-color);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -386,11 +485,11 @@
 
     .alert-card:hover {
       transform: translateY(-3px);
-      box-shadow: 0 15px 40px rgba(68, 160, 141, 0.15);
+      box-shadow: 0 15px 40px var(--shadow-hover);
     }
 
     .alert-card.high-priority {
-      border-left-color: #FF7875;
+      border-left-color: var(--status-concerning);
     }
 
     .alert-content {
@@ -405,7 +504,7 @@
     }
 
     .alert-header h4 {
-      color: #2C3E50;
+      color: var(--text-primary);
       font-size: 1.2rem;
       font-weight: 600;
     }
@@ -424,18 +523,18 @@
 
     .priority-badge.high {
       background: rgba(255, 120, 117, 0.2);
-      color: #FF7875;
+      color: var(--status-concerning);
     }
 
     .alert-concern {
-      color: #2C3E50;
+      color: var(--text-primary);
       font-weight: 500;
       margin-bottom: 8px;
       font-size: 1rem;
     }
 
     .alert-time {
-      color: #5D6D7E;
+      color: var(--text-secondary);
       font-size: 0.85rem;
     }
 
@@ -447,12 +546,12 @@
     }
 
     .action-btn {
-      background: white;
+      background: var(--bg-card);
       border-radius: 20px;
       padding: 30px;
       text-align: center;
-      box-shadow: 0 10px 30px rgba(68, 160, 141, 0.08);
-      border: 2px solid #E8F5F4;
+      box-shadow: 0 10px 30px var(--shadow-color);
+      border: 2px solid var(--border-card);
       cursor: pointer;
       transition: all 0.3s ease;
       text-decoration: none;
@@ -468,15 +567,15 @@
       left: 0;
       width: 100%;
       height: 4px;
-      background: linear-gradient(90deg, #44A08D, #4ECDC4);
+      background: linear-gradient(90deg, var(--accent-gradient-start), var(--accent-gradient-end));
       transform: scaleX(0);
       transition: transform 0.3s ease;
     }
 
     .action-btn:hover {
       transform: translateY(-5px);
-      border-color: #44A08D;
-      box-shadow: 0 15px 40px rgba(68, 160, 141, 0.15);
+      border-color: var(--accent-gradient-start);
+      box-shadow: 0 15px 40px var(--shadow-hover);
     }
 
     .action-btn:hover::before {
@@ -484,25 +583,27 @@
     }
 
     .action-btn.emergency {
-      border-left: 6px solid #FF7875;
+      border-left: 6px solid var(--status-concerning);
     }
 
     .action-icon {
       font-size: 2.2rem;
       margin-bottom: 15px;
-      background: linear-gradient(135deg, #44A08D, #4ECDC4);
+      background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-gradient-end));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .action-btn.emergency .action-icon {
-      background: linear-gradient(135deg, #FF7875, #F8C471);
+      background: var(--urgent-gradient);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .action-text {
-      color: #2C3E50;
+      color: var(--text-primary);
       font-weight: 600;
       font-size: 1.1rem;
     }
@@ -524,7 +625,7 @@
     }
 
     .btn-danger {
-      background: linear-gradient(135deg, #FF7875, #F8C471);
+      background: var(--urgent-gradient);
       color: white;
     }
 
@@ -554,7 +655,7 @@
     }
 
     .modal-content {
-      background: white;
+      background: var(--modal-bg);
       border-radius: 20px;
       max-width: 500px;
       width: 90%;
@@ -564,7 +665,7 @@
 
     .modal-header {
       padding: 25px 30px;
-      background: linear-gradient(135deg, #44A08D, #4ECDC4);
+      background: var(--modal-header-bg);
       color: white;
       display: flex;
       justify-content: space-between;
@@ -591,13 +692,13 @@
 
     .modal-body {
       padding: 30px;
-      color: #2C3E50;
+      color: var(--text-primary);
       line-height: 1.6;
     }
 
     .modal-footer {
       padding: 20px 30px;
-      background: #F8F9FA;
+      background: var(--modal-footer-bg);
       display: flex;
       gap: 15px;
       justify-content: flex-end;
@@ -639,7 +740,7 @@
       background: none;
       border: none;
       font-size: 1.5rem;
-      color: #2C3E50;
+      color: var(--text-primary);
       cursor: pointer;
     }
 
@@ -652,10 +753,19 @@
 </head>
 <body>
 
+<!-- Theme Toggle Button -->
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+  <!-- Sun Icon (Light Mode) -->
+  <svg class="sun-icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+  </svg>
+  <!-- Moon Icon (Dark Mode) -->
+  <svg class="moon-icon" style="display: none;" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+  </svg>
+</button>
 
-
-
-  <div class="sidebar" id="sidebar">
+<div class="sidebar" id="sidebar">
   <div class="sidebar-header">
     <div class="logo" id="sidebarLogo">TechHealth</div>
     <div class="user-info">
@@ -709,860 +819,867 @@
     </div>
   </nav>
 </div>
-  <div class="main-content">
-    <div class="topbar">
-      <div class="topbar-left">
-        <button class="mobile-toggle" onclick="toggleSidebar()">
-          <i class="fas fa-bars"></i>
+
+<div class="main-content">
+  <div class="topbar">
+    <div class="topbar-left">
+      <button class="mobile-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <h1 id="page-title">Counselor Dashboard</h1>
+    </div>
+    <div class="topbar-right">
+      <div class="language-selector">
+        <select id="languageSelect">
+          <option value="en">English</option>
+          <option value="hi">हिन्दी (Hindi)</option>
+          <option value="ur">اردو (Urdu)</option>
+          <option value="ks">کٲشُر (Kashmiri)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- Today's Overview Section -->
+    <div class="section">
+      <h2 class="section-title">
+        <i class="fas fa-sun"></i>
+        <span id="todays-overview">Today's Overview</span>
+      </h2>
+
+      <div class="stat-grid">
+        <div class="stat-card clickable" data-navigate="sessions">
+          <div class="stat-value">8</div>
+          <div class="stat-label" id="sessions-scheduled">Sessions Scheduled</div>
+        </div>
+
+        <div class="stat-card clickable" data-navigate="clients">
+          <div class="stat-value">45</div>
+          <div class="stat-label" id="active-clients">Active Clients</div>
+        </div>
+
+        <div class="stat-card urgent clickable" data-navigate="urgent">
+          <div class="stat-value">2</div>
+          <div class="stat-label" id="urgent-cases">Urgent Cases</div>
+        </div>
+
+        <div class="stat-card clickable" data-navigate="completed">
+          <div class="stat-value">5</div>
+          <div class="stat-label" id="completed-sessions">Completed Sessions</div>
+        </div>
+
+        <div class="stat-card warning clickable" data-navigate="noshows">
+          <div class="stat-value">1</div>
+          <div class="stat-label" id="no-shows">No-shows</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Client Insights Section -->
+    <div class="section">
+      <h2 class="section-title">
+        <i class="fas fa-brain"></i>
+        <span id="client-insights">Client Insights</span>
+      </h2>
+
+      <div class="insights-grid">
+        <div class="insight-card">
+          <h3 id="client-mood-trends">Client Mood Trends</h3>
+          <div class="chart-container">
+            <canvas id="moodTrendChart"></canvas>
+          </div>
+        </div>
+
+        <div class="insight-card">
+          <h3 id="session-completion-rate">Session Completion Rate</h3>
+          <div class="progress-container">
+            <div class="progress-circle">
+              <div class="progress-value">85%</div>
+            </div>
+            <div class="progress-label">This Week</div>
+          </div>
+        </div>
+
+        <div class="insight-card">
+          <h3 id="active-cases-status">Active Cases Status</h3>
+          <div class="case-status">
+            <div class="status-item improving">
+              <div class="status-count">12</div>
+              <div class="status-text" id="improving">Improving</div>
+            </div>
+            <div class="status-item stable">
+              <div class="status-count">8</div>
+              <div class="status-text" id="stable">Stable</div>
+            </div>
+            <div class="status-item concerning">
+              <div class="status-count">3</div>
+              <div class="status-text" id="concerning">Concerning</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Urgent Alerts Section -->
+    <div class="section">
+      <h2 class="section-title">
+        <i class="fas fa-bell"></i>
+        <span id="urgent-alerts">Urgent Alerts</span>
+      </h2>
+
+      <div class="alert-list">
+        <div class="alert-card">
+          <div class="alert-content">
+            <div class="alert-header">
+              <h4 id="alert-name-1">Soniya M.</h4>
+              <div class="priority-badge medium" id="alert-priority-1">Medium Priority</div>
+            </div>
+            <div class="alert-concern" id="alert-concern-1">Missed 2 consecutive sessions</div>
+            <div class="alert-time" id="alert-time-1">Last contact: 3 days ago</div>
+          </div>
+          <button class="btn btn-danger">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span id="alert-action-1">Take Action</span>
+          </button>
+        </div>
+
+        <div class="alert-card high-priority">
+          <div class="alert-content">
+            <div class="alert-header">
+              <h4 id="alert-name-2">Alex K.</h4>
+              <div class="priority-badge high" id="alert-priority-2">High Priority</div>
+            </div>
+            <div class="alert-concern" id="alert-concern-2">Reported increased anxiety levels</div>
+            <div class="alert-time" id="alert-time-2">Last contact: Today</div>
+          </div>
+          <button class="btn btn-danger">
+            <i class="fas fa-phone"></i>
+            <span id="alert-action-2">Contact Now</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions Section -->
+    <div class="section">
+      <h2 class="section-title">
+        <i class="fas fa-bolt"></i>
+        <span id="quick-actions">Quick Actions</span>
+      </h2>
+
+      <div class="action-grid">
+        <button class="action-btn" data-action="notes">
+          <div class="action-icon">
+            <i class="fas fa-sticky-note"></i>
+          </div>
+          <div class="action-text" id="add-session-notes">📝 Add Session Notes</div>
         </button>
-        <h1 id="page-title">Counselor Dashboard</h1>
+
+        <button class="action-btn" data-action="schedule">
+          <div class="action-icon">
+            <i class="fas fa-calendar-plus"></i>
+          </div>
+          <div class="action-text" id="schedule-appointment">📅 Schedule Appointment</div>
+        </button>
+
+        <button class="action-btn" data-action="report">
+          <div class="action-icon">
+            <i class="fas fa-chart-bar"></i>
+          </div>
+          <div class="action-text" id="generate-report">📊 Generate Report</div>
+        </button>
+
+        <button class="action-btn" data-action="contact">
+          <div class="action-icon">
+            <i class="fas fa-comments"></i>
+          </div>
+          <div class="action-text" id="contact-client">👥 Contact Client</div>
+        </button>
+
+        <button class="action-btn emergency" data-action="emergency">
+          <div class="action-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <div class="action-text" id="emergency-protocol">🚨 Emergency Protocol</div>
+        </button>
       </div>
-      <div class="topbar-right">
-        <div class="language-selector">
-          <select id="languageSelect">
-            <option value="en">English</option>
-            <option value="hi">हिन्दी (Hindi)</option>
-            <option value="ur">اردو (Urdu)</option>
-            <option value="ks">کٲشُر (Kashmiri)</option>
-          </select>
-        </div>
-        <!-- <div style="margin-left: 15px;">
-          <a href="student.html" style="margin-right: 10px; color: #44A08D; text-decoration: none;">Student</a>
-          <a href="admin.html" style="color: #44A08D; text-decoration: none;">Admin</a>
-        </div> -->
-      </div>
-    </div>
-
-    <div class="content">
-      <!-- Today's Overview Section -->
-      <div class="section">
-        <h2 class="section-title">
-          <i class="fas fa-sun"></i>
-          <span id="todays-overview">Today's Overview</span>
-        </h2>
-
-        <div class="stat-grid">
-          <div class="stat-card clickable" data-navigate="sessions">
-            <div class="stat-value">8</div>
-            <div class="stat-label" id="sessions-scheduled">Sessions Scheduled</div>
-          </div>
-
-          <div class="stat-card clickable" data-navigate="clients">
-            <div class="stat-value">45</div>
-            <div class="stat-label" id="active-clients">Active Clients</div>
-          </div>
-
-          <div class="stat-card urgent clickable" data-navigate="urgent">
-            <div class="stat-value">2</div>
-            <div class="stat-label" id="urgent-cases">Urgent Cases</div>
-          </div>
-
-          <div class="stat-card clickable" data-navigate="completed">
-            <div class="stat-value">5</div>
-            <div class="stat-label" id="completed-sessions">Completed Sessions</div>
-          </div>
-
-          <div class="stat-card warning clickable" data-navigate="noshows">
-            <div class="stat-value">1</div>
-            <div class="stat-label" id="no-shows">No-shows</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Client Insights Section -->
-      <div class="section">
-        <h2 class="section-title">
-          <i class="fas fa-brain"></i>
-          <span id="client-insights">Client Insights</span>
-        </h2>
-
-        <div class="insights-grid">
-          <div class="insight-card">
-            <h3 id="client-mood-trends">Client Mood Trends</h3>
-            <div class="chart-container">
-              <canvas id="moodTrendChart"></canvas>
-            </div>
-          </div>
-
-          <div class="insight-card">
-            <h3 id="session-completion-rate">Session Completion Rate</h3>
-            <div class="progress-container">
-              <div class="progress-circle">
-                <div class="progress-value">85%</div>
-              </div>
-              <div class="progress-label">This Week</div>
-            </div>
-          </div>
-
-          <div class="insight-card">
-            <h3 id="active-cases-status">Active Cases Status</h3>
-            <div class="case-status">
-              <div class="status-item improving">
-                <div class="status-count">12</div>
-                <div class="status-text" id="improving">Improving</div>
-              </div>
-              <div class="status-item stable">
-                <div class="status-count">8</div>
-                <div class="status-text" id="stable">Stable</div>
-              </div>
-              <div class="status-item concerning">
-                <div class="status-count">3</div>
-                <div class="status-text" id="concerning">Concerning</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Urgent Alerts Section -->
-<div class="section">
-  <h2 class="section-title">
-    <i class="fas fa-bell"></i>
-    <span id="urgent-alerts">Urgent Alerts</span>
-  </h2>
-
-  <div class="alert-list">
-    <div class="alert-card">
-      <div class="alert-content">
-        <div class="alert-header">
-          <h4 id="alert-name-1">Soniya M.</h4>
-          <div class="priority-badge medium" id="alert-priority-1">Medium Priority</div>
-        </div>
-        <div class="alert-concern" id="alert-concern-1">Missed 2 consecutive sessions</div>
-        <div class="alert-time" id="alert-time-1">Last contact: 3 days ago</div>
-      </div>
-      <button class="btn btn-danger">
-        <i class="fas fa-exclamation-triangle"></i>
-        <span id="alert-action-1">Take Action</span>
-      </button>
-    </div>
-
-    <div class="alert-card high-priority">
-      <div class="alert-content">
-        <div class="alert-header">
-          <h4 id="alert-name-2">Alex K.</h4>
-          <div class="priority-badge high" id="alert-priority-2">High Priority</div>
-        </div>
-        <div class="alert-concern" id="alert-concern-2">Reported increased anxiety levels</div>
-        <div class="alert-time" id="alert-time-2">Last contact: Today</div>
-      </div>
-      <button class="btn btn-danger">
-        <i class="fas fa-phone"></i>
-        <span id="alert-action-2">Contact Now</span>
-      </button>
     </div>
   </div>
 </div>
 
-      <!-- Quick Actions Section -->
-      <div class="section">
-        <h2 class="section-title">
-          <i class="fas fa-bolt"></i>
-          <span id="quick-actions">Quick Actions</span>
-        </h2>
-
-        <div class="action-grid">
-          <button class="action-btn" data-action="notes">
-            <div class="action-icon">
-              <i class="fas fa-sticky-note"></i>
-            </div>
-            <div class="action-text" id="add-session-notes">📝 Add Session Notes</div>
-          </button>
-
-          <button class="action-btn" data-action="schedule">
-            <div class="action-icon">
-              <i class="fas fa-calendar-plus"></i>
-            </div>
-            <div class="action-text" id="schedule-appointment">📅 Schedule Appointment</div>
-          </button>
-
-          <button class="action-btn" data-action="report">
-            <div class="action-icon">
-              <i class="fas fa-chart-bar"></i>
-            </div>
-            <div class="action-text" id="generate-report">📊 Generate Report</div>
-          </button>
-
-          <button class="action-btn" data-action="contact">
-            <div class="action-icon">
-              <i class="fas fa-comments"></i>
-            </div>
-            <div class="action-text" id="contact-client">👥 Contact Client</div>
-          </button>
-
-          <button class="action-btn emergency" data-action="emergency">
-            <div class="action-icon">
-              <i class="fas fa-exclamation-triangle"></i>
-            </div>
-            <div class="action-text" id="emergency-protocol">🚨 Emergency Protocol</div>
-          </button>
-        </div>
-      </div>
+<!-- Action Modal -->
+<div class="modal hidden" id="actionModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="modalTitle">Action</h3>
+      <button class="modal-close" id="modalClose">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p id="modalMessage">This action will be performed.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" id="modalCancel" style="background: var(--border-card); color: var(--text-primary);">Cancel</button>
+      <button class="btn" id="modalConfirm" style="background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-gradient-end)); color: white;">Confirm</button>
     </div>
   </div>
+</div>
 
-  <!-- Action Modal -->
-  <div class="modal hidden" id="actionModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 id="modalTitle">Action</h3>
-        <button class="modal-close" id="modalClose">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p id="modalMessage">This action will be performed.</p>
-      </div>
-      <div class="modal-footer">
-        <button class="btn" id="modalCancel" style="background: #E8F5F4; color: #2C3E50;">Cancel</button>
-        <button class="btn" id="modalConfirm" style="background: linear-gradient(135deg, #44A08D, #4ECDC4); color: white;">Confirm</button>
-      </div>
-    </div>
-  </div>
+<script>
+// Theme toggle functionality
+const themeToggle = document.getElementById('themeToggle');
+const sunIcon = document.querySelector('.sun-icon');
+const moonIcon = document.querySelector('.moon-icon');
+const html = document.documentElement;
 
-  <script>
+// Check for saved theme preference or default to light mode
+const currentTheme = localStorage.getItem('theme') || 'light';
+html.setAttribute('data-theme', currentTheme);
 
+// Update icon visibility based on current theme
+function updateIcon() {
+  const theme = html.getAttribute('data-theme');
+  if (theme === 'dark') {
+    sunIcon.style.display = 'none';
+    moonIcon.style.display = 'block';
+  } else {
+    sunIcon.style.display = 'block';
+    moonIcon.style.display = 'none';
+  }
+}
+
+// Initialize icon state
+updateIcon();
+
+// Toggle theme function with smooth transition
+function toggleTheme() {
+  const currentTheme = html.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  
+  // Add a subtle scale effect during transition
+  themeToggle.style.transform = 'scale(0.9) rotate(180deg)';
+  
+  setTimeout(() => {
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateIcon();
+    
+    // Update charts with new theme colors if dashboard is initialized
+    if (window.counselorDashboard) {
+      window.counselorDashboard.updateChartsForTheme();
+    }
+    
+    // Reset the transform
+    setTimeout(() => {
+      themeToggle.style.transform = '';
+    }, 200);
+  }, 100);
+}
+
+// Add click event listener to toggle button
+themeToggle.addEventListener('click', toggleTheme);
+
+// Optional: Add keyboard support
+themeToggle.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    toggleTheme();
+  }
+});
 
 // Load saved language (default English if none)
 const savedLang = localStorage.getItem("selectedLanguage") || "en";
 
+const appData = {
+  clientMoodData: {
+    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    averageMoodScores: [6.2, 6.8, 5.9, 7.1, 6.5, 6.9, 7.3]
+  }
+};
 
-
-
-    const appData = {
-      clientMoodData: {
-        labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-        averageMoodScores: [6.2, 6.8, 5.9, 7.1, 6.5, 6.9, 7.3]
-      }
-    };
-
-    // Language translations
-    const translations = {
-      en: {
-        title: "Counselor Dashboard",
-        todaysOverview: "Today's Overview",
-        clientInsights: "Client Insights", 
-        urgentAlerts: "Urgent Alerts",
-        quickActions: "Quick Actions",
-        sessionsScheduled: "Sessions Scheduled",
-        activeClients: "Active Clients",
-        urgentCases: "Urgent Cases",
-        completedSessions: "Completed Sessions",
-        noShows: "No-shows",
-        clientMoodTrends: "Client Mood Trends",
-        sessionCompletionRate: "Session Completion Rate", 
-        activeCasesStatus: "Active Cases Status",
-        improving: "Improving",
-        stable: "Stable",
-        concerning: "Concerning",
-        addSessionNotes: "📝 Add Session Notes",
-        scheduleAppointment: "📅 Schedule Appointment",
-        generateReport: "📊 Generate Report",
-        contactClient: "👥 Contact Client",
-        emergencyProtocol: "🚨 Emergency Protocol",
-        cancel: "Cancel",
-        confirm: "Confirm",
-        sidebarLogo: "TechHealth",
-        alertName1: "Soniya M.",
+// Language translations
+const translations = {
+  en: {
+    title: "Counselor Dashboard",
+    todaysOverview: "Today's Overview",
+    clientInsights: "Client Insights", 
+    urgentAlerts: "Urgent Alerts",
+    quickActions: "Quick Actions",
+    sessionsScheduled: "Sessions Scheduled",
+    activeClients: "Active Clients",
+    urgentCases: "Urgent Cases",
+    completedSessions: "Completed Sessions",
+    noShows: "No-shows",
+    clientMoodTrends: "Client Mood Trends",
+    sessionCompletionRate: "Session Completion Rate", 
+    activeCasesStatus: "Active Cases Status",
+    improving: "Improving",
+    stable: "Stable",
+    concerning: "Concerning",
+    addSessionNotes: "📝 Add Session Notes",
+    scheduleAppointment: "📅 Schedule Appointment",
+    generateReport: "📊 Generate Report",
+    contactClient: "👥 Contact Client",
+    emergencyProtocol: "🚨 Emergency Protocol",
+    cancel: "Cancel",
+    confirm: "Confirm",
+    sidebarLogo: "TechHealth",
+    alertName1: "Soniya M.",
     alertPriority1: "Medium Priority",
     alertConcern1: "Missed 2 consecutive sessions",
     alertTime1: "Last contact: 3 days ago",
     alertAction1: "Take Action",
-    
     alertName2: "Alex K.",
     alertPriority2: "High Priority", 
     alertConcern2: "Reported increased anxiety levels",
     alertTime2: "Last contact: Today",
     alertAction2: "Contact Now",
-  sidebarPortal: "Counselor Portal",
-  navDashboard: "🏠 Dashboard",
-  navClients: "👥 My Clients",
-  navSessions: "📅 Today's Sessions",
-  navProgress: "📊 Client Progress",
-  navNotes: "📝 Case Notes",
-  navAlerts: "🚨 Emergency Alerts",
-  navLogout: "Logout"
-      },
-      hi: {
-        title: "काउंसलर डैशबोर्ड",
-        todaysOverview: "आज की समीक्षा", 
-        clientInsights: "क्लाइंट अंतर्दृष्टि",
-        urgentAlerts: "तत्काल अलर्ट",
-        quickActions: "त्वरित कार्य",
-        sessionsScheduled: "निर्धारित सेशन",
-        activeClients: "सक्रिय क्लाइंट",
-        urgentCases: "तत्काल मामले",
-        completedSessions: "पूर्ण सेशन",
-        noShows: "अनुपस्थित",
-        clientMoodTrends: "क्लाइंट मूड रुझान",
-        sessionCompletionRate: "सेशन पूर्णता दर",
-        activeCasesStatus: "सक्रिय मामलों की स्थिति",
-        improving: "सुधार रहा",
-        stable: "स्थिर", 
-        concerning: "चिंताजनक",
-        addSessionNotes: "📝 सेशन नोट्स जोड़ें",
-        scheduleAppointment: "📅 अपॉइंटमेंट शेड्यूल करें",
-        generateReport: "📊 रिपोर्ट तैयार करें",
-        contactClient: "👥 क्लाइंट से संपर्क करें",
-        emergencyProtocol: "🚨 आपातकालीन प्रोटोकॉल",
-        cancel: "रद्द करें",
-        confirm: "पुष्टि करें",
-        sidebarLogo: "टेकहेल्थ",
-        alertName1: "सोनिया एम.",
+    sidebarPortal: "Counselor Portal",
+    navDashboard: "🏠 Dashboard",
+    navClients: "👥 My Clients",
+    navSessions: "📅 Today's Sessions",
+    navProgress: "📊 Client Progress",
+    navNotes: "📝 Case Notes",
+    navAlerts: "🚨 Emergency Alerts",
+    navLogout: "Logout"
+  },
+  hi: {
+    title: "काउंसलर डैशबोर्ड",
+    todaysOverview: "आज की समीक्षा", 
+    clientInsights: "क्लाइंट अंतर्दृष्टि",
+    urgentAlerts: "तत्काल अलर्ट",
+    quickActions: "त्वरित कार्य",
+    sessionsScheduled: "निर्धारित सेशन",
+    activeClients: "सक्रिय क्लाइंट",
+    urgentCases: "तत्काल मामले",
+    completedSessions: "पूर्ण सेशन",
+    noShows: "अनुपस्थित",
+    clientMoodTrends: "क्लाइंट मूड रुझान",
+    sessionCompletionRate: "सेशन पूर्णता दर",
+    activeCasesStatus: "सक्रिय मामलों की स्थिति",
+    improving: "सुधार रहा",
+    stable: "स्थिर", 
+    concerning: "चिंताजनक",
+    addSessionNotes: "📝 सेशन नोट्स जोड़ें",
+    scheduleAppointment: "📅 अपॉइंटमेंट शेड्यूल करें",
+    generateReport: "📊 रिपोर्ट तैयार करें",
+    contactClient: "👥 क्लाइंट से संपर्क करें",
+    emergencyProtocol: "🚨 आपातकालीन प्रोटोकॉल",
+    cancel: "रद्द करें",
+    confirm: "पुष्टि करें",
+    sidebarLogo: "टेकहेल्थ",
+    alertName1: "सोनिया एम.",
     alertPriority1: "मध्यम प्राथमिकता",
     alertConcern1: "2 लगातार सत्र छूट गए",
     alertTime1: "अंतिम संपर्क: 3 दिन पहले",
     alertAction1: "कार्रवाई करें",
-    
     alertName2: "एलेक्स के.",
     alertPriority2: "उच्च प्राथमिकता",
     alertConcern2: "बढ़ी हुई चिंता की सूचना दी",
     alertTime2: "अंतिम संपर्क: आज",
     alertAction2: "अभी संपर्क करें",
-  sidebarPortal: "काउंसलर पोर्टल",
-  navDashboard: "🏠 डैशबोर्ड",
-  navClients: "👥 मेरे क्लाइंट",
-  navSessions: "📅 आज के सेशन",
-  navProgress: "📊 क्लाइंट प्रगति",
-  navNotes: "📝 केस नोट्स",
-  navAlerts: "🚨 आपातकालीन अलर्ट",
-  navLogout: "लॉगआउट"
-      },
-      ur: {
-        title: "کاؤنسلر ڈیش بورڈ",
-        todaysOverview: "آج کا جائزہ",
-        clientInsights: "کلائنٹ بصیرت", 
-        urgentAlerts: "فوری الرٹس",
-        quickActions: "فوری اقدامات",
-        sessionsScheduled: "شیڈول شدہ سیشن",
-        activeClients: "فعال کلائنٹس", 
-        urgentCases: "فوری مقدمات",
-        completedSessions: "مکمل سیشن",
-        noShows: "غیر حاضری",
-        clientMoodTrends: "کلائنٹ موڈ کے رجحانات",
-        sessionCompletionRate: "سیشن تکمیل کی شرح",
-        activeCasesStatus: "فعال مقدمات کی صورتحال",
-        improving: "بہتری",
-        stable: "مستحکم",
-        concerning: "تشویشناک", 
-        addSessionNotes: "📝 سیشن نوٹس شامل کریں",
-        scheduleAppointment: "📅 اپائنٹمنٹ شیڈول کریں",
-        generateReport: "📊 رپورٹ تیار کریں",
-        contactClient: "👥 کلائنٹ سے رابطہ کریں", 
-        emergencyProtocol: "🚨 ہنگامی پروٹوکول",
-        cancel: "منسوخ",
-        confirm: "تصدیق",
-        sidebarLogo: "ٹیک ہیلتھ",
-        alertName1: "سونیا ایم۔",
+    sidebarPortal: "काउंसलर पोर्टल",
+    navDashboard: "🏠 डैशबोर्ड",
+    navClients: "👥 मेरे क्लाइंट",
+    navSessions: "📅 आज के सेशन",
+    navProgress: "📊 क्लाइंट प्रगति",
+    navNotes: "📝 केस नोट्स",
+    navAlerts: "🚨 आपातकालीन अलर्ट",
+    navLogout: "लॉगआउट"
+  },
+  ur: {
+    title: "کاؤنسلر ڈیش بورڈ",
+    todaysOverview: "آج کا جائزہ",
+    clientInsights: "کلائنٹ بصیرت", 
+    urgentAlerts: "فوری الرٹس",
+    quickActions: "فوری اقدامات",
+    sessionsScheduled: "شیڈول شدہ سیشن",
+    activeClients: "فعال کلائنٹس", 
+    urgentCases: "فوری مقدمات",
+    completedSessions: "مکمل سیشن",
+    noShows: "غیر حاضری",
+    clientMoodTrends: "کلائنٹ موڈ کے رجحانات",
+    sessionCompletionRate: "سیشن تکمیل کی شرح",
+    activeCasesStatus: "فعال مقدمات کی صورتحال",
+    improving: "بہتری",
+    stable: "مستحکم",
+    concerning: "تشویشناک", 
+    addSessionNotes: "📝 سیشن نوٹس شامل کریں",
+    scheduleAppointment: "📅 اپائنٹمنٹ شیڈول کریں",
+    generateReport: "📊 رپورٹ تیار کریں",
+    contactClient: "👥 کلائنٹ سے رابطہ کریں", 
+    emergencyProtocol: "🚨 ہنگامی پروٹوکول",
+    cancel: "منسوخ",
+    confirm: "تصدیق",
+    sidebarLogo: "ٹیک ہیلتھ",
+    alertName1: "سونیا ایم۔",
     alertPriority1: "درمیانی ترجیح",
     alertConcern1: "2 مسلسل سیشنز چھوٹ گئے",
     alertTime1: "آخری رابطہ: 3 دن پہلے",
     alertAction1: "کارروائی کریں",
-    
     alertName2: "الیگزینڈر کے۔",
     alertPriority2: "اعلی ترجیح",
     alertConcern2: "بڑھتی ہوئی پریشانی کی سطح کی اطلاع دی",
     alertTime2: "آخری رابطہ: آج",
     alertAction2: "ابھی رابطہ کریں",
-  sidebarPortal: "کاؤنسلر پورٹل",
-  navDashboard: "🏠 ڈیش بورڈ",
-  navClients: "👥 میرے کلائنٹس",
-  navSessions: "📅 آج کے سیشنز",
-  navProgress: "📊 کلائنٹ کی ترقی",
-  navNotes: "📝 کیس نوٹس",
-  navAlerts: "🚨 ہنگامی انتباہات",
-  navLogout: "لاگ آؤٹ"
-      },
-      ks: {
-        title: "کاؤنسلر ڈیش بورڈ",
-        todaysOverview: "آز کو جائزہ",
-        clientInsights: "کلائنٹ بصیرت",
-        urgentAlerts: "ضروری الرٹس", 
-        quickActions: "جلدی کام",
-        sessionsScheduled: "طے شدہ سیشن",
-        activeClients: "فعال کلائنٹ",
-        urgentCases: "ضروری معاملات",
-        completedSessions: "مکمل سیشن",
-        noShows: "نیہ آیہ",
-        clientMoodTrends: "کلائنٹ موڈ رجحان", 
-        sessionCompletionRate: "سیشن مکمل کرنے کی رفتار",
-        activeCasesStatus: "فعال معاملات کی صورت",
-        improving: "بہتر",
-        stable: "مستحکم",
-        concerning: "پریشان کن",
-        addSessionNotes: "📝 سیشن نوٹس شامل کریو",
-        scheduleAppointment: "📅 ملاقات مقرر کریو", 
-        generateReport: "📊 رپورٹ بناؤ",
-        contactClient: "👥 کلائنٹ سیت رابطہ کریو",
-        emergencyProtocol: "🚨 ہنگامی طریقہ کار",
-        cancel: "منسوخ",
-        confirm: "تصدیق",
-        alertName1: "سونیا ایم۔",
+    sidebarPortal: "کاؤنسلر پورٹل",
+    navDashboard: "🏠 ڈیش بورڈ",
+    navClients: "👥 میرے کلائنٹس",
+    navSessions: "📅 آج کے سیشنز",
+    navProgress: "📊 کلائنٹ کی ترقی",
+    navNotes: "📝 کیس نوٹس",
+    navAlerts: "🚨 ہنگامی انتباہات",
+    navLogout: "لاگ آؤٹ"
+  },
+  ks: {
+    title: "کاؤنسلر ڈیش بورڈ",
+    todaysOverview: "آز کو جائزہ",
+    clientInsights: "کلائنٹ بصیرت",
+    urgentAlerts: "ضروری الرٹس", 
+    quickActions: "جلدی کام",
+    sessionsScheduled: "طے شدہ سیشن",
+    activeClients: "فعال کلائنٹ",
+    urgentCases: "ضروری معاملات",
+    completedSessions: "مکمل سیشن",
+    noShows: "نیہ آیہ",
+    clientMoodTrends: "کلائنٹ موڈ رجحان", 
+    sessionCompletionRate: "سیشن مکمل کرنے کی رفتار",
+    activeCasesStatus: "فعال معاملات کی صورت",
+    improving: "بہتر",
+    stable: "مستحکم",
+    concerning: "پریشان کن",
+    addSessionNotes: "📝 سیشن نوٹس شامل کریو",
+    scheduleAppointment: "📅 ملاقات مقرر کریو", 
+    generateReport: "📊 رپورٹ بناؤ",
+    contactClient: "👥 کلائنٹ سیت رابطہ کریو",
+    emergencyProtocol: "🚨 ہنگامی طریقہ کار",
+    cancel: "منسوخ",
+    confirm: "تصدیق",
+    alertName1: "سونیا ایم۔",
     alertPriority1: "درمیانی ترجیح",
     alertConcern1: "2 مسلسل سیشنز چھوٹ گئے",
     alertTime1: "آخری رابطہ: 3 دن پہلے",
     alertAction1: "کارروائی کریں",
-    
     alertName2: "الیگزینڈر کے۔",
     alertPriority2: "اعلی ترجیح",
     alertConcern2: "بڑھتی ہوئی پریشانی کی سطح کی اطلاع دی",
     alertTime2: "آخری رابطہ: آج",
     alertAction2: "ابھی رابطہ کریں",
-        sidebarLogo: "ٹیک ہیلتھ",
-  sidebarPortal: "کاؤنسلر پورٹل",
-  navDashboard: "🏠 ڈیش بورڈ",
-  navClients: "👥 میرے کلائنٹس",
-  navSessions: "📅 آج کے سیشنز",
-  navProgress: "📊 کلائنٹ کی ترقی",
-  navNotes: "📝 کیس نوٹس",
-  navAlerts: "🚨 ہنگامی انتباہات",
-  navLogout: "لاگ آؤٹ"
-      }
-    };
+    sidebarLogo: "ٹیک ہیلتھ",
+    sidebarPortal: "کاؤنسلر پورٹل",
+    navDashboard: "🏠 ڈیش بورڈ",
+    navClients: "👥 میرے کلائنٹس",
+    navSessions: "📅 آج کے سیشنز",
+    navProgress: "📊 کلائنٹ کی ترقی",
+    navNotes: "📝 کیس نوٹس",
+    navAlerts: "🚨 ہنگامی انتباہات",
+    navLogout: "لاگ آؤٹ"
+  }
+};
 
-
-
-    const sidebarLogo = document.querySelector(".logo");
-const sidebarPortal = document.querySelector(".user-info span");
-const navLinks = document.querySelectorAll(".sidebar-nav .nav-link span");
-
-function updateSidebarLanguage(lang) {
-  const t = translations[lang];
-  if (!t) return;
-
-  sidebarLogo.textContent = t.sidebarLogo;
-  sidebarPortal.textContent = t.sidebarPortal;
-
-  navLinks.forEach(link => {
-    const section = link.parentElement.getAttribute("data-section");
-    if (section === "dashboard") link.textContent = t.navDashboard;
-    if (section === "clients") link.textContent = t.navClients;
-    if (section === "sessions") link.textContent = t.navSessions;
-    if (section === "progress") link.textContent = t.navProgress;
-    if (section === "notes") link.textContent = t.navNotes;
-    if (section === "alerts") link.textContent = t.navAlerts;
-    if (!section) link.textContent = t.navLogout; // logout
-  });
+function getThemeColors() {
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  return {
+    primary: isDark ? '#22c55e' : '#44A08D',
+    secondary: isDark ? '#16a34a' : '#4ECDC4',
+    background: isDark ? '#1e293b' : '#F8F9FA',
+    text: isDark ? '#e2e8f0' : '#2C3E50'
+  };
 }
 
-
-document.addEventListener("DOMContentLoaded", () => {
-  const langSelect = document.getElementById("languageSelect");
-  if (langSelect) {
-    langSelect.value = savedLang; // set dropdown value to saved language
+// Initialize dashboard
+class CounselorDashboard {
+  constructor() {
+    this.currentLanguage = savedLang;
+    this.moodChart = null;
+    this.currentAction = null;
+    this.init();
   }
-  new CounselorDashboard();
-});
 
-document.getElementById("languageSelect").addEventListener("change", e => {
-  updateSidebarLanguage(e.target.value);
-});
+  init() {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        this.initializeApp();
+      });
+    } else {
+      this.initializeApp();
+    }
+  }
 
-    // Initialize dashboard
-    class CounselorDashboard {
-      constructor() {
-        this.currentLanguage = savedLang;
-        this.moodChart = null;
-        this.currentAction = null;
-        this.init();
-      }
+  initializeApp() {
+    this.initializeMoodChart();
+    this.setupEventListeners();
+    this.updateLanguage();
+  }
 
-      init() {
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', () => {
-            this.initializeApp();
-          });
-        } else {
-          this.initializeApp();
-        }
-      }
+  initializeMoodChart() {
+    const ctx = document.getElementById('moodTrendChart');
+    if (!ctx) return;
 
-      initializeApp() {
-        this.initializeMoodChart();
-        this.setupEventListeners();
-        this.updateLanguage();
-      }
+    const colors = getThemeColors();
 
-      initializeMoodChart() {
-        const ctx = document.getElementById('moodTrendChart');
-        if (!ctx) return;
-
-        this.moodChart = new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels: appData.clientMoodData.labels,
-            datasets: [{
-              label: 'Average Mood Score',
-              data: appData.clientMoodData.averageMoodScores,
-              borderColor: '#44A08D',
-              backgroundColor: 'rgba(68, 160, 141, 0.1)',
-              borderWidth: 3,
-              fill: true,
-              tension: 0.4,
-              pointBackgroundColor: '#44A08D',
-              pointBorderColor: '#ffffff',
-              pointBorderWidth: 2,
-              pointRadius: 6
-            }]
+    this.moodChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: appData.clientMoodData.labels,
+        datasets: [{
+          label: 'Average Mood Score',
+          data: appData.clientMoodData.averageMoodScores,
+          borderColor: colors.primary,
+          backgroundColor: colors.primary + '20',
+          borderWidth: 3,
+          fill: true,
+          tension: 0.4,
+          pointBackgroundColor: colors.primary,
+          pointBorderColor: '#ffffff',
+          pointBorderWidth: 2,
+          pointRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 10,
+            grid: { color: colors.text + '20' },
+            ticks: { 
+              stepSize: 2,
+              color: colors.text 
+            }
           },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: { display: false }
-            },
-            scales: {
-              y: {
-                beginAtZero: true,
-                max: 10,
-                grid: { color: 'rgba(0, 0, 0, 0.1)' },
-                ticks: { stepSize: 2 }
-              },
-              x: {
-                grid: { display: false }
-              }
-            },
-            elements: {
-              point: { hoverRadius: 8 }
-            }
+          x: {
+            grid: { display: false },
+            ticks: { color: colors.text }
           }
-        });
-      }
-
-      setupEventListeners() {
-        // Language selector
-        document.getElementById('languageSelect').addEventListener('change', (e) => {
-          this.currentLanguage = e.target.value;
-          this.updateLanguage();
-        });
-
-        // Navigation links
-        document.querySelectorAll('.nav-link').forEach(link => {
-          link.addEventListener('click', (e) => {
-            if (e.target.closest('a').getAttribute('href') === '#') {
-              e.preventDefault();
-              this.handleNavigation(e.target.closest('a'));
-            }
-          });
-        });
-
-
-
-        // Stat cards
-        document.querySelectorAll('.stat-card.clickable').forEach(card => {
-          card.addEventListener('click', (e) => {
-            const navigate = e.currentTarget.getAttribute('data-navigate');
-            this.handleStatCardClick(navigate);
-          });
-        });
-
-        // Quick action buttons
-        document.querySelectorAll('.action-btn').forEach(btn => {
-          btn.addEventListener('click', (e) => {
-            const action = e.currentTarget.getAttribute('data-action');
-            this.handleQuickAction(action);
-          });
-        });
-
-        // Alert buttons
-        document.querySelectorAll('.btn-danger').forEach(btn => {
-          btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            const alertCard = e.target.closest('.alert-card');
-            if (alertCard) {
-              const clientName = alertCard.querySelector('h4').textContent;
-              this.handleAlertAction(clientName);
-            }
-          });
-        });
-
-        this.setupModalEventListeners();
-      }
-
-      setupModalEventListeners() {
-        const modal = document.getElementById('actionModal');
-        const modalClose = document.getElementById('modalClose');
-        const modalCancel = document.getElementById('modalCancel');
-        const modalConfirm = document.getElementById('modalConfirm');
-
-        [modalClose, modalCancel].forEach(btn => {
-          if (btn) {
-            btn.addEventListener('click', (e) => {
-              e.preventDefault();
-              this.closeModal();
-            });
-          }
-        });
-
-        if (modalConfirm) {
-          modalConfirm.addEventListener('click', (e) => {
-            e.preventDefault();
-            this.confirmModalAction();
-            this.closeModal();
-          });
-        }
-
-        if (modal) {
-          modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-              this.closeModal();
-            }
-          });
-        }
-
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
-            this.closeModal();
-          }
-        });
-      }
-
-      handleNavigation(element) {
-        document.querySelectorAll('.nav-link').forEach(link => {
-          link.classList.remove('active');
-        });
-        element.classList.add('active');
-
-        const section = element.getAttribute('data-section');
-        this.showTemporaryMessage(`Navigated to ${section} section`);
-      }
-
-      handleStatCardClick(navigate) {
-        this.showModal(
-          `${navigate.charAt(0).toUpperCase() + navigate.slice(1)} Details`,
-          `This would show detailed information about ${navigate}. In a full application, this would navigate to a dedicated page with comprehensive data and management tools.`,
-          'View Details'
-        );
-      }
-
-      handleQuickAction(action) {
-        const actionMessages = {
-          notes: 'This would open the session notes interface where you can add detailed notes about your client sessions.',
-          schedule: 'This would open the appointment scheduling system to book new sessions with clients.',
-          report: 'This would open the report generation tool to create client progress reports and analytics.',
-          contact: 'This would open the client communication interface with secure messaging options.',
-          emergency: 'This would activate the emergency protocol system for crisis interventions.'
-        };
-
-        const actionTitles = {
-          notes: 'Add Session Notes',
-          schedule: 'Schedule Appointment', 
-          report: 'Generate Report',
-          contact: 'Contact Client',
-          emergency: 'Emergency Protocol'
-        };
-
-        this.showModal(
-          actionTitles[action] || 'Quick Action',
-          actionMessages[action] || 'Action functionality would be implemented here.',
-          action === 'emergency' ? 'Activate Protocol' : 'Proceed'
-        );
-
-        this.currentAction = action;
-      }
-
-      handleAlertAction(clientName) {
-        this.showModal(
-          `Alert Action - ${clientName}`,
-          `This would open the detailed case management interface for ${clientName}, allowing you to review their complete history and take appropriate clinical action.`,
-          'Open Case'
-        );
-        this.currentAction = 'alert';
-      }
-
-      showModal(title, message, confirmText = 'Confirm') {
-        const modal = document.getElementById('actionModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalMessage = document.getElementById('modalMessage');
-        const modalConfirm = document.getElementById('modalConfirm');
-
-        if (modal && modalTitle && modalMessage && modalConfirm) {
-          modalTitle.textContent = title;
-          modalMessage.textContent = message;
-          modalConfirm.textContent = confirmText;
-          modal.classList.remove('hidden');
-          modalConfirm.focus();
+        },
+        elements: {
+          point: { hoverRadius: 8 }
         }
       }
+    });
+  }
 
-      closeModal() {
-        const modal = document.getElementById('actionModal');
-        if (modal) {
-          modal.classList.add('hidden');
+  updateChartsForTheme() {
+    if (this.moodChart) {
+      this.moodChart.destroy();
+      this.initializeMoodChart();
+    }
+  }
+
+  setupEventListeners() {
+    // Language selector
+    document.getElementById('languageSelect').addEventListener('change', (e) => {
+      this.currentLanguage = e.target.value;
+      localStorage.setItem("selectedLanguage", e.target.value);
+      this.updateLanguage();
+    });
+
+    // Navigation links
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        if (e.target.closest('a').getAttribute('href') === '#') {
+          e.preventDefault();
+          this.handleNavigation(e.target.closest('a'));
         }
-      }
+      });
+    });
 
-      confirmModalAction() {
-        if (this.currentAction) {
-          const successMessages = {
-            notes: 'Session notes interface opened successfully.',
-            schedule: 'Appointment scheduling system accessed.',
-            report: 'Report generation initiated.',
-            contact: 'Client communication interface opened.',
-            emergency: 'Emergency protocol activated.',
-            alert: 'Case management interface opened.'
-          };
+    // Stat cards
+    document.querySelectorAll('.stat-card.clickable').forEach(card => {
+      card.addEventListener('click', (e) => {
+        const navigate = e.currentTarget.getAttribute('data-navigate');
+        this.handleStatCardClick(navigate);
+      });
+    });
 
-          if (successMessages[this.currentAction]) {
-            setTimeout(() => {
-              this.showTemporaryMessage(successMessages[this.currentAction]);
-            }, 100);
-          }
+    // Quick action buttons
+    document.querySelectorAll('.action-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const action = e.currentTarget.getAttribute('data-action');
+        this.handleQuickAction(action);
+      });
+    });
+
+    // Alert buttons
+    document.querySelectorAll('.btn-danger').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const alertCard = e.target.closest('.alert-card');
+        if (alertCard) {
+          const clientName = alertCard.querySelector('h4').textContent;
+          this.handleAlertAction(clientName);
         }
-        this.currentAction = null;
+      });
+    });
+
+    this.setupModalEventListeners();
+  }
+
+  setupModalEventListeners() {
+    const modal = document.getElementById('actionModal');
+    const modalClose = document.getElementById('modalClose');
+    const modalCancel = document.getElementById('modalCancel');
+    const modalConfirm = document.getElementById('modalConfirm');
+
+    [modalClose, modalCancel].forEach(btn => {
+      if (btn) {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          this.closeModal();
+        });
       }
+    });
 
-      showTemporaryMessage(message) {
-        const messageDiv = document.createElement('div');
-        messageDiv.style.cssText = `
-          position: fixed;
-          top: 20px;
-          right: 20px;
-          background: linear-gradient(135deg, #44A08D, #4ECDC4);
-          color: white;
-          padding: 15px 20px;
-          border-radius: 12px;
-          box-shadow: 0 8px 25px rgba(68, 160, 141, 0.3);
-          z-index: 3000;
-          font-weight: 500;
-          max-width: 300px;
-          word-wrap: break-word;
-        `;
-        messageDiv.textContent = message;
-        document.body.appendChild(messageDiv);
+    if (modalConfirm) {
+      modalConfirm.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.confirmModalAction();
+        this.closeModal();
+      });
+    }
 
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          this.closeModal();
+        }
+      });
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+        this.closeModal();
+      }
+    });
+  }
+
+  handleNavigation(element) {
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.classList.remove('active');
+    });
+    element.classList.add('active');
+
+    const section = element.getAttribute('data-section');
+    this.showTemporaryMessage(`Navigated to ${section} section`);
+  }
+
+  handleStatCardClick(navigate) {
+    this.showModal(
+      `${navigate.charAt(0).toUpperCase() + navigate.slice(1)} Details`,
+      `This would show detailed information about ${navigate}. In a full application, this would navigate to a dedicated page with comprehensive data and management tools.`,
+      'View Details'
+    );
+  }
+
+  handleQuickAction(action) {
+    const actionMessages = {
+      notes: 'This would open the session notes interface where you can add detailed notes about your client sessions.',
+      schedule: 'This would open the appointment scheduling system to book new sessions with clients.',
+      report: 'This would open the report generation tool to create client progress reports and analytics.',
+      contact: 'This would open the client communication interface with secure messaging options.',
+      emergency: 'This would activate the emergency protocol system for crisis interventions.'
+    };
+
+    const actionTitles = {
+      notes: 'Add Session Notes',
+      schedule: 'Schedule Appointment', 
+      report: 'Generate Report',
+      contact: 'Contact Client',
+      emergency: 'Emergency Protocol'
+    };
+
+    this.showModal(
+      actionTitles[action] || 'Quick Action',
+      actionMessages[action] || 'Action functionality would be implemented here.',
+      action === 'emergency' ? 'Activate Protocol' : 'Proceed'
+    );
+
+    this.currentAction = action;
+  }
+
+  handleAlertAction(clientName) {
+    this.showModal(
+      `Alert Action - ${clientName}`,
+      `This would open the detailed case management interface for ${clientName}, allowing you to review their complete history and take appropriate clinical action.`,
+      'Open Case'
+    );
+    this.currentAction = 'alert';
+  }
+
+  showModal(title, message, confirmText = 'Confirm') {
+    const modal = document.getElementById('actionModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalMessage = document.getElementById('modalMessage');
+    const modalConfirm = document.getElementById('modalConfirm');
+
+    if (modal && modalTitle && modalMessage && modalConfirm) {
+      modalTitle.textContent = title;
+      modalMessage.textContent = message;
+      modalConfirm.textContent = confirmText;
+      modal.classList.remove('hidden');
+      modalConfirm.focus();
+    }
+  }
+
+  closeModal() {
+    const modal = document.getElementById('actionModal');
+    if (modal) {
+      modal.classList.add('hidden');
+    }
+  }
+
+  confirmModalAction() {
+    if (this.currentAction) {
+      const successMessages = {
+        notes: 'Session notes interface opened successfully.',
+        schedule: 'Appointment scheduling system accessed.',
+        report: 'Report generation initiated.',
+        contact: 'Client communication interface opened.',
+        emergency: 'Emergency protocol activated.',
+        alert: 'Case management interface opened.'
+      };
+
+      if (successMessages[this.currentAction]) {
         setTimeout(() => {
-          if (messageDiv.parentNode) {
-            messageDiv.remove();
-          }
-        }, 3000);
-      }
-
-      updateLanguage() {
-        const t = translations[this.currentLanguage];
-
-        // Update page title
-        document.title = `${t.title} - TechHealth`;
-        document.getElementById('page-title').textContent = t.title;
-
-        // Update section titles
-        document.getElementById('todays-overview').textContent = t.todaysOverview;
-        document.getElementById('client-insights').textContent = t.clientInsights;
-        document.getElementById('urgent-alerts').textContent = t.urgentAlerts;
-        document.getElementById('quick-actions').textContent = t.quickActions;
-
-        // Update stat labels
-        document.getElementById('sessions-scheduled').textContent = t.sessionsScheduled;
-        document.getElementById('active-clients').textContent = t.activeClients;
-        document.getElementById('urgent-cases').textContent = t.urgentCases;
-        document.getElementById('completed-sessions').textContent = t.completedSessions;
-        document.getElementById('no-shows').textContent = t.noShows;
-
-        // Update insight titles
-        document.getElementById('client-mood-trends').textContent = t.clientMoodTrends;
-        document.getElementById('session-completion-rate').textContent = t.sessionCompletionRate;
-        document.getElementById('active-cases-status').textContent = t.activeCasesStatus;
-
-        // Update status labels
-        document.getElementById('improving').textContent = t.improving;
-        document.getElementById('stable').textContent = t.stable;
-        document.getElementById('concerning').textContent = t.concerning;
-
-        // Update action button texts
-        document.getElementById('add-session-notes').textContent = t.addSessionNotes;
-        document.getElementById('schedule-appointment').textContent = t.scheduleAppointment;
-        document.getElementById('generate-report').textContent = t.generateReport;
-        document.getElementById('contact-client').textContent = t.contactClient;
-        document.getElementById('emergency-protocol').textContent = t.emergencyProtocol;
-
-                // Update section titles
-        document.getElementById('todays-overview').textContent = t.todaysOverview;
-        document.getElementById('client-insights').textContent = t.clientInsights;
-        document.getElementById('urgent-alerts').textContent = t.urgentAlerts;
-        document.getElementById('quick-actions').textContent = t.quickActions;
-
-        // Update stat labels
-        document.getElementById('sessions-scheduled').textContent = t.sessionsScheduled;
-        document.getElementById('active-clients').textContent = t.activeClients;
-        document.getElementById('urgent-cases').textContent = t.urgentCases;
-        document.getElementById('completed-sessions').textContent = t.completedSessions;
-        document.getElementById('no-shows').textContent = t.noShows;
-
-        // Update insight titles
-        document.getElementById('client-mood-trends').textContent = t.clientMoodTrends;
-        document.getElementById('session-completion-rate').textContent = t.sessionCompletionRate;
-        document.getElementById('active-cases-status').textContent = t.activeCasesStatus;
-
-        // Update case status labels
-        document.getElementById('improving').textContent = t.improving;
-        document.getElementById('stable').textContent = t.stable;
-        document.getElementById('concerning').textContent = t.concerning;
-
-        // Update action buttons
-        document.getElementById('add-session-notes').textContent = t.addSessionNotes;
-        document.getElementById('schedule-appointment').textContent = t.scheduleAppointment;
-        document.getElementById('generate-report').textContent = t.generateReport;
-        document.getElementById('contact-client').textContent = t.contactClient;
-        document.getElementById('emergency-protocol').textContent = t.emergencyProtocol;
-
-        // Update modal buttons
-        document.getElementById('modalCancel').textContent = t.cancel;
-        document.getElementById('modalConfirm').textContent = t.confirm;
-
-
-document.getElementById('sidebarLogo').textContent   = t.sidebarLogo;
-document.getElementById('sidebarPortal').textContent = t.sidebarPortal;
-document.getElementById('navDashboard').textContent  = t.navDashboard;
-document.getElementById('navClients').textContent    = t.navClients;
-document.getElementById('navSessions').textContent   = t.navSessions;
-document.getElementById('navProgress').textContent   = t.navProgress;
-document.getElementById('navNotes').textContent      = t.navNotes;
-document.getElementById('navAlerts').textContent     = t.navAlerts;
-document.getElementById('navLogout').textContent     = t.navLogout;
-
-
+          this.showTemporaryMessage(successMessages[this.currentAction]);
+        }, 100);
       }
     }
+    this.currentAction = null;
+  }
 
-    // Initialize the dashboard
-    new CounselorDashboard();
+  showTemporaryMessage(message) {
+    const messageDiv = document.createElement('div');
+    messageDiv.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-gradient-end));
+      color: white;
+      padding: 15px 20px;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px var(--shadow-color);
+      z-index: 3000;
+      font-weight: 500;
+      max-width: 300px;
+      word-wrap: break-word;
+    `;
+    messageDiv.textContent = message;
+    document.body.appendChild(messageDiv);
 
-    // Sidebar toggle for mobile
-    function toggleSidebar() {
-      document.getElementById('sidebar').classList.toggle('mobile-open');
-    }
-
-
-        // Show language change confirmation
-        const languageNames = {
-          en: 'English',
-          hi: 'Hindi (हिंदी)',
-          ur: 'Urdu (اردو)',
-          ks: 'Kashmiri (کٲشُر)'
-        };
-        this.showTemporaryMessage(`Language changed to ${languageNames[this.currentLanguage]}`);
-      
-    
-
-    // Mobile sidebar toggle
-    function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      sidebar.classList.toggle('mobile-open');
-    }
-
-    // Initialize dashboard
-    document.addEventListener('DOMContentLoaded', () => {
-      new CounselorDashboard();
-    });
-
-    // Handle window resize
-    window.addEventListener('resize', () => {
-      const sidebar = document.getElementById('sidebar');
-      const mainContent = document.querySelector('.main-content');
-      if (window.innerWidth > 768) {
-        if (sidebar) sidebar.classList.remove('mobile-open');
+    setTimeout(() => {
+      if (messageDiv.parentNode) {
+        messageDiv.remove();
       }
-    });
-  </script>
+    }, 3000);
+  }
+
+  updateLanguage() {
+    const t = translations[this.currentLanguage];
+
+    // Update page title
+    document.title = `${t.title} - TechHealth`;
+    document.getElementById('page-title').textContent = t.title;
+
+    // Update section titles
+    document.getElementById('todays-overview').textContent = t.todaysOverview;
+    document.getElementById('client-insights').textContent = t.clientInsights;
+    document.getElementById('urgent-alerts').textContent = t.urgentAlerts;
+    document.getElementById('quick-actions').textContent = t.quickActions;
+
+    // Update stat labels
+    document.getElementById('sessions-scheduled').textContent = t.sessionsScheduled;
+    document.getElementById('active-clients').textContent = t.activeClients;
+    document.getElementById('urgent-cases').textContent = t.urgentCases;
+    document.getElementById('completed-sessions').textContent = t.completedSessions;
+    document.getElementById('no-shows').textContent = t.noShows;
+
+    // Update insight titles
+    document.getElementById('client-mood-trends').textContent = t.clientMoodTrends;
+    document.getElementById('session-completion-rate').textContent = t.sessionCompletionRate;
+    document.getElementById('active-cases-status').textContent = t.activeCasesStatus;
+
+    // Update status labels
+    document.getElementById('improving').textContent = t.improving;
+    document.getElementById('stable').textContent = t.stable;
+    document.getElementById('concerning').textContent = t.concerning;
+
+    // Update action button texts
+    document.getElementById('add-session-notes').textContent = t.addSessionNotes;
+    document.getElementById('schedule-appointment').textContent = t.scheduleAppointment;
+    document.getElementById('generate-report').textContent = t.generateReport;
+    document.getElementById('contact-client').textContent = t.contactClient;
+    document.getElementById('emergency-protocol').textContent = t.emergencyProtocol;
+
+    // Update alert content
+    document.getElementById('alert-name-1').textContent = t.alertName1;
+    document.getElementById('alert-priority-1').textContent = t.alertPriority1;
+    document.getElementById('alert-concern-1').textContent = t.alertConcern1;
+    document.getElementById('alert-time-1').textContent = t.alertTime1;
+    document.getElementById('alert-action-1').textContent = t.alertAction1;
+
+    document.getElementById('alert-name-2').textContent = t.alertName2;
+    document.getElementById('alert-priority-2').textContent = t.alertPriority2;
+    document.getElementById('alert-concern-2').textContent = t.alertConcern2;
+    document.getElementById('alert-time-2').textContent = t.alertTime2;
+    document.getElementById('alert-action-2').textContent = t.alertAction2;
+
+    // Update modal buttons
+    document.getElementById('modalCancel').textContent = t.cancel;
+
+    // Update sidebar
+    document.getElementById('sidebarLogo').textContent = t.sidebarLogo;
+    document.getElementById('sidebarPortal').textContent = t.sidebarPortal;
+    document.getElementById('navDashboard').textContent = t.navDashboard;
+    document.getElementById('navClients').textContent = t.navClients;
+    document.getElementById('navSessions').textContent = t.navSessions;
+    document.getElementById('navProgress').textContent = t.navProgress;
+    document.getElementById('navNotes').textContent = t.navNotes;
+    document.getElementById('navAlerts').textContent = t.navAlerts;
+    document.getElementById('navLogout').textContent = t.navLogout;
+
+    // Show language change confirmation
+    const languageNames = {
+      en: 'English',
+      hi: 'Hindi (हिंदी)',
+      ur: 'Urdu (اردو)',
+      ks: 'Kashmiri (کٲشُر)'
+    };
+    this.showTemporaryMessage(`Language changed to ${languageNames[this.currentLanguage]}`);
+  }
+}
+
+// Sidebar toggle for mobile
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('mobile-open');
+}
+
+// Initialize the dashboard
+document.addEventListener('DOMContentLoaded', () => {
+  const dashboard = new CounselorDashboard();
+  window.counselorDashboard = dashboard;
+  
+  const languageSelect = document.getElementById('languageSelect');
+  if (languageSelect) {
+    languageSelect.value = savedLang;
+  }
+});
+
+// Handle window resize
+window.addEventListener('resize', () => {
+  const sidebar = document.getElementById('sidebar');
+  if (window.innerWidth > 768) {
+    if (sidebar) sidebar.classList.remove('mobile-open');
+  }
+});
+</script>
+
 </body>
 </html>
