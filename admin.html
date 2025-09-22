@@ -7,30 +7,121 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
+    /* CSS Variables for Theme System */
+    :root {
+      --bg-gradient-start: #F8F9FA;
+      --bg-gradient-end: #E8F5F4;
+      --text-primary: #2C3E50;
+      --text-secondary: #5D6D7E;
+      --bg-white: white;
+      --bg-card: white;
+      --bg-card-secondary: linear-gradient(135deg, #FDFEFE, #F8F9FA);
+      --shadow-color: rgba(187, 143, 206, 0.08);
+      --shadow-hover: rgba(187, 143, 206, 0.15);
+      --border-color: rgba(187, 143, 206, 0.1);
+      --border-card: #E8F5F4;
+      --accent-gradient-start: #BB8FCE;
+      --accent-gradient-end: #D2B4DE;
+      --sidebar-gradient: linear-gradient(180deg, #BB8FCE 0%, #D2B4DE 100%);
+      --topbar-bg: rgba(255, 255, 255, 0.95);
+      --input-bg: white;
+      --chart-bg: linear-gradient(135deg, #F8F9FA, rgba(187, 143, 206, 0.05));
+      --chart-decoration: rgba(187, 143, 206, 0.1);
+      --status-available: #52C41A;
+      --status-busy: #FF7875;
+      --status-break: #FAAD14;
+      --report-bg: linear-gradient(135deg, #FDFEFE, #F8F9FA);
+    }
+
+    [data-theme="dark"] {
+      --bg-gradient-start: #0f172a;
+      --bg-gradient-end: #1e293b;
+      --text-primary: #e2e8f0;
+      --text-secondary: #94a3b8;
+      --bg-white: #1e293b;
+      --bg-card: #1e293b;
+      --bg-card-secondary: linear-gradient(135deg, #1e293b, #334155);
+      --shadow-color: rgba(0, 0, 0, 0.3);
+      --shadow-hover: rgba(0, 0, 0, 0.4);
+      --border-color: rgba(168, 85, 247, 0.2);
+      --border-card: #334155;
+      --accent-gradient-start: #a855f7;
+      --accent-gradient-end: #8b5cf6;
+      --sidebar-gradient: linear-gradient(180deg, #7c3aed 0%, #8b5cf6 100%);
+      --topbar-bg: rgba(30, 41, 59, 0.95);
+      --input-bg: #334155;
+      --chart-bg: linear-gradient(135deg, #1e293b, rgba(168, 85, 247, 0.05));
+      --chart-decoration: rgba(168, 85, 247, 0.1);
+      --status-available: #10b981;
+      --status-busy: #ef4444;
+      --status-break: #f59e0b;
+      --report-bg: linear-gradient(135deg, #1e293b, #334155);
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                  background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                  border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                  box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #F8F9FA 0%, #E8F5F4 100%);
-      color: #2C3E50;
+      background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+      color: var(--text-primary);
       display: flex;
       min-height: 100vh;
+    }
+
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--accent-gradient-start);
+      border: 2px solid var(--accent-gradient-end);
+      border-radius: 50%;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 8px var(--shadow-color);
+      z-index: 1001;
+      backdrop-filter: blur(10px);
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.15) rotate(10deg);
+      box-shadow: 0 8px 20px var(--shadow-hover);
+    }
+
+    .theme-toggle svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      color: white;
+    }
+
+    .theme-toggle:active {
+      transform: scale(0.95);
     }
 
     /* Sidebar */
     .sidebar {
       width: 280px;
       height: 100vh;
-      background: linear-gradient(180deg, #BB8FCE 0%, #D2B4DE 100%);
+      background: var(--sidebar-gradient);
       color: white;
       padding: 0;
       display: flex;
       flex-direction: column;
-      box-shadow: 4px 0 20px rgba(187, 143, 206, 0.2);
+      box-shadow: 4px 0 20px var(--shadow-color);
       position: fixed;
       left: 0;
       top: 0;
@@ -99,13 +190,13 @@
 
     /* Topbar */
     .topbar {
-      background: rgba(255, 255, 255, 0.95);
+      background: var(--topbar-bg);
       backdrop-filter: blur(10px);
       padding: 20px 30px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 20px rgba(187, 143, 206, 0.1);
+      box-shadow: 0 2px 20px var(--shadow-color);
       position: sticky;
       top: 0;
       z-index: 100;
@@ -114,7 +205,7 @@
     .topbar h1 {
       font-size: 1.8rem;
       font-weight: 600;
-      color: #2C3E50;
+      color: var(--text-primary);
     }
 
     .topbar .profile {
@@ -126,26 +217,30 @@
     .topbar input {
       width: 280px;
       padding: 10px 16px;
-      border: 2px solid #E8F5F4;
+      border: 2px solid var(--border-card);
       border-radius: 10px;
       font-size: 0.9rem;
-      background: white;
-      color: #2C3E50;
+      background: var(--input-bg);
+      color: var(--text-primary);
       transition: all 0.3s ease;
     }
 
     .topbar input:focus {
       outline: none;
-      border-color: #BB8FCE;
-      box-shadow: 0 0 15px rgba(187, 143, 206, 0.2);
+      border-color: var(--accent-gradient-start);
+      box-shadow: 0 0 15px var(--shadow-color);
+    }
+
+    .topbar input::placeholder {
+      color: var(--text-secondary);
     }
 
     .language-selector select {
       padding: 8px 15px;
-      border: 2px solid #E8F5F4;
+      border: 2px solid var(--border-card);
       border-radius: 8px;
-      background: white;
-      color: #2C3E50;
+      background: var(--input-bg);
+      color: var(--text-primary);
       font-size: 0.9rem;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -153,15 +248,15 @@
 
     .language-selector select:focus {
       outline: none;
-      border-color: #BB8FCE;
-      box-shadow: 0 0 10px rgba(187, 143, 206, 0.2);
+      border-color: var(--accent-gradient-start);
+      box-shadow: 0 0 10px var(--shadow-color);
     }
 
     .topbar .profile img {
       border-radius: 50%;
       width: 40px;
       height: 40px;
-      border: 2px solid #BB8FCE;
+      border: 2px solid var(--accent-gradient-start);
     }
 
     /* Dashboard Content */
@@ -178,11 +273,11 @@
     }
 
     .card {
-      background: white;
+      background: var(--bg-card);
       padding: 30px;
       border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(187, 143, 206, 0.08);
-      border: 1px solid rgba(187, 143, 206, 0.1);
+      box-shadow: 0 10px 30px var(--shadow-color);
+      border: 1px solid var(--border-color);
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
@@ -195,26 +290,26 @@
       left: 0;
       width: 100%;
       height: 4px;
-      background: linear-gradient(90deg, #BB8FCE, #D2B4DE, #F1C2E8);
+      background: linear-gradient(90deg, var(--accent-gradient-start), var(--accent-gradient-end), #F1C2E8);
     }
 
     .card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 15px 40px rgba(187, 143, 206, 0.15);
+      box-shadow: 0 15px 40px var(--shadow-hover);
     }
 
     .card h3 {
       margin-bottom: 20px;
       font-size: 1.4rem;
       font-weight: 600;
-      color: #2C3E50;
+      color: var(--text-primary);
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
     .card h3 i {
-      color: #BB8FCE;
+      color: var(--accent-gradient-start);
     }
 
     .card ul {
@@ -224,12 +319,12 @@
 
     .card ul li {
       margin-bottom: 12px;
-      color: #5D6D7E;
+      color: var(--text-secondary);
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 8px 0;
-      border-bottom: 1px solid rgba(187, 143, 206, 0.1);
+      border-bottom: 1px solid var(--border-color);
     }
 
     .card ul li:last-child {
@@ -237,7 +332,7 @@
     }
 
     .card ul li strong {
-      color: #2C3E50;
+      color: var(--text-primary);
       font-weight: 600;
     }
 
@@ -254,20 +349,20 @@
       margin-right: 8px;
     }
 
-    .status-available { background: #52C41A; }
-    .status-busy { background: #FF7875; }
-    .status-break { background: #FAAD14; }
+    .status-available { background: var(--status-available); }
+    .status-busy { background: var(--status-busy); }
+    .status-break { background: var(--status-break); }
 
     /* Chart Placeholder */
     .chart {
       height: 200px;
-      background: linear-gradient(135deg, #F8F9FA, rgba(187, 143, 206, 0.05));
-      border: 2px solid rgba(187, 143, 206, 0.1);
+      background: var(--chart-bg);
+      border: 2px solid var(--border-color);
       border-radius: 15px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #5D6D7E;
+      color: var(--text-secondary);
       font-size: 1rem;
       font-weight: 500;
       position: relative;
@@ -281,7 +376,7 @@
       right: -20%;
       width: 200px;
       height: 200px;
-      background: radial-gradient(circle, rgba(187, 143, 206, 0.1), transparent);
+      background: radial-gradient(circle, var(--chart-decoration), transparent);
       border-radius: 50%;
     }
 
@@ -303,12 +398,12 @@
     }
 
     .metric-card {
-      background: white;
+      background: var(--bg-card);
       padding: 25px;
       border-radius: 16px;
       text-align: center;
-      box-shadow: 0 8px 25px rgba(187, 143, 206, 0.08);
-      border: 2px solid rgba(187, 143, 206, 0.1);
+      box-shadow: 0 8px 25px var(--shadow-color);
+      border: 2px solid var(--border-color);
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
@@ -321,25 +416,26 @@
       left: 0;
       width: 100%;
       height: 4px;
-      background: linear-gradient(90deg, #BB8FCE, #F1C2E8);
+      background: linear-gradient(90deg, var(--accent-gradient-start), #F1C2E8);
     }
 
     .metric-card:hover {
       transform: translateY(-3px);
-      box-shadow: 0 12px 35px rgba(187, 143, 206, 0.15);
+      box-shadow: 0 12px 35px var(--shadow-hover);
     }
 
     .metric-value {
       font-size: 2.5rem;
       font-weight: 700;
       margin-bottom: 8px;
-      background: linear-gradient(135deg, #BB8FCE, #D2B4DE);
+      background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-gradient-end));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .metric-label {
-      color: #5D6D7E;
+      color: var(--text-secondary);
       font-weight: 500;
       font-size: 1rem;
     }
@@ -362,40 +458,40 @@
     }
 
     .btn.primary {
-      background: linear-gradient(135deg, #BB8FCE, #D2B4DE);
+      background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-gradient-end));
       color: white;
     }
 
     .btn.primary:hover {
-      background: linear-gradient(135deg, #D2B4DE, #BB8FCE);
+      background: linear-gradient(135deg, var(--accent-gradient-end), var(--accent-gradient-start));
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(187, 143, 206, 0.3);
+      box-shadow: 0 8px 25px var(--shadow-color);
     }
 
     .btn.secondary {
-      background: #F8F9FA;
-      color: #2C3E50;
-      border: 2px solid #E8F5F4;
+      background: var(--bg-card-secondary);
+      color: var(--text-primary);
+      border: 2px solid var(--border-card);
     }
 
     .btn.secondary:hover {
-      background: #E8F5F4;
-      border-color: #BB8FCE;
+      background: var(--chart-bg);
+      border-color: var(--accent-gradient-start);
     }
 
     /* Reports Section */
     .reports-section {
-      background: white;
+      background: var(--bg-card);
       border-radius: 20px;
       padding: 30px;
       margin: 25px 0;
-      box-shadow: 0 10px 30px rgba(187, 143, 206, 0.08);
-      border: 1px solid rgba(187, 143, 206, 0.1);
+      box-shadow: 0 10px 30px var(--shadow-color);
+      border: 1px solid var(--border-color);
     }
 
     .reports-section h3 {
       margin-bottom: 20px;
-      color: #2C3E50;
+      color: var(--text-primary);
       font-size: 1.4rem;
       display: flex;
       align-items: center;
@@ -403,7 +499,7 @@
     }
 
     .reports-section h3 i {
-      color: #BB8FCE;
+      color: var(--accent-gradient-start);
     }
 
     .reports-grid {
@@ -414,26 +510,26 @@
 
     .report-item {
       padding: 20px;
-      border: 2px solid #E8F5F4;
+      border: 2px solid var(--border-card);
       border-radius: 12px;
       transition: all 0.3s ease;
-      background: linear-gradient(135deg, #FDFEFE, #F8F9FA);
+      background: var(--report-bg);
     }
 
     .report-item:hover {
-      border-color: #BB8FCE;
+      border-color: var(--accent-gradient-start);
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(187, 143, 206, 0.1);
+      box-shadow: 0 8px 25px var(--shadow-color);
     }
 
     .report-item h4 {
-      color: #2C3E50;
+      color: var(--text-primary);
       margin-bottom: 10px;
       font-size: 1.1rem;
     }
 
     .report-item p {
-      color: #5D6D7E;
+      color: var(--text-secondary);
       font-size: 0.9rem;
       margin-bottom: 15px;
     }
@@ -475,7 +571,7 @@
       background: none;
       border: none;
       font-size: 1.5rem;
-      color: #2C3E50;
+      color: var(--text-primary);
       cursor: pointer;
       margin-right: 15px;
     }
@@ -488,6 +584,18 @@
   </style>
 </head>
 <body>
+
+<!-- Theme Toggle Button -->
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+  <!-- Sun Icon (Light Mode) -->
+  <svg class="sun-icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+  </svg>
+  <!-- Moon Icon (Dark Mode) -->
+  <svg class="moon-icon" style="display: none;" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+  </svg>
+</button>
 
   <div class="sidebar" id="sidebar">
     <div class="sidebar-header">
@@ -556,10 +664,6 @@
             <option value="ks">کٲشُر (Kashmiri)</option>
           </select>
         </div>
-        <!-- <div style="margin-left: 15px;">
-          <a href="student.html" style="margin-right: 10px; color: #BB8FCE; text-decoration: none;">Student</a>
-          <a href="counselor.html" style="color: #BB8FCE; text-decoration: none;">Counselor</a>
-        </div> -->
         <img src="https://via.placeholder.com/40x40/BB8FCE/FFFFFF?text=A" alt="Admin">
       </div>
     </div>
@@ -753,7 +857,74 @@
   </button>
 </div>
 
+</div>
+
+    </div>
+  </div>
+
 <script>
+// Theme toggle functionality
+const themeToggle = document.getElementById('themeToggle');
+const sunIcon = document.querySelector('.sun-icon');
+const moonIcon = document.querySelector('.moon-icon');
+const html = document.documentElement;
+
+// Check for saved theme preference or default to light mode
+const currentTheme = localStorage.getItem('theme') || 'light';
+html.setAttribute('data-theme', currentTheme);
+
+// Update icon visibility based on current theme
+function updateIcon() {
+  const theme = html.getAttribute('data-theme');
+  if (theme === 'dark') {
+    sunIcon.style.display = 'none';
+    moonIcon.style.display = 'block';
+  } else {
+    sunIcon.style.display = 'block';
+    moonIcon.style.display = 'none';
+  }
+}
+
+// Initialize icon state
+updateIcon();
+
+// Toggle theme function with smooth transition
+function toggleTheme() {
+  const currentTheme = html.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  
+  // Add a subtle scale effect during transition
+  themeToggle.style.transform = 'scale(0.9) rotate(180deg)';
+  
+  setTimeout(() => {
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateIcon();
+    
+    // Update charts with new theme colors
+    initializeCharts();
+    
+    // Reset the transform
+    setTimeout(() => {
+      themeToggle.style.transform = '';
+    }, 200);
+  }, 100);
+}
+
+// Add click event listener to toggle button
+themeToggle.addEventListener('click', toggleTheme);
+
+// Optional: Add keyboard support
+themeToggle.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    toggleTheme();
+  }
+});
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('mobile-open');
+}
 
 const translations = {
   en: {
@@ -972,18 +1143,24 @@ const translations = {
     }
 };
 
-
-const translate = {
-  en: { login: "Welcome Back", username: "Username", password: "Password", loginBtn: "Login" },
-  hi: { login: "वापसी पर स्वागत है", username: "उपयोगकर्ता नाम", password: "पासवर्ड", loginBtn: "लॉगिन" },
-  ur: { login: "واپسی پر خوش آمدید", username: "صارف کا نام", password: "پاس ورڈ", loginBtn: "لاگ ان" },
-  ks: { login: "واپسی پر خوش آمدید", username: "ناو", password: "پاسورڈ", loginBtn: "لاگ ان" }
-};
-
+function getThemeColors() {
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  return {
+    primary: isDark ? '#a855f7' : '#BB8FCE',
+    secondary: isDark ? '#8b5cf6' : '#D2B4DE',
+    background: isDark ? '#1e293b' : '#F8F9FA',
+    text: isDark ? '#e2e8f0' : '#2C3E50'
+  };
+}
 
 function initializeCharts() {
+  const colors = getThemeColors();
+  
   const screeningCtx = document.getElementById('screeningChart');
   if (screeningCtx) {
+    const existingChart = Chart.getChart(screeningCtx);
+    if (existingChart) existingChart.destroy();
+    
     new Chart(screeningCtx, {
       type: 'line',
       data: {
@@ -991,27 +1168,62 @@ function initializeCharts() {
         datasets: [{
           label: 'Screenings',
           data: [65, 78, 90, 81, 96, 105],
-          borderColor: '#BB8FCE',
-          backgroundColor: 'rgba(187, 143, 206, 0.1)',
+          borderColor: colors.primary,
+          backgroundColor: colors.primary + '20',
           borderWidth: 3,
           fill: true,
           tension: 0.4
         }]
       },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.1)' } }, x: { grid: { display: false } } } }
+      options: { 
+        responsive: true, 
+        maintainAspectRatio: false, 
+        plugins: { 
+          legend: { display: false } 
+        }, 
+        scales: { 
+          y: { 
+            beginAtZero: true, 
+            grid: { color: colors.text + '20' },
+            ticks: { color: colors.text }
+          }, 
+          x: { 
+            grid: { display: false },
+            ticks: { color: colors.text }
+          } 
+        } 
+      }
     });
   }
 
   const resourceCtx = document.getElementById('resourceChart');
   if (resourceCtx) {
+    const existingChart = Chart.getChart(resourceCtx);
+    if (existingChart) existingChart.destroy();
+    
     new Chart(resourceCtx, {
       type: 'doughnut',
-      data: { labels: ['Active Users', 'Idle', 'Maintenance'], datasets: [{ data: [65,25,10], backgroundColor: ['#BB8FCE','#D2B4DE','#F1C2E8'], borderWidth: 0 }] },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+      data: { 
+        labels: ['Active Users', 'Idle', 'Maintenance'], 
+        datasets: [{ 
+          data: [65,25,10], 
+          backgroundColor: [colors.primary, colors.secondary, '#F1C2E8'], 
+          borderWidth: 0 
+        }] 
+      },
+      options: { 
+        responsive: true, 
+        maintainAspectRatio: false, 
+        plugins: { 
+          legend: { 
+            position: 'bottom',
+            labels: { color: colors.text }
+          } 
+        } 
+      }
     });
   }
 }
-
 
 function updateLanguage(lang) {
   const t = translations[lang];
@@ -1028,26 +1240,7 @@ function updateLanguage(lang) {
     const keys = ['dashboard','userManagement','counselors','students','analytics','forumManagement','resources','settings','logout'];
     sidebarLinks.forEach((el,i) => { if(s[keys[i]]) el.textContent = s[keys[i]]; });
   }
-
-  initializeCharts();
 }
-
-
-function applyLoginTranslations(lang){
-  const t = translate[lang];
-  if(!t) return;
-
-  const loginTitle = document.getElementById("login-title");
-  const usernameInput = document.getElementById("username");
-  const passwordInput = document.getElementById("password");
-  const loginBtn = document.getElementById("login-btn");
-
-  if (loginTitle) loginTitle.innerText = t.login;
-  if (usernameInput) usernameInput.placeholder = t.username;
-  if (passwordInput) passwordInput.placeholder = t.password;
-  if (loginBtn) loginBtn.innerText = t.loginBtn || "Login";
-}
-
 
 document.addEventListener("DOMContentLoaded", () => {
   const savedLang = localStorage.getItem("selectedLanguage") || "en";
@@ -1056,19 +1249,17 @@ document.addEventListener("DOMContentLoaded", () => {
   if(languageSelect) languageSelect.value = savedLang;
 
   updateLanguage(savedLang);
-  applyLoginTranslations(savedLang);
+  initializeCharts();
 
   if(languageSelect){
     languageSelect.addEventListener('change', e => {
       const lang = e.target.value;
       localStorage.setItem('selectedLanguage', lang);
       updateLanguage(lang);
-      applyLoginTranslations(lang);
     });
   }
 });
 </script>
-
 
 </body>
 </html>
