@@ -5,30 +5,105 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TechHealth Login - Bright Mental Wellness</title>
   <style>
+    /* CSS Variables for Theme System */
+    :root {
+      --bg-gradient-start: #F8F9FA;
+      --bg-gradient-end: #FDFEFE;
+      --text-primary: #2C3E50;
+      --text-secondary: #5D6D7E;
+      --bg-white: #FDFEFE;
+      --bg-white-secondary: rgba(253, 254, 254, 0.9);
+      --border-color: #E8F5F4;
+      --shadow-color: rgba(78, 205, 196, 0.1);
+      --accent-gradient-start: #4ECDC4;
+      --accent-gradient-end: #44A08D;
+      --left-panel-gradient: linear-gradient(135deg, #4ECDC4, #A2EBB3, #F7DC6F);
+      --right-panel-gradient: linear-gradient(145deg, #FDFEFE, #F8F9FA);
+      --input-bg: #FDFEFE;
+      --link-color: #BB8FCE;
+    }
+
+    [data-theme="dark"] {
+      --bg-gradient-start: #0f172a;
+      --bg-gradient-end: #1e293b;
+      --text-primary: #e2e8f0;
+      --text-secondary: #94a3b8;
+      --bg-white: #1e293b;
+      --bg-white-secondary: rgba(30, 41, 59, 0.9);
+      --border-color: #334155;
+      --shadow-color: rgba(0, 0, 0, 0.3);
+      --accent-gradient-start: #38bdf8;
+      --accent-gradient-end: #0891b2;
+      --left-panel-gradient: linear-gradient(135deg, #0891b2, #22d3ee, #fbbf24);
+      --right-panel-gradient: linear-gradient(145deg, #1e293b, #0f172a);
+      --input-bg: #334155;
+      --link-color: #c084fc;
+    }
+
     * {
       margin: 0; 
       padding: 0; 
       box-sizing: border-box;
       font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                  background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                  border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                  box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     body {
       height: 100vh;
       display: flex;
-      background: linear-gradient(135deg, #F8F9FA, #FDFEFE);
+      background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+    }
+
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--accent-gradient-start);
+      border: 2px solid var(--accent-gradient-end);
+      border-radius: 50%;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 8px var(--shadow-color);
+      z-index: 50;
+      backdrop-filter: blur(10px);
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.15) rotate(10deg);
+      box-shadow: 0 8px 20px var(--shadow-color);
+    }
+
+    .theme-toggle svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      color: white;
+    }
+
+    .theme-toggle:active {
+      transform: scale(0.95);
     }
 
     /* Left Info Panel */
     .info-left {
       width: 50%;
-      background: linear-gradient(135deg, #4ECDC4, #A2EBB3, #F7DC6F);
+      background: var(--left-panel-gradient);
       background-size: 400% 400%;
       animation: gradientShift 20s ease infinite;
       display: flex;
       justify-content: center;
       align-items: center;
       padding: 60px;
-      color: #2C3E50;
+      color: var(--text-primary);
       position: relative;
       overflow: hidden;
     }
@@ -85,7 +160,7 @@
     .info-left h1 {
       font-size: 2.8em;
       margin-bottom: 24px;
-      color: #2C3E50;
+      color: var(--text-primary);
       font-weight: 700;
       text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
     }
@@ -93,7 +168,7 @@
     .info-left p {
       font-size: 1.25em;
       line-height: 1.7;
-      color: #2C3E50;
+      color: var(--text-primary);
       font-weight: 400;
     }
 
@@ -105,12 +180,12 @@
     /* Right Login Panel */
     .login-right {
       width: 50%;
-      background: linear-gradient(145deg, #FDFEFE, #F8F9FA);
+      background: var(--right-panel-gradient);
       display: flex;
       justify-content: center;
       align-items: center;
       padding: 50px;
-      box-shadow: -10px 0 30px rgba(78, 205, 196, 0.1);
+      box-shadow: -10px 0 30px var(--shadow-color);
       position: relative;
     }
 
@@ -130,10 +205,10 @@
       max-width: 380px;
       text-align: center;
       animation: fadeIn 1.8s ease;
-      background: rgba(253, 254, 254, 0.9);
+      background: var(--bg-white-secondary);
       padding: 40px;
       border-radius: 20px;
-      box-shadow: 0 20px 40px rgba(78, 205, 196, 0.1);
+      box-shadow: 0 20px 40px var(--shadow-color);
       position: relative;
       z-index: 2;
     }
@@ -141,9 +216,10 @@
     .login-box h2 {
       margin-bottom: 30px;
       font-size: 2.2em;
-      background: linear-gradient(135deg, #4ECDC4, #44A08D);
+      background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-gradient-end));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
       font-weight: 700;
     }
 
@@ -152,18 +228,18 @@
       width: 100%;
       padding: 16px 20px;
       margin: 12px 0;
-      border: 2px solid #E8F5F4;
+      border: 2px solid var(--border-color);
       border-radius: 12px;
       font-size: 1.05em;
       outline: none;
       transition: all 0.3s ease;
-      background: #FDFEFE;
-      color: #2C3E50;
+      background: var(--input-bg);
+      color: var(--text-primary);
     }
 
     .login-box input:focus, 
     .login-box select:focus {
-      border-color: #4ECDC4;
+      border-color: var(--accent-gradient-start);
       box-shadow: 0 0 20px rgba(78, 205, 196, 0.2);
       transform: translateY(-2px);
     }
@@ -174,7 +250,7 @@
       margin-top: 20px;
       border: none;
       border-radius: 12px;
-      background: linear-gradient(135deg, #4ECDC4, #44A08D);
+      background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-gradient-end));
       color: white;
       font-weight: 600;
       font-size: 1.15em;
@@ -184,7 +260,7 @@
     }
 
     .login-box button:hover {
-      background: linear-gradient(135deg, #44A08D, #4ECDC4);
+      background: linear-gradient(135deg, var(--accent-gradient-end), var(--accent-gradient-start));
       box-shadow: 0 12px 35px rgba(78, 205, 196, 0.4);
       transform: translateY(-3px);
     }
@@ -192,18 +268,18 @@
     .login-box p {
       margin-top: 20px;
       font-size: 0.95em;
-      color: #5D6D7E;
+      color: var(--text-secondary);
     }
 
     .login-box a {
-      color: #BB8FCE;
+      color: var(--link-color);
       text-decoration: none;
       font-weight: 600;
       transition: all 0.3s ease;
     }
 
     .login-box a:hover {
-      color: #4ECDC4;
+      color: var(--accent-gradient-start);
       text-decoration: underline;
     }
 
@@ -224,7 +300,6 @@
   .login-box { max-width: 380px; }
 }
 
-
 @media screen and (max-width: 991px) and (min-width: 768px) {
   body { flex-direction: column; }
   .info-left, .login-right { width: 100%; min-height: auto; padding: 40px; }
@@ -234,7 +309,6 @@
   .float1, .float2, .float3 { display: none; }
 }
 
-
 @media screen and (max-width: 767px) and (min-width: 481px) {
   body { flex-direction: column; }
   .info-left, .login-right { width: 100%; padding: 30px; }
@@ -243,7 +317,6 @@
   .login-box { width: 90%; padding: 25px; margin: auto; }
   .float1, .float2, .float3 { display: none; }
 }
-
 
 @media screen and (max-width: 480px) {
   body { flex-direction: column; }
@@ -259,6 +332,18 @@
   </style>
 </head>
 <body>
+
+  <!-- Theme Toggle Button -->
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+    <!-- Sun Icon (Light Mode) -->
+    <svg class="sun-icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+    </svg>
+    <!-- Moon Icon (Dark Mode) -->
+    <svg class="moon-icon" style="display: none;" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+    </svg>
+  </button>
 
   <div class="info-left">
     <div class="wellness-float float1"></div>
@@ -302,6 +387,63 @@
   </div>
 
 <script>
+  // Theme toggle functionality
+  const themeToggle = document.getElementById('themeToggle');
+  const sunIcon = document.querySelector('.sun-icon');
+  const moonIcon = document.querySelector('.moon-icon');
+  const html = document.documentElement;
+
+  // Check for saved theme preference or default to light mode
+  const currentTheme = localStorage.getItem('theme') || 'light';
+  html.setAttribute('data-theme', currentTheme);
+
+  // Update icon visibility based on current theme
+  function updateIcon() {
+    const theme = html.getAttribute('data-theme');
+    if (theme === 'dark') {
+      sunIcon.style.display = 'none';
+      moonIcon.style.display = 'block';
+    } else {
+      sunIcon.style.display = 'block';
+      moonIcon.style.display = 'none';
+    }
+  }
+
+  // Initialize icon state
+  updateIcon();
+
+  // Toggle theme function with smooth transition
+  function toggleTheme() {
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    // Add a subtle scale effect during transition
+    themeToggle.style.transform = 'scale(0.9) rotate(180deg)';
+    
+    setTimeout(() => {
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateIcon();
+      
+      // Reset the transform
+      setTimeout(() => {
+        themeToggle.style.transform = '';
+      }, 200);
+    }, 100);
+  }
+
+  // Add click event listener to toggle button
+  themeToggle.addEventListener('click', toggleTheme);
+
+  // Optional: Add keyboard support
+  themeToggle.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toggleTheme();
+    }
+  });
+
+  // Existing translations functionality
   const translations = {
     en: {
       welcome: "🌟 Your Wellness Journey",
