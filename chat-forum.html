@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support Chat Forum - TechHealth</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    /* CSS Variables for Theme System */
+    :root {
+      --bg-gradient-start: #F8F9FA;
+      --bg-gradient-end: #E8F5F4;
+      --text-primary: #2C3E50;
+      --text-secondary: #5D6D7E;
+      --bg-white: white;
+      --bg-card: white;
+      --bg-card-secondary: linear-gradient(135deg, white, #F8F9FA);
+      --shadow-color: rgba(78, 205, 196, 0.08);
+      --shadow-hover: rgba(78, 205, 196, 0.15);
+      --border-color: rgba(78, 205, 196, 0.1);
+      --border-card: #E8F5F4;
+      --accent-gradient-start: #4ECDC4;
+      --accent-gradient-end: #44A08D;
+      --sidebar-gradient: linear-gradient(180deg, #4ECDC4 0%, #44A08D 100%);
+      --topbar-bg: rgba(255,255,255,0.95);
+      --welcome-bg: linear-gradient(135deg, #FDFEFE, rgba(78,205,196,0.05));
+      --welcome-decoration: rgba(162,235,179,0.2);
+      --chat-bg: #F8F9FA;
+      --message-user: linear-gradient(135deg, #4ECDC4, #44A08D);
+      --message-volunteer: linear-gradient(135deg, #A2EBB3, #82E0AA);
+      --message-system: linear-gradient(135deg, #F7DC6F, #F8C471);
+      --online-status: #52C41A;
+      --away-status: #FAAD14;
+      --offline-status: #95A5A6;
+    }
+
+    [data-theme="dark"] {
+      --bg-gradient-start: #0f172a;
+      --bg-gradient-end: #1e293b;
+      --text-primary: #e2e8f0;
+      --text-secondary: #94a3b8;
+      --bg-white: #1e293b;
+      --bg-card: #1e293b;
+      --bg-card-secondary: linear-gradient(135deg, #1e293b, #334155);
+      --shadow-color: rgba(0, 0, 0, 0.3);
+      --shadow-hover: rgba(0, 0, 0, 0.4);
+      --border-color: rgba(56, 189, 248, 0.2);
+      --border-card: #334155;
+      --accent-gradient-start: #38bdf8;
+      --accent-gradient-end: #0891b2;
+      --sidebar-gradient: linear-gradient(180deg, #0891b2 0%, #0e7490 100%);
+      --topbar-bg: rgba(30, 41, 59, 0.95);
+      --welcome-bg: linear-gradient(135deg, #1e293b, rgba(56, 189, 248, 0.05));
+      --welcome-decoration: rgba(56, 189, 248, 0.2);
+      --chat-bg: #334155;
+      --message-user: linear-gradient(135deg, #38bdf8, #0891b2);
+      --message-volunteer: linear-gradient(135deg, #22c55e, #16a34a);
+      --message-system: linear-gradient(135deg, #eab308, #f59e0b);
+      --online-status: #10b981;
+      --away-status: #f59e0b;
+      --offline-status: #6b7280;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                  background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                  border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                  box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--accent-gradient-start);
+      border: 2px solid var(--accent-gradient-end);
+      border-radius: 50%;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 8px var(--shadow-color);
+      z-index: 1001;
+      backdrop-filter: blur(10px);
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.15) rotate(10deg);
+      box-shadow: 0 8px 20px var(--shadow-hover);
+    }
+
+    .theme-toggle svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      color: white;
+    }
+
+    .theme-toggle:active {
+      transform: scale(0.95);
+    }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 280px;
+      height: 100vh;
+      background: var(--sidebar-gradient);
+      color: white;
+      padding: 0;
+      z-index: 1000;
+      box-shadow: 4px 0 20px var(--shadow-color);
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar-header {
+      padding: 30px 25px;
+      background: rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: white;
+    }
+
+    .user-info {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sidebar-nav {
+      padding: 20px 0;
+    }
+
+    .nav-item {
+      margin: 5px 0;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      padding: 15px 25px;
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-left: 4px solid transparent;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      border-left-color: #F7DC6F;
+      transform: translateX(5px);
+    }
+
+    .nav-link i {
+      width: 20px;
+      margin-right: 15px;
+      font-size: 1.1rem;
+    }
+
+    .main-content {
+      margin-left: 280px;
+      min-height: 100vh;
+      transition: margin-left 0.3s ease;
+    }
+
+    .topbar {
+      background: var(--topbar-bg);
+      backdrop-filter: blur(10px);
+      padding: 20px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 20px var(--shadow-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .topbar h1 {
+      color: var(--text-primary);
+      font-size: 1.8rem;
+      font-weight: 600;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .language-selector select {
+      padding: 8px 15px;
+      border: 2px solid var(--border-card);
+      border-radius: 8px;
+      background: var(--bg-card);
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .language-selector select:focus {
+      outline: none;
+      border-color: var(--accent-gradient-start);
+      box-shadow: 0 0 10px var(--shadow-color);
+    }
+
+    /* Chat Layout */
+    .chat-container {
+      display: grid;
+      grid-template-columns: 350px 1fr;
+      height: calc(100vh - 80px);
+    }
+
+    /* Chat Sidebar */
+    .chat-sidebar {
+      background: var(--bg-card);
+      border-right: 1px solid var(--border-card);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border-card);
+      background: var(--welcome-bg);
+    }
+
+    .chat-search {
+      position: relative;
+    }
+
+    .chat-search input {
+      width: 100%;
+      padding: 12px 15px 12px 45px;
+      border: 2px solid var(--border-card);
+      border-radius: 25px;
+      background: var(--bg-card);
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .chat-search input:focus {
+      outline: none;
+      border-color: var(--accent-gradient-start);
+      box-shadow: 0 0 15px var(--shadow-color);
+    }
+
+    .chat-search input::placeholder {
+      color: var(--text-secondary);
+    }
+
+    .chat-search i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+    }
+
+    /* Chat Tabs */
+    .chat-tabs {
+      display: flex;
+      padding: 15px 20px;
+      gap: 10px;
+      border-bottom: 1px solid var(--border-card);
+    }
+
+    .chat-tab {
+      padding: 8px 16px;
+      border-radius: 20px;
+      background: transparent;
+      border: 2px solid var(--border-card);
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .chat-tab.active {
+      background: var(--accent-gradient-start);
+      border-color: var(--accent-gradient-start);
+      color: white;
+    }
+
+    /* Chat List */
+    .chat-list {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .chat-item {
+      padding: 15px 20px;
+      border-bottom: 1px solid var(--border-card);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .chat-item:hover {
+      background: var(--chat-bg);
+    }
+
+    .chat-item.active {
+      background: var(--welcome-bg);
+      border-right: 4px solid var(--accent-gradient-start);
+    }
+
+    .chat-avatar {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: var(--accent-gradient-start);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      position: relative;
+    }
+
+    .status-indicator {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 2px solid var(--bg-card);
+    }
+
+    .status-online { background: var(--online-status); }
+    .status-away { background: var(--away-status); }
+    .status-offline { background: var(--offline-status); }
+
+    .chat-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .chat-name {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .volunteer-badge {
+      background: var(--accent-gradient-start);
+      color: white;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-weight: 500;
+    }
+
+    .chat-preview {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .chat-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+    }
+
+    .chat-time {
+      color: var(--text-secondary);
+      font-size: 0.75rem;
+    }
+
+    .unread-badge {
+      background: var(--accent-gradient-start);
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+
+    /* Chat Main Area */
+    .chat-main {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-main-header {
+      padding: 20px 30px;
+      border-bottom: 1px solid var(--border-card);
+      background: var(--bg-card);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .chat-title-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .chat-title-info .chat-avatar {
+      width: 50px;
+      height: 50px;
+    }
+
+    .chat-title-details h3 {
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .chat-status {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .chat-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .chat-action-btn {
+      padding: 8px 12px;
+      border: 2px solid var(--border-card);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .chat-action-btn:hover {
+      border-color: var(--accent-gradient-start);
+      color: var(--accent-gradient-start);
+    }
+
+    /* Messages Area */
+    .messages-area {
+      flex: 1;
+      background: var(--chat-bg);
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .message {
+      display: flex;
+      max-width: 70%;
+      animation: messageSlideIn 0.3s ease-out;
+    }
+
+    @keyframes messageSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .message.user {
+      align-self: flex-end;
+      flex-direction: row-reverse;
+    }
+
+    .message-avatar {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      background: var(--accent-gradient-start);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 0.8rem;
+      margin: 0 10px;
+    }
+
+    .message-content {
+      background: var(--bg-card);
+      padding: 12px 16px;
+      border-radius: 18px;
+      box-shadow: 0 2px 8px var(--shadow-color);
+      position: relative;
+    }
+
+    .message.user .message-content {
+      background: var(--message-user);
+      color: white;
+    }
+
+    .message.volunteer .message-content {
+      background: var(--message-volunteer);
+      color: white;
+    }
+
+    .message.system .message-content {
+      background: var(--message-system);
+      color: white;
+      text-align: center;
+      font-size: 0.85rem;
+      align-self: center;
+      max-width: none;
+    }
+
+    .message-text {
+      margin-bottom: 4px;
+    }
+
+    .message-time {
+      font-size: 0.7rem;
+      opacity: 0.8;
+    }
+
+    .message.user .message-time {
+      text-align: right;
+    }
+
+    /* Message Input */
+    .message-input-area {
+      padding: 20px;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-card);
+    }
+
+    .input-container {
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+    }
+
+    .message-input {
+      flex: 1;
+      background: var(--chat-bg);
+      border: 2px solid var(--border-card);
+      border-radius: 25px;
+      padding: 12px 20px;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      resize: none;
+      max-height: 100px;
+      transition: all 0.3s ease;
+    }
+
+    .message-input:focus {
+      outline: none;
+      border-color: var(--accent-gradient-start);
+      box-shadow: 0 0 15px var(--shadow-color);
+    }
+
+    .message-input::placeholder {
+      color: var(--text-secondary);
+    }
+
+    .send-btn {
+      background: var(--accent-gradient-start);
+      border: none;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .send-btn:hover {
+      background: var(--accent-gradient-end);
+      transform: scale(1.05);
+    }
+
+    .send-btn:disabled {
+      background: var(--text-secondary);
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Empty State */
+    .empty-chat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      background: var(--chat-bg);
+      color: var(--text-secondary);
+      text-align: center;
+      padding: 40px;
+    }
+
+    .empty-chat i {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      opacity: 0.5;
+    }
+
+    .empty-chat h3 {
+      margin-bottom: 10px;
+      color: var(--text-primary);
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.mobile-open {
+        transform: translateX(0);
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .chat-container {
+        grid-template-columns: 1fr;
+        position: relative;
+      }
+
+      .chat-sidebar {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+
+      .chat-sidebar.mobile-open {
+        transform: translateX(0);
+      }
+
+      .message {
+        max-width: 85%;
+      }
+    }
+
+    .mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text-primary);
+      cursor: pointer;
+    }
+
+    .mobile-chat-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      color: var(--text-primary);
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-toggle,
+      .mobile-chat-toggle {
+        display: block;
+      }
+    }
+
+    /* Safety Features */
+    .safety-notice {
+      background: var(--message-system);
+      color: white;
+      padding: 15px;
+      border-radius: 12px;
+      margin: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .crisis-banner {
+      background: #FF7875;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .crisis-banner a {
+      color: white;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Theme Toggle Button -->
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+  <svg class="sun-icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+  </svg>
+  <svg class="moon-icon" style="display: none;" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+  </svg>
+</button>
+
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo" id="sidebarLogo">TechHealth</div>
+    <div class="user-info">
+      <i class="fas fa-user-circle"></i>
+      <span id="sidebarPortal">Student Dashboard</span>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-item">
+      <a href="student.html" class="nav-link">
+        <i class="fas fa-home"></i>
+        <span id="navDashboard">🏠 Dashboard</span>
+      </a>
+    </div>
+    <div class="nav-item">
+      <a href="#" class="nav-link">
+        <i class="fas fa-brain"></i>
+        <span id="navMindfulness">Mindfulness</span>
+      </a>
+    </div>
+    <div class="nav-item">
+      <a href="#" class="nav-link">
+        <i class="fas fa-book-open"></i>
+        <span id="navResources">Resources</span>
+      </a>
+    </div>
+    <div class="nav-item">
+      <a href="#" class="nav-link active">
+        <i class="fas fa-comments"></i>
+        <span id="navSupportChat">Support Chat</span>
+      </a>
+    </div>
+    <div class="nav-item">
+      <a href="#" class="nav-link">
+        <i class="fas fa-calendar-alt"></i>
+        <span id="navAppointments">Appointments</span>
+      </a>
+    </div>
+    <div class="nav-item">
+      <a href="#" class="nav-link">
+        <i class="fas fa-chart-line"></i>
+        <span id="navProgress">Progress</span>
+      </a>
+    </div>
+    <div class="nav-item">
+      <a href="#" class="nav-link">
+        <i class="fas fa-cog"></i>
+        <span id="navSettings">Settings</span>
+      </a>
+    </div>
+    <div class="nav-item">
+      <a href="index.html" class="nav-link">
+        <i class="fas fa-sign-out-alt"></i>
+        <span id="navLogout">Logout</span>
+      </a>
+    </div>
+  </nav>
+</div>
+
+<div class="main-content">
+  <div class="topbar">
+    <div class="topbar-left">
+      <button class="mobile-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <button class="mobile-chat-toggle" onclick="toggleChatSidebar()">
+        <i class="fas fa-comments"></i>
+      </button>
+      <h1 id="page-title">Support Chat Forum</h1>
+    </div>
+    <div class="topbar-right">
+      <div class="language-selector">
+        <select id="languageSelect">
+          <option value="en">English</option>
+          <option value="hi">हिन्दी (Hindi)</option>
+          <option value="ur">اردو (Urdu)</option>
+          <option value="ks">کٲشُر (Kashmiri)</option>
+        </select>
+      </div>
+      <button id="panicButton" style="background:#E74C3C; color:white; border:none; padding:8px 15px; border-radius:8px; cursor:pointer; font-weight:600;">
+        <i class="fas fa-exclamation-triangle"></i> Panic
+      </button>
+    </div>
+  </div>
+
+  <!-- Crisis Support Banner -->
+  <div class="crisis-banner" id="crisisBanner">
+    🚨 In crisis? Call 988 (Suicide & Crisis Lifeline) or <a href="#">click here for immediate help</a>
+  </div>
+
+  <div class="chat-container">
+    <!-- Chat Sidebar -->
+    <div class="chat-sidebar" id="chatSidebar">
+      <div class="chat-header">
+        <div class="chat-search">
+          <i class="fas fa-search"></i>
+          <input type="text" id="chatSearchInput" placeholder="Search conversations...">
+        </div>
+      </div>
+
+      <div class="chat-tabs">
+        <button class="chat-tab active" data-tab="volunteers" id="volunteersTab">Volunteers</button>
+        <button class="chat-tab" data-tab="groups" id="groupsTab">Groups</button>
+        <button class="chat-tab" data-tab="ai" id="aiTab">AI Support</button>
+      </div>
+
+      <div class="safety-notice" id="safetyNotice">
+        💚 This is a safe space. Our volunteers are here to listen and support you. All conversations are confidential.
+      </div>
+
+      <div class="chat-list" id="chatList">
+        <!-- Volunteer Chats -->
+        <div class="chat-item active" data-chat="sarah-volunteer">
+          <div class="chat-avatar" style="background: var(--message-volunteer);">
+            S
+            <div class="status-indicator status-online"></div>
+          </div>
+          <div class="chat-info">
+            <div class="chat-name">
+              Sarah Chen
+              <span class="volunteer-badge">Volunteer</span>
+            </div>
+            <div class="chat-preview">I'm here to listen whenever you need...</div>
+          </div>
+          <div class="chat-meta">
+            <div class="chat-time">2m ago</div>
+            <div class="unread-badge">3</div>
+          </div>
+        </div>
+
+        <div class="chat-item" data-chat="alex-volunteer">
+          <div class="chat-avatar" style="background: var(--message-volunteer);">
+            A
+            <div class="status-indicator status-online"></div>
+          </div>
+          <div class="chat-info">
+            <div class="chat-name">
+              Alex Rodriguez
+              <span class="volunteer-badge">Volunteer</span>
+            </div>
+            <div class="chat-preview">How are you feeling today?</div>
+          </div>
+          <div class="chat-meta">
+            <div class="chat-time">1h ago</div>
+          </div>
+        </div>
+
+        <div class="chat-item" data-chat="maya-volunteer">
+          <div class="chat-avatar" style="background: var(--message-volunteer);">
+            M
+            <div class="status-indicator status-away"></div>
+          </div>
+          <div class="chat-info">
+            <div class="chat-name">
+              Dr. Maya Patel
+              <span class="volunteer-badge">Counselor</span>
+            </div>
+            <div class="chat-preview">Remember, small steps count too</div>
+          </div>
+          <div class="chat-meta">
+            <div class="chat-time">3h ago</div>
+          </div>
+        </div>
+
+        <div class="chat-item" data-chat="support-ai">
+          <div class="chat-avatar" style="background: var(--accent-gradient-start);">
+            <i class="fas fa-robot"></i>
+          </div>
+          <div class="chat-info">
+            <div class="chat-name">
+              TechHealth AI
+              <span class="volunteer-badge" style="background: var(--accent-gradient-start);">AI</span>
+            </div>
+            <div class="chat-preview">I'm available 24/7 for support</div>
+          </div>
+          <div class="chat-meta">
+            <div class="chat-time">Always</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat Main Area -->
+    <div class="chat-main" id="chatMain">
+      <div class="chat-main-header">
+        <div class="chat-title-info">
+          <div class="chat-avatar" style="background: var(--message-volunteer);" id="currentChatAvatar">
+            S
+            <div class="status-indicator status-online"></div>
+          </div>
+          <div class="chat-title-details">
+            <h3 id="currentChatName">Sarah Chen</h3>
+            <div class="chat-status">
+              <i class="fas fa-circle" style="color: var(--online-status);"></i>
+              <span id="currentChatStatus">Online • Volunteer</span>
+            </div>
+          </div>
+        </div>
+        <div class="chat-actions">
+          <button class="chat-action-btn" id="reportBtn" title="Report Issue">
+            <i class="fas fa-flag"></i>
+          </button>
+          <button class="chat-action-btn" id="videoCallBtn" title="Video Call">
+            <i class="fas fa-video"></i>
+          </button>
+          <button class="chat-action-btn" id="moreOptionsBtn" title="More Options">
+            <i class="fas fa-ellipsis-v"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="messages-area" id="messagesArea">
+        <div class="message system">
+          <div class="message-content">
+            <div class="message-text">🌟 You're now connected with Sarah Chen, a trained volunteer. This conversation is confidential and secure.</div>
+          </div>
+        </div>
+
+        <div class="message volunteer">
+          <div class="message-avatar" style="background: var(--message-volunteer);">S</div>
+          <div class="message-content">
+            <div class="message-text">Hi there! I'm Sarah, and I'm here to listen and support you. How are you feeling today? 😊</div>
+            <div class="message-time">10:30 AM</div>
+          </div>
+        </div>
+
+        <div class="message user">
+          <div class="message-avatar" style="background: var(--message-user);">You</div>
+          <div class="message-content">
+            <div class="message-text">Hi Sarah, I've been feeling really overwhelmed with my studies lately. I can't seem to focus and I'm falling behind.</div>
+            <div class="message-time">10:32 AM</div>
+          </div>
+        </div>
+
+        <div class="message volunteer">
+          <div class="message-avatar" style="background: var(--message-volunteer);">S</div>
+          <div class="message-content">
+            <div class="message-text">I hear you, and what you're experiencing sounds really challenging. It's completely normal to feel overwhelmed sometimes, especially with academic pressure. You took a brave step by reaching out. 💚</div>
+            <div class="message-time">10:33 AM</div>
+          </div>
+        </div>
+
+        <div class="message volunteer">
+          <div class="message-avatar" style="background: var(--message-volunteer);">S</div>
+          <div class="message-content">
+            <div class="message-text">Can you tell me a bit more about what specifically is making you feel overwhelmed? Is it the workload, upcoming deadlines, or something else?</div>
+            <div class="message-time">10:34 AM</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="message-input-area">
+        <div class="input-container">
+          <textarea 
+            class="message-input" 
+            id="messageInput" 
+            placeholder="Type your message here... Remember, this is a safe space to share your thoughts and feelings."
+            rows="1"></textarea>
+          <button class="send-btn" id="sendBtn" disabled>
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Theme toggle functionality
+const themeToggle = document.getElementById('themeToggle');
+const sunIcon = document.querySelector('.sun-icon');
+const moonIcon = document.querySelector('.moon-icon');
+const html = document.documentElement;
+
+const currentTheme = localStorage.getItem('theme') || 'light';
+html.setAttribute('data-theme', currentTheme);
+
+function updateIcon() {
+  const theme = html.getAttribute('data-theme');
+  if (theme === 'dark') {
+    sunIcon.style.display = 'none';
+    moonIcon.style.display = 'block';
+  } else {
+    sunIcon.style.display = 'block';
+    moonIcon.style.display = 'none';
+  }
+}
+
+updateIcon();
+
+function toggleTheme() {
+  const currentTheme = html.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  
+  themeToggle.style.transform = 'scale(0.9) rotate(180deg)';
+  
+  setTimeout(() => {
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateIcon();
+    
+    setTimeout(() => {
+      themeToggle.style.transform = '';
+    }, 200);
+  }, 100);
+}
+
+themeToggle.addEventListener('click', toggleTheme);
+
+// Language translations
+const translations = {
+  en: {
+    pageTitle: "Support Chat Forum",
+    sidebarLogo: "TechHealth",
+    sidebarPortal: "Student Dashboard",
+    navDashboard: "🏠 Dashboard",
+    navMindfulness: "Mindfulness",
+    navResources: "Resources", 
+    navSupportChat: "Support Chat",
+    navAppointments: "Appointments",
+    navProgress: "Progress",
+    navSettings: "Settings",
+    navLogout: "Logout",
+    volunteersTab: "Volunteers",
+    groupsTab: "Groups",
+    aiTab: "AI Support",
+    safetyNotice: "💚 This is a safe space. Our volunteers are here to listen and support you. All conversations are confidential.",
+    crisisBanner: "🚨 In crisis? Call 988 (Suicide & Crisis Lifeline) or click here for immediate help",
+    chatSearchPlaceholder: "Search conversations...",
+    messageInputPlaceholder: "Type your message here... Remember, this is a safe space to share your thoughts and feelings."
+  },
+  hi: {
+    pageTitle: "सहायता चैट फोरम",
+    sidebarLogo: "टेकहेल्थ",
+    sidebarPortal: "छात्र डैशबोर्ड",
+    navDashboard: "🏠 डैशबोर्ड",
+    navMindfulness: "सजगता",
+    navResources: "संसाधन",
+    navSupportChat: "सहायता चैट",
+    navAppointments: "नियुक्तियां",
+    navProgress: "प्रगति",
+    navSettings: "सेटिंग्स",
+    navLogout: "लॉगआउट",
+    volunteersTab: "स्वयंसेवक",
+    groupsTab: "समूह",
+    aiTab: "AI सहायता",
+    safetyNotice: "💚 यह एक सुरक्षित स्थान है। हमारे स्वयंसेवक आपकी बात सुनने और सहायता करने के लिए यहाँ हैं। सभी बातचीत गोपनीय हैं।",
+    crisisBanner: "🚨 संकट में? 988 पर कॉल करें या तुरंत मदद के लिए यहाँ क्लिक करें",
+    chatSearchPlaceholder: "बातचीत खोजें...",
+    messageInputPlaceholder: "यहाँ अपना संदेश टाइप करें... याद रखें, यह आपके विचारों को साझा करने के लिए एक सुरक्षित स्थान है।"
+  },
+  ur: {
+    pageTitle: "سپورٹ چیٹ فورم",
+    sidebarLogo: "ٹیک ہیلتھ", 
+    sidebarPortal: "طالب علم ڈیش بورڈ",
+    navDashboard: "🏠 ڈیش بورڈ",
+    navMindfulness: "ذہن سازی",
+    navResources: "وسائل",
+    navSupportChat: "سپورٹ چیٹ", 
+    navAppointments: "ملاقاتیں",
+    navProgress: "ترقی",
+    navSettings: "سیٹنگز",
+    navLogout: "لاگ آؤٹ",
+    volunteersTab: "رضاکار",
+    groupsTab: "گروپس",
+    aiTab: "AI سپورٹ",
+    safetyNotice: "💚 یہ ایک محفوظ جگہ ہے۔ ہمارے رضاکار آپ کی بات سننے اور مدد کرنے کے لیے یہاں ہیں۔ تمام بات چیت خفیہ ہے۔",
+    crisisBanner: "🚨 بحران میں؟ 988 پر کال کریں یا فوری مدد کے لیے یہاں کلک کریں",
+    chatSearchPlaceholder: "گفتگو تلاش کریں...",
+    messageInputPlaceholder: "یہاں اپنا پیغام ٹائپ کریں... یاد رکھیں، یہ آپ کے خیالات کا اظہار کرنے کے لیے ایک محفوظ جگہ ہے۔"
+  },
+  ks: {
+    pageTitle: "سپورٹ چیٹ فورم",
+    sidebarLogo: "ٹیک ہیلتھ",
+    sidebarPortal: "طالب علم ڈیش بورڈ", 
+    navDashboard: "🏠 ڈیش بورڈ",
+    navMindfulness: "ذہن سازی",
+    navResources: "وسائل",
+    navSupportChat: "سپورٹ چیٹ",
+    navAppointments: "ملاقات",
+    navProgress: "ترقی", 
+    navSettings: "سیٹنگ",
+    navLogout: "لاگ آؤٹ",
+    volunteersTab: "رضاکار",
+    groupsTab: "گروپ",
+    aiTab: "AI مدد",
+    safetyNotice: "💚 یہ محفوظ جگہ چھ۔ أسۍ رضاکار تُہند مدد کرنس خٲطرؠ یِتھ چھ۔ تمام بات چیت خفیہ چھ۔",
+    crisisBanner: "🚨 بحران منز؟ 988 پتھ کال کریو یا فوری مدد خٲطرؠ یِتھ کلک کریو",
+    chatSearchPlaceholder: "بات چیت تلاش کریو...",
+    messageInputPlaceholder: "یِتھ اپنؠ پیغام ٹائپ کریو... یاد تھٲویو، یہ تُہندؠ خیالات شیئر کرنس خٲطرؠ محفوظ جگہ چھ۔"
+  }
+};
+
+// Chat functionality
+class ChatForum {
+  constructor() {
+    this.currentChat = 'sarah-volunteer';
+    this.currentLanguage = localStorage.getItem("selectedLanguage") || "en";
+    this.initializeEventListeners();
+    this.updateLanguage();
+    this.initializeAutoResize();
+  }
+
+  initializeEventListeners() {
+    // Language selector
+    document.getElementById('languageSelect').addEventListener('change', (e) => {
+      this.currentLanguage = e.target.value;
+      localStorage.setItem("selectedLanguage", e.target.value);
+      this.updateLanguage();
+    });
+
+    // Chat item selection
+    document.querySelectorAll('.chat-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        this.selectChat(e.currentTarget);
+      });
+    });
+
+    // Tab switching
+    document.querySelectorAll('.chat-tab').forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        this.switchTab(e.currentTarget);
+      });
+    });
+
+    // Message input
+    const messageInput = document.getElementById('messageInput');
+    const sendBtn = document.getElementById('sendBtn');
+
+    messageInput.addEventListener('input', () => {
+      sendBtn.disabled = !messageInput.value.trim();
+    });
+
+    messageInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        this.sendMessage();
+      }
+    });
+
+    sendBtn.addEventListener('click', () => {
+      this.sendMessage();
+    });
+
+    // Panic button
+    document.getElementById('panicButton').addEventListener('click', () => {
+      this.handlePanicButton();
+    });
+
+    // Search functionality
+    document.getElementById('chatSearchInput').addEventListener('input', (e) => {
+      this.searchChats(e.target.value);
+    });
+
+    // Action buttons
+    document.getElementById('reportBtn').addEventListener('click', () => {
+      this.showAlert('Report functionality would be implemented here.');
+    });
+
+    document.getElementById('videoCallBtn').addEventListener('click', () => {
+      this.showAlert('Video calling feature coming soon!');
+    });
+  }
+
+  initializeAutoResize() {
+    const messageInput = document.getElementById('messageInput');
+    
+    messageInput.addEventListener('input', function() {
+      this.style.height = 'auto';
+      this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+    });
+  }
+
+  selectChat(chatItem) {
+    // Remove active class from all items
+    document.querySelectorAll('.chat-item').forEach(item => {
+      item.classList.remove('active');
+    });
+    
+    // Add active class to selected item
+    chatItem.classList.add('active');
+    
+    // Remove unread badge
+    const unreadBadge = chatItem.querySelector('.unread-badge');
+    if (unreadBadge) {
+      unreadBadge.style.display = 'none';
+    }
+    
+    // Update chat header
+    const chatName = chatItem.querySelector('.chat-name').childNodes[0].textContent.trim();
+    const chatAvatar = chatItem.querySelector('.chat-avatar');
+    const statusIndicator = chatItem.querySelector('.status-indicator');
+    
+    document.getElementById('currentChatName').textContent = chatName;
+    document.getElementById('currentChatAvatar').innerHTML = chatAvatar.innerHTML;
+    
+    // Close mobile chat sidebar
+    if (window.innerWidth <= 768) {
+      document.getElementById('chatSidebar').classList.remove('mobile-open');
+    }
+    
+    this.loadChatMessages(chatItem.dataset.chat);
+  }
+
+  loadChatMessages(chatId) {
+    const messagesArea = document.getElementById('messagesArea');
+    
+    // Sample message loading based on chat type
+    const messageTemplates = {
+      'sarah-volunteer': this.getSarahMessages(),
+      'alex-volunteer': this.getAlexMessages(),
+      'maya-volunteer': this.getMayaMessages(),
+      'support-ai': this.getAIMessages()
+    };
+    
+    messagesArea.innerHTML = messageTemplates[chatId] || this.getDefaultMessages();
+    messagesArea.scrollTop = messagesArea.scrollHeight;
+  }
+
+  getSarahMessages() {
+    return `
+      <div class="message system">
+        <div class="message-content">
+          <div class="message-text">🌟 You're now connected with Sarah Chen, a trained volunteer. This conversation is confidential and secure.</div>
+        </div>
+      </div>
+      <div class="message volunteer">
+        <div class="message-avatar" style="background: var(--message-volunteer);">S</div>
+        <div class="message-content">
+          <div class="message-text">Hi there! I'm Sarah, and I'm here to listen and support you. How are you feeling today? 😊</div>
+          <div class="message-time">10:30 AM</div>
+        </div>
+      </div>
+      <div class="message volunteer">
+        <div class="message-avatar" style="background: var(--message-volunteer);">S</div>
+        <div class="message-content">
+          <div class="message-text">I'm here to listen whenever you need to talk. What's on your mind?</div>
+          <div class="message-time">Just now</div>
+        </div>
+      </div>
+    `;
+  }
+
+  getAlexMessages() {
+    return `
+      <div class="message system">
+        <div class="message-content">
+          <div class="message-text">🌟 You're now connected with Alex Rodriguez, a peer volunteer. This is a safe space to share.</div>
+        </div>
+      </div>
+      <div class="message volunteer">
+        <div class="message-avatar" style="background: var(--message-volunteer);">A</div>
+        <div class="message-content">
+          <div class="message-text">Hey! I'm Alex, a student volunteer. I understand what it's like to go through tough times in college. How are you doing?</div>
+          <div class="message-time">1 hour ago</div>
+        </div>
+      </div>
+    `;
+  }
+
+  getMayaMessages() {
+    return `
+      <div class="message system">
+        <div class="message-content">
+          <div class="message-text">🌟 You're now connected with Dr. Maya Patel, a licensed counselor. This conversation is completely confidential.</div>
+        </div>
+      </div>
+      <div class="message volunteer">
+        <div class="message-avatar" style="background: var(--message-volunteer);">M</div>
+        <div class="message-content">
+          <div class="message-text">Hello, I'm Dr. Maya Patel. I'm here to provide professional support. Remember, small steps count too. What would you like to talk about today?</div>
+          <div class="message-time">3 hours ago</div>
+        </div>
+      </div>
+    `;
+  }
+
+  getAIMessages() {
+    return `
+      <div class="message system">
+        <div class="message-content">
+          <div class="message-text">🤖 You're now chatting with TechHealth AI. I'm available 24/7 and can provide immediate support and resources.</div>
+        </div>
+      </div>
+      <div class="message volunteer">
+        <div class="message-avatar" style="background: var(--accent-gradient-start);"><i class="fas fa-robot"></i></div>
+        <div class="message-content">
+          <div class="message-text">Hi! I'm here to help you 24/7. I can provide coping strategies, breathing exercises, and connect you with human support when needed. How can I assist you today?</div>
+          <div class="message-time">Always available</div>
+        </div>
+      </div>
+    `;
+  }
+
+  getDefaultMessages() {
+    return `
+      <div class="message system">
+        <div class="message-content">
+          <div class="message-text">🌟 Welcome to TechHealth Support Chat. You're in a safe, confidential space.</div>
+        </div>
+      </div>
+    `;
+  }
+
+  switchTab(tab) {
+    // Remove active class from all tabs
+    document.querySelectorAll('.chat-tab').forEach(t => {
+      t.classList.remove('active');
+    });
+    
+    // Add active class to clicked tab
+    tab.classList.add('active');
+    
+    // Filter chat list based on tab
+    const tabType = tab.dataset.tab;
+    this.filterChatList(tabType);
+  }
+
+  filterChatList(type) {
+    const chatItems = document.querySelectorAll('.chat-item');
+    
+    chatItems.forEach(item => {
+      const chatId = item.dataset.chat;
+      let shouldShow = false;
+      
+      switch(type) {
+        case 'volunteers':
+          shouldShow = chatId.includes('volunteer');
+          break;
+        case 'groups':
+          shouldShow = chatId.includes('group');
+          break;
+        case 'ai':
+          shouldShow = chatId.includes('ai');
+          break;
+        default:
+          shouldShow = true;
+      }
+      
+      item.style.display = shouldShow ? 'flex' : 'none';
+    });
+  }
+
+  sendMessage() {
+    const messageInput = document.getElementById('messageInput');
+    const messageText = messageInput.value.trim();
+    
+    if (!messageText) return;
+    
+    // Add user message to chat
+    this.addMessageToChat('user', messageText);
+    
+    // Clear input
+    messageInput.value = '';
+    messageInput.style.height = 'auto';
+    document.getElementById('sendBtn').disabled = true;
+    
+    // Simulate volunteer response after delay
+    setTimeout(() => {
+      this.simulateVolunteerResponse(messageText);
+    }, 1000 + Math.random() * 2000);
+  }
+
+  addMessageToChat(type, text, avatar = null) {
+    const messagesArea = document.getElementById('messagesArea');
+    const messageDiv = document.createElement('div');
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    
+    let avatarContent = '';
+    let messageClass = type;
+    
+    if (type === 'user') {
+      avatarContent = 'You';
+    } else if (type === 'volunteer') {
+      avatarContent = avatar || 'S';
+    }
+    
+    messageDiv.className = `message ${messageClass}`;
+    messageDiv.innerHTML = `
+      <div class="message-avatar" style="background: var(--message-${type});">${avatarContent}</div>
+      <div class="message-content">
+        <div class="message-text">${text}</div>
+        <div class="message-time">${timeStr}</div>
+      </div>
+    `;
+    
+    messagesArea.appendChild(messageDiv);
+    messagesArea.scrollTop = messagesArea.scrollHeight;
+  }
+
+  simulateVolunteerResponse(userMessage) {
+    const responses = [
+      "I hear you, and I want you to know that your feelings are valid. Can you tell me more about what's going on?",
+      "Thank you for sharing that with me. It sounds like you're going through a difficult time. I'm here to listen.",
+      "That must be really challenging for you. You're not alone in this. What do you think might help you feel a bit better right now?",
+      "I appreciate you opening up about this. It takes courage to reach out. How long have you been feeling this way?",
+      "Your feelings matter, and I'm glad you're talking about them. Sometimes just expressing what we're going through can help.",
+      "That sounds overwhelming. Let's take this one step at a time. What feels like the most pressing thing right now?",
+      "I can understand why that would be stressful. You're doing the right thing by reaching out for support.",
+      "Thank you for trusting me with this. Remember, it's okay to not be okay sometimes. What usually helps you cope?"
+    ];
+    
+    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+    this.addMessageToChat('volunteer', randomResponse, 'S');
+  }
+
+  searchChats(query) {
+    const chatItems = document.querySelectorAll('.chat-item');
+    
+    chatItems.forEach(item => {
+      const chatName = item.querySelector('.chat-name').textContent.toLowerCase();
+      const chatPreview = item.querySelector('.chat-preview').textContent.toLowerCase();
+      const searchTerm = query.toLowerCase();
+      
+      const matches = chatName.includes(searchTerm) || chatPreview.includes(searchTerm);
+      item.style.display = matches ? 'flex' : 'none';
+    });
+  }
+
+  handlePanicButton() {
+    // Show immediate crisis resources
+    const crisisMessage = this.currentLanguage === 'en' ? 
+      "🚨 CRISIS RESOURCES:\n\n• National Suicide Prevention Lifeline: 988\n• Crisis Text Line: Text HOME to 741741\n• International Crisis Lines: befrienders.org\n\nYou are not alone. Help is available 24/7." :
+      "🚨 संकट संसाधन:\n\n• राष्ट्रीय आत्महत्या रोकथाम लाइफलाइन: 988\n• संकट टेक्स्ट लाइन: HOME भेजें 741741\n\nआप अकेले नहीं हैं। 24/7 मदद उपलब्ध है।";
+    
+    alert(crisisMessage);
+    
+    // Add crisis message to current chat
+    this.addMessageToChat('system', 'Crisis support resources have been sent to you. Please reach out for immediate help if needed.');
+  }
+
+  updateLanguage() {
+    const t = translations[this.currentLanguage];
+    
+    // Update page elements
+    document.getElementById('page-title').textContent = t.pageTitle;
+    document.getElementById('sidebarLogo').textContent = t.sidebarLogo;
+    document.getElementById('sidebarPortal').textContent = t.sidebarPortal;
+    
+    // Update navigation
+    document.getElementById('navDashboard').textContent = t.navDashboard;
+    document.getElementById('navMindfulness').textContent = t.navMindfulness;
+    document.getElementById('navResources').textContent = t.navResources;
+    document.getElementById('navSupportChat').textContent = t.navSupportChat;
+    document.getElementById('navAppointments').textContent = t.navAppointments;
+    document.getElementById('navProgress').textContent = t.navProgress;
+    document.getElementById('navSettings').textContent = t.navSettings;
+    document.getElementById('navLogout').textContent = t.navLogout;
+    
+    // Update chat interface
+    document.getElementById('volunteersTab').textContent = t.volunteersTab;
+    document.getElementById('groupsTab').textContent = t.groupsTab;
+    document.getElementById('aiTab').textContent = t.aiTab;
+    document.getElementById('safetyNotice').textContent = t.safetyNotice;
+    document.getElementById('crisisBanner').innerHTML = t.crisisBanner;
+    document.getElementById('chatSearchInput').placeholder = t.chatSearchPlaceholder;
+    document.getElementById('messageInput').placeholder = t.messageInputPlaceholder;
+    
+    // Set language selector
+    document.getElementById('languageSelect').value = this.currentLanguage;
+  }
+
+  showAlert(message) {
+    // Create a better alert system
+    const alertDiv = document.createElement('div');
+    alertDiv.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-gradient-end));
+      color: white;
+      padding: 15px 20px;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px var(--shadow-color);
+      z-index: 3000;
+      font-weight: 500;
+      max-width: 300px;
+    `;
+    alertDiv.textContent = message;
+    document.body.appendChild(alertDiv);
+    
+    setTimeout(() => {
+      if (alertDiv.parentNode) {
+        alertDiv.remove();
+      }
+    }, 3000);
+  }
+}
+
+// Sidebar toggle functions
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('mobile-open');
+}
+
+function toggleChatSidebar() {
+  document.getElementById('chatSidebar').classList.toggle('mobile-open');
+}
+
+// Initialize chat forum
+document.addEventListener('DOMContentLoaded', () => {
+  const chatForum = new ChatForum();
+  
+  // Auto-scroll messages area on new messages
+  const messagesArea = document.getElementById('messagesArea');
+  if (messagesArea) {
+    messagesArea.scrollTop = messagesArea.scrollHeight;
+  }
+});
+
+// Handle window resize
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 768) {
+    document.getElementById('sidebar').classList.remove('mobile-open');
+    document.getElementById('chatSidebar').classList.remove('mobile-open');
+  }
+});
+</script>
+
+</body>
+</html>
